@@ -17,8 +17,12 @@ void main(char *bitstream[], bool couleur)  {
 
     if (couleur) {
         struct YCbCr vect_YCbCr;
+        length = sizeof(bitstream) / sizeof(bitstream[0]);
 
-        vect_YCbCr = malloc(sizeof(bitstream));
+        vect_YCbCr.Y = malloc(length * sizeof(float));
+        vect_YCbCr.Cb = malloc(length * sizeof(float));
+        vect_YCbCr.Cr = malloc(length * sizeof(float));
+
 
         length = sizeof(bitstream) / sizeof(bitstream[0]);
         for (int i = 0; i < length; i++) {
