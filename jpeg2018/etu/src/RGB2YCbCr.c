@@ -26,7 +26,7 @@ void main(char *bitstream[])  {
         vect_YCbCr.Cb[i] = -0.1687*bistream[3*i] -0.3313*bitstream[3*i+1] + 0.5*bitstream[3*i+2] + 128;
         vect_YCbCr.Cr[i] = 0.5*bistream[3*i] - 0.4187*bitstream[3*i+1] - 0.0813*bitstream[3*i+2] + 128;
     }
-
-    bitstream = vect_YCbCr;
     free(bitstream);
+    bitstream = vect_YCbCr;
+
 }
