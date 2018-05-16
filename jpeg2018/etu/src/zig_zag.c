@@ -17,7 +17,6 @@ int16_t *zig_zag(int16_t *vecteur_initial)
                                           35, 36, 48, 49, 57, 58, 62, 63};
     int16_t *vecteur_zigzag = malloc(64*sizeof(int16_t));
     for (int indice = 0; indice < 64; indice++) {
-        // vecteur_zigzag[indice] = malloc(sizeof(int16_t));
         vecteur_zigzag[indice] = vecteur_initial[correspondance_zigzag[indice]];
     }
     return vecteur_zigzag;
