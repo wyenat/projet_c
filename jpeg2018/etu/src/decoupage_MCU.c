@@ -1,15 +1,16 @@
+#include "recuperer_image.h"
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
-
-struct Image {
-   int couleur;               //0 si en noir et blanc, 1 sinon.
-   uint32_t largeur;
-   uint32_t hauteur;
-   uint32_t valeur;
-   char *stream;
-};
+// struct Image {
+//    int couleur;               //0 si en noir et blanc, 1 sinon.
+//    uint32_t largeur;
+//    uint32_t hauteur;
+//    uint32_t valeur;
+//    char *stream;
+//    size_t taille_stream;
+// };
 
 struct MCU_8 {                // information sur un octet (RGB, YCbCr et échantillonnage)
     int couleur;               //0 si en noir et blanc, 1 sinon.
@@ -18,7 +19,7 @@ struct MCU_8 {                // information sur un octet (RGB, YCbCr et échant
     uint8_t echant_l;         // 1 si on échantillonne en largeur, 0 sinon
     uint8_t echant_h;         // 1 si on échantillonne en hauteur, 0 sinon
     uint8_t *flux;
-}
+};
 
 // struct MCU_16 {               // information sur un octet (DCT, ZigZag et quantification)
 //     int couleur;               //0 si en noir et blanc, 1 sinon.
@@ -34,7 +35,7 @@ struct Image_MCU_8 {
     uint32_t largeur;         // en MCUs
     uint32_t hauteur;         // en MCUs
     struct MCU_8 **MCUs;
-}
+};
 
 // struct Image_MCU_16 {
 //     int couleur;              //0 si en noir et blanc, 1 sinon.
@@ -57,12 +58,12 @@ struct Image_MCU_8 *decoupe(struct Image *image, uint8_t largeur_MCU, uint8_t ha
         for (uint32_t colonne = 0; colonne < largeur; colonne++) {
             struct MCU_8 *MCU = creer_MCU(image, ligne, colonne, largeur, largeur_MCU, hauteur_MCU);
             MCU = MCU_RGB(MCU)
-            MCUs[largeur*ligne + colonne] = MCU
+            MCUs[largeur*ligne + colonne] = MCU;
         }
     }
     struct Image_MCU_8 *image_MCU = malloc(sizeof(struct Image_MCU_8));
     Image_MCU_8
-}
+};
 
 
 

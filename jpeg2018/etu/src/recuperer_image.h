@@ -10,34 +10,38 @@
 #include <stdio.h>
 #include <string.h>
 
-extern truct Image {int couleur,
-                    uint32_t largeur,
-                    uint32_t hauteur,
-                    uint32_t valeur,
-                    char *stream,
-                    size_t taille_stream};
+struct Image {int couleur; // 0 si noir et blanc, 1 si couleur
+                    uint32_t largeur;
+                    uint32_t hauteur;
+                    uint32_t valeur;
+                    char *stream; // Le premier bit est stream[0], le i_ième est stream[i-1]. Pour observer ces bits, printf("%0hhx", stream[i])
+                    size_t taille_stream;};
 
-
-#endif //RECUPERER_IMAGE
 
 #include <stdlib.h>
 
 /* Crée une structure Image du fichier rentré et la retourne. */
-extern struct Image *initialisation(char *name_file);
+const struct Image *initialisation(char *name_file);
 
 /* Libère une image */
-extern void free_image(struct Image *pic);
+void free_image(struct Image *pic);
 
 /* Prend le buffer, et renvoie la valeur entière qu'il contient */
-extern uint32_t prendre_valeur(char *chaine);
+const uint32_t prendre_valeur(char *chaine);
 
 /* Place dans le buffer tous les caractères dans le stream lecture jusqu'à la première
 occurence du caractère retour.
 Renvoie la taille du mot placé dans buffer */
-extern size_t recuperer_jusqua_retour(FILE *lecture, char *buffer, char retour);
+const size_t recuperer_jusqua_retour(FILE *lecture, char *buffer, char retour);
+
+/* Place dans le buffer tous les caractères dans le stream lecture jusqu'à la fin.
+Renvoie la taille du mot placé dans buffer */
+const size_t recuperer_jusqua_fin(FILE *lecture, char *buffer);
 
 /* Réinitialise le buffer pour pouvoir y stoquer la suite */
-extern void remettre_zero(size_t indice, char *buffer);
+void remettre_zero(size_t indice, char *buffer);
 
 /* Affiche les valeurs de l'image rentrée */
-extern void afficher_pic(struct Image *pic);
+void afficher_pic(struct Image *pic);
+
+#endif //RECUPERER_IMAGE

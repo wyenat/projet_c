@@ -1,16 +1,8 @@
+ #include "recuperer_image.h"
  #include <stdlib.h>
  #include <stdint.h>
  #include <stdio.h>
  #include <string.h>
-
-struct Image {
-  int couleur;              //0 si en noir et blanc, 1 sinon.
-  uint32_t largeur;
-  uint32_t hauteur;
-  uint32_t valeur;
-  char *stream; // Le premier bit est stream[0], le i_ième est stream[i-1]. Pour observer ces bits, printf("%0hhx", stream[i])
-  size_t taille_stream;
-};
 
 void remettre_zero(size_t indice, char *buffer){
   for (size_t i=0; i<= indice; i++){
