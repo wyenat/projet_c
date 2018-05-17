@@ -28,7 +28,7 @@ int16_t *quantifier(int16_t *table, int booleen_tableY)
 // {
 //     printf("\n");
 //     for (int indice = 0; indice < 64; indice++) {
-//         printf("%hx\t", vecteur[indice]);
+//         printf("%02hx\t", vecteur[indice]);
 //         if ((indice+1)%8 == 0) {
 //             printf("\n");
 //         }
