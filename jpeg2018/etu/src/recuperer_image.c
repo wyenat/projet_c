@@ -11,57 +11,64 @@ struct Image {
   char *stream[];
 };
 
+/* Réinitialise le buffer pour pouvoir y stoquer la suite */
 void remettre_zero(size_t indice, char *buffer){
   for (size_t i=0; i<= indice; i++){
     buffer[i] = '\0';
   }
 }
 
+/* Place dans le buffer tous les caractères dans le stream lecture jusqu'à la première
+occurence du caractère retour.
+Renvoie la taille du mot placé dans buffer */
+size_t recuperer_jusqua_retour(FILE *lecture, char *buffer, char retour) {
+  size_t indice = 0;
+  char caractere_courant = fgetc(lecture);
+  while (caractere_courant != retour) {
+    buffer[indice] = caractere_courant;
+    caractere_courant = fgetc(lecture);
+    indice++;
+  }
+  return indice;
+}
+
+/* Prend le buffer, et renvoie la valeur entière qu'il contient */
+uint32_t prendre_valeur(char *chaine){
+  uint32_t valeur = atoi(&chaine[0]);
+  return valeur;
+}
+
 struct Image initialisation(/*char name_file*/){
   FILE *lecture;
   lecture = fopen("/user/2/matterv/TP/projet_c/jpeg2018/etu/images/invader.pgm", "r");
-  char buffer[sizeof(lecture)];
+  char *buffer = malloc(sizeof(lecture));
+  printf("Buffer initial : %s \n", buffer);
+  remettre_zero(sizeof(buffer), buffer);
   // initialisation de couleur
-  size_t indice = 0;
-  char caractere_courant = fgetc(lecture);
-  char retour = '\n';
-  while (caractere_courant != retour) {
-    buffer[indice] = caractere_courant;
-    caractere_courant = fgetc(lecture);
-    indice++;
-  }
-  printf("%s \n", buffer);
+  size_t indice = recuperer_jusqua_retour(lecture, buffer, '\n');
   int couleur = 1;
-  if (strcmp(&buffer, "P5") == 0) {
+  if (buffer[1] == '5') {
     couleur = 0;
   }
   printf("%d \n", couleur);
-  remettre_zero(indice, &buffer);
+  remettre_zero(indice, buffer);
   // initialisation de largeur
-  indice = 0;
-  caractere_courant = fgetc(lecture);
-  retour = ' ';
-  while (caractere_courant != retour) {
-    buffer[indice] = caractere_courant;
-    caractere_courant = fgetc(lecture);
-    indice++;
-  }
-  uint32_t largeur = atoi(buffer);
-  remettre_zero(indice, &buffer);
+  indice = recuperer_jusqua_retour(lecture, buffer, ' ');
+  uint32_t largeur = prendre_valeur(buffer);
+  remettre_zero(indice, buffer);
   printf("%d \n", largeur);
   // initialisation de longueur;
-  indice = 0;
-  caractere_courant = fgetc(lecture);
-  retour = '\n';
-  while (caractere_courant != retour) {
-    buffer[indice] = caractere_courant;
-    caractere_courant = fgetc(lecture);
-    indice++;
-  }
-  uint32_t longueur = atoi(buffer);
-  remettre_zero(indice, &buffer);
+  indice = recuperer_jusqua_retour(lecture, buffer, '\n');
+  uint32_t longueur = prendre_valeur(buffer);
+  remettre_zero(indice, buffer);
   printf("%d \n", longueur);
-  // initialisation de stream 
+  // initialisation de valeur;
+  indice = recuperer_jusqua_retour(lecture, buffer, '\n');
+  uint32_t valeur = prendre_valeur(buffer);
+  remettre_zero(indice, buffer);
+  printf("%d \n", valeur);
+  // initialisation de stream
+
 }
 
 
