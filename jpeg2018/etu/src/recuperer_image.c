@@ -12,16 +12,12 @@ struct Image {
   size_t taille_stream;
 };
 
-/* Réinitialise le buffer pour pouvoir y stoquer la suite */
 void remettre_zero(size_t indice, char *buffer){
   for (size_t i=0; i<= indice; i++){
     buffer[i] = '\0';
   }
 }
 
-/* Place dans le buffer tous les caractères dans le stream lecture jusqu'à la première
-occurence du caractère retour.
-Renvoie la taille du mot placé dans buffer */
 size_t recuperer_jusqua_retour(FILE *lecture, char *buffer, char retour) {
   size_t indice = 0;
   char caractere_courant = fgetc(lecture);
@@ -33,19 +29,17 @@ size_t recuperer_jusqua_retour(FILE *lecture, char *buffer, char retour) {
   return indice;
 }
 
-/* Prend le buffer, et renvoie la valeur entière qu'il contient */
+
 uint32_t prendre_valeur(char *chaine){
   uint32_t valeur = atoi(&chaine[0]);
   return valeur;
 }
 
-/* Libère une image */
 void free_image(struct Image *pic){
   free(pic->stream);
   free(pic);
 }
 
-/* Affiche les valeurs de l'image rentrée */
 void afficher_pic(struct Image *pic){
   printf("En couleur : %d \n", pic->couleur);
   printf("Dimentions : %d x %d \n", pic->hauteur, pic->largeur);
@@ -55,7 +49,6 @@ void afficher_pic(struct Image *pic){
   printf("\n");
 }
 
-/* Crée une structure Image du fichier rentré et la retourne. */
 struct Image initialisation(char *name_file){
   FILE *lecture;
   lecture = fopen(name_file, "r");
@@ -96,6 +89,6 @@ struct Image initialisation(char *name_file){
 
 
  int main(/*int argc, char* name_file[]*/) {
-   struct Image pic = initialisation("/user/2/matterv/TP/projet_c/jpeg2018/etu/images/invader.pgm");
+   struct Image pic = initialisation("/user/2/matterv/TP/projet_c/jpeg2018/etu/images/shaun_the_sheep.ppm");
    afficher_pic(&pic);
  }

@@ -9,4 +9,4 @@
 
 #include <stdlib.h>
 
-int16_t *zig_zag(int16_t *vecteur_initial);
+extern int16_t *zig_zag(int16_t *vecteur_initial);
