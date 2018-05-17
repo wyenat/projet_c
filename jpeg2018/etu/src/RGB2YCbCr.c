@@ -9,7 +9,9 @@
 
 float *RGB2YCbCr_couleur(char *bitstream[], size_t length)  {
     // length est égal à 3 fois le nombre de pixel (3 octets pour le RGB)
-    assert(length%3 == 0);
+    assert(length%3 == 0 && "La longueur donnée en argument n'est pas un multiple de 3 ! L'image est bien une image "
+                                    "couleur ? Le bitstream est-il bien correct ? La longueur donnée correspond-elle bien "
+                                    "à la longueur du bitstream ?");
     float *vect_YCbCr = malloc(sizeof(float) * length);
 
     for (size_t i = 0; i < length/3; i++) {
@@ -41,7 +43,7 @@ int main(int argc, char *argv[])    {
     char *bitstream_gris[5] = {"ff", "0f", "00", "ff", "00"};
     float *new_vect_gris = RGB2YCbCr_gris(bitstream_gris, (size_t) 5);
     free(new_vect_gris);
-    char *bitstream_couleurs[6] = {"ff", "0f", "00", "15", "a3", "4d"};
+    char *bitstream_couleurs[7] = {"ff", "0f", "00", "15", "a3", "4d"};
     float *new_vect_couleurs = RGB2YCbCr_couleur(bitstream_couleurs, (size_t) 6);
     free(new_vect_couleurs);
     return 0;
