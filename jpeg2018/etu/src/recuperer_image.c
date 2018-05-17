@@ -19,14 +19,27 @@ void remettre_zero(size_t indice, char *buffer){
 }
 
 size_t recuperer_jusqua_retour(FILE *lecture, char *buffer, char retour) {
-  size_t indice = 0;
+  uint32_t indice = 0;
   char caractere_courant = fgetc(lecture);
   while (caractere_courant != retour && !feof(lecture)) {
     buffer[indice] = caractere_courant;
     caractere_courant = fgetc(lecture);
     indice++;
   }
-  return indice;
+  size_t i = indice;
+  return i;
+}
+
+size_t recuperer_jusqua_fin(FILE *lecture, char *buffer) {
+  uint32_t indice = 0;
+  char caractere_courant = fgetc(lecture);
+  while (!feof(lecture)) {
+    buffer[indice] = caractere_courant;
+    caractere_courant = fgetc(lecture);
+    indice++;
+  }
+  size_t i = indice;
+  return i;
 }
 
 
@@ -49,32 +62,57 @@ void afficher_pic(struct Image *pic){
   printf("\n");
 }
 
-struct Image initialisation(char *name_file){
+struct Image *initialisation(char *name_file){
   FILE *lecture;
   lecture = fopen(name_file, "r");
-  char *buffer = malloc(sizeof(lecture));
+  char *buffer = malloc(32*sizeof(char));
   remettre_zero(sizeof(buffer), buffer);
   // initialisation de couleur
   size_t indice = recuperer_jusqua_retour(lecture, buffer, '\n');
-  int couleur = 1;
-  if (buffer[1] == '5') {
+  int couleur = 2;
+  if (buffer[0]=='P' && buffer[1] == '5') {
     couleur = 0;
   }
+  else {if (buffer[0]=='P' && buffer[1] == '6') {
+    couleur = 1;
+  }
+  else {
+    perror("Il n'y a ni P5 ni P6 dans l'entête, vérifiez que le fichier est bien un .ppm ou un .pgm ! \n");
+    exit(EXIT_FAILURE);
+  }}
   remettre_zero(indice, buffer);
   // initialisation de largeur
   indice = recuperer_jusqua_retour(lecture, buffer, ' ');
   uint32_t largeur = prendre_valeur(buffer);
   remettre_zero(indice, buffer);
+  if ( largeur == 0 ) {
+    perror("Il n'y a pas un V valide dans V*H ! \n");
+    exit(EXIT_FAILURE);
+  }
   // initialisation de hauteur;
   indice = recuperer_jusqua_retour(lecture, buffer, '\n');
   uint32_t hauteur = prendre_valeur(buffer);
   remettre_zero(indice, buffer);
+  if ( hauteur == 0 ) {
+    perror("Il n'y a pas un H valide dans V*H ! \n");
+    exit(EXIT_FAILURE);
+  }
   // initialisation de valeur;
   indice = recuperer_jusqua_retour(lecture, buffer, '\n');
   uint32_t valeur = prendre_valeur(buffer);
+  if ( valeur != 255 ) {
+    perror("Il n'y a pas 255 dans l'entête ! \n");
+    exit(EXIT_FAILURE);
+  }
   remettre_zero(indice, buffer);
+  free(buffer);
   // initialisation de stream et de taille_stream
-  size_t taille_stream = recuperer_jusqua_retour(lecture, buffer, '\n');
+  buffer = malloc(sizeof(char)*hauteur*largeur*3);
+  size_t taille_stream = recuperer_jusqua_fin(lecture, buffer);
+  if (taille_stream != hauteur*largeur*(1+2*couleur)) {
+    perror("Nombre de données incohérent : l'image est incomplète ou surchargée ! \n");
+    exit(EXIT_FAILURE);
+  }
   //initialisation de struct image pic
   struct Image *pic = malloc(sizeof(couleur) + 3*32 + sizeof(taille_stream) + sizeof(buffer));
   pic->couleur = couleur;
@@ -83,12 +121,16 @@ struct Image initialisation(char *name_file){
   pic->valeur  = valeur;
   pic->taille_stream = taille_stream;
   pic->stream = buffer;
-  free(buffer);
-  return *pic;
+  fclose(lecture);
+  return pic;
 }
 
 
  int main(/*int argc, char* name_file[]*/) {
-   struct Image pic = initialisation("/user/2/matterv/TP/projet_c/jpeg2018/etu/images/shaun_the_sheep.ppm");
-   afficher_pic(&pic);
+   struct Image *pic = initialisation("../images/invader.pgm");
+   afficher_pic(pic);
+   free_image(pic);
+   pic = initialisation("../images/shaun_the_sheep.ppm");
+   afficher_pic(pic);
+   free_image(pic);
  }

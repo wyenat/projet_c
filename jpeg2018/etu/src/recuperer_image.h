@@ -23,7 +23,7 @@ extern truct Image {int couleur,
 #include <stdlib.h>
 
 /* Crée une structure Image du fichier rentré et la retourne. */
-extern struct Image initialisation(char *name_file);
+extern struct Image *initialisation(char *name_file);
 
 /* Libère une image */
 extern void free_image(struct Image *pic);
