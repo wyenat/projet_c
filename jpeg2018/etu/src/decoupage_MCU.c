@@ -1,19 +1,20 @@
-#include "recuperer_image.h"
+// #include "recuperer_image.h"
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
-// struct Image {
-//    int couleur;               //0 si en noir et blanc, 1 sinon.
-//    uint32_t largeur;
-//    uint32_t hauteur;
-//    uint32_t valeur;
-//    char *stream;
-//    size_t taille_stream;
-// };
+
+struct Image {
+   int couleur;               //0 si en noir et blanc, 1 sinon.
+   uint32_t largeur;
+   uint32_t hauteur;
+   uint32_t valeur;
+   char *stream;
+   size_t taille_stream;
+};
 
 struct MCU_8 {                // information sur un octet (RGB, YCbCr et échantillonnage)
-    int couleur;               //0 si en noir et blanc, 1 sinon.
+    int couleur;              //0 si en noir et blanc, 1 sinon.
     uint8_t largeur;          // 1 ou 2 (blocs de 8x8)
     uint8_t hauteur;          // 1 ou 2 (blocs de 8x8)
     uint8_t echant_l;         // 1 si on échantillonne en largeur, 0 sinon
@@ -146,4 +147,10 @@ uint8_t *elargir(struct Image *image, char *stream_tmp, uint32_t new_largeur)
 uint8_t *elargir(struct Image *image, char *stream_tmp, uint32_t new_largeur)
 {
     //TODO
+}
+
+
+int main(void)
+{
+    return EXIT_SUCCESS
 }

@@ -21,22 +21,22 @@ struct Image {int couleur; // 0 si noir et blanc, 1 si couleur
 #include <stdlib.h>
 
 /* Crée une structure Image du fichier rentré et la retourne. */
-const struct Image *initialisation(char *name_file);
+struct Image *initialisation(char *name_file);
 
 /* Libère une image */
 void free_image(struct Image *pic);
 
 /* Prend le buffer, et renvoie la valeur entière qu'il contient */
-const uint32_t prendre_valeur(char *chaine);
+uint32_t prendre_valeur(char *chaine);
 
 /* Place dans le buffer tous les caractères dans le stream lecture jusqu'à la première
 occurence du caractère retour.
 Renvoie la taille du mot placé dans buffer */
-const size_t recuperer_jusqua_retour(FILE *lecture, char *buffer, char retour);
+size_t recuperer_jusqua_retour(FILE *lecture, char *buffer, char retour);
 
 /* Place dans le buffer tous les caractères dans le stream lecture jusqu'à la fin.
 Renvoie la taille du mot placé dans buffer */
-const size_t recuperer_jusqua_fin(FILE *lecture, char *buffer);
+size_t recuperer_jusqua_fin(FILE *lecture, char *buffer);
 
 /* Réinitialise le buffer pour pouvoir y stoquer la suite */
 void remettre_zero(size_t indice, char *buffer);
