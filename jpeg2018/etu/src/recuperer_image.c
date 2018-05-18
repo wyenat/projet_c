@@ -50,7 +50,9 @@ void afficher_pic(struct Image *pic){
   printf("Dimentions : %d x %d \n", pic->hauteur, pic->largeur);
   printf("La ligne avec 255 affiche : %d \n", pic->valeur);
   printf("%zu octets utilisés : ", pic->taille_stream);
-  for (size_t i=0; i<pic->taille_stream; i++) {printf("%0hhx ", pic->stream[i]);}
+  for (size_t i=0; i<pic->taille_stream; i++) {
+    printf("%0hhx ", pic->stream[i]);
+  }
   printf("\n");
 }
 
@@ -118,11 +120,11 @@ struct Image *initialisation(char *name_file){
 }
 
 
- // int main(/*int argc, char* name_file[]*/) {
- //   struct Image *pic = initialisation("../images/thumbs.ppm");
- //   afficher_pic(pic);
- //   free_image(pic);
- //   pic = initialisation("../images/shaun_the_sheep.ppm");
- //   afficher_pic(pic);
- //   free_image(pic);
- // }
+//int main(/*int argc, char* name_file[]*/) {
+//  struct Image *pic = initialisation("../images/thumbs.ppm");
+//  afficher_pic(pic);
+//  free_image(pic);
+//  pic = initialisation("../images/shaun_the_sheep.ppm");
+//  afficher_pic(pic);
+//  free_image(pic);
+//}

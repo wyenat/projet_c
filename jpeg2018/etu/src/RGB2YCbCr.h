@@ -8,10 +8,15 @@
 #endif //ETU_RGB2YCBCR_H
 
 #include <stdlib.h>
+#include <stdint.h>
+#include "decoupage_MCU.h"
 
 
 
-float *RGB2YCbCr_couleur(char *bitstream[], size_t length);
+struct MCU_8 *RGB2YCbCr_couleur(struct MCU_8 *MCU_entree);
 
 
-float *RGB2YCbCr_gris(char* bitstream[], size_t length);
+struct MCU_8 *RGB2YCbCr_gris(struct MCU_8 *MCU_entree);
+
+
+void Image_RGB2YCbCr(struct Image_MCU_8 *Image_entree);
