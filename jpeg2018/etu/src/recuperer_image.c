@@ -118,11 +118,11 @@ struct Image *initialisation(char *name_file){
 }
 
 
- int main(/*int argc, char* name_file[]*/) {
-   struct Image *pic = initialisation("../images/zig-zag.ppm");
-   //afficher_pic(pic);
-   free_image(pic);
-  //  pic = initialisation("../images/shaun_the_sheep.ppm");
-  //  afficher_pic(pic);
-  //  free_image(pic);
- }
+ // int main(/*int argc, char* name_file[]*/) {
+ //   struct Image *pic = initialisation("../images/thumbs.ppm");
+ //   afficher_pic(pic);
+ //   free_image(pic);
+ //   pic = initialisation("../images/shaun_the_sheep.ppm");
+ //   afficher_pic(pic);
+ //   free_image(pic);
+ // }
