@@ -172,11 +172,11 @@ struct MCU_8 *MCU_RGB(struct MCU_8 *MCU)
 // }
 
 
-int main(void)
-{
-    struct Image *pic = initialisation("../images/zig-zag.ppm");
-    afficher_pic(pic);
-    struct Image_MCU_8 *image = decoupe(pic, 1, 1);
-    afficher_image_8(image);
-    return EXIT_SUCCESS;
-}
+// int main(void)
+// {
+//     struct Image *pic = initialisation("../images/zig-zag.ppm");
+//     afficher_pic(pic);
+//     struct Image_MCU_8 *image = decoupe(pic, 1, 1);
+//     afficher_image_8(image);
+//     return EXIT_SUCCESS;
+// }

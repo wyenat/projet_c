@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include "recuperer_image.h"
+#include "decoupage_MCU.h"
+#include "jpeg_writer_prof.h"
 
 int main( int argc, char * argv[] )
 { if (argc == 1) {
@@ -12,7 +14,12 @@ int main( int argc, char * argv[] )
   char* renommage[argc];
   int nombre_de_renommage=0;
   int nombre_dimages = 0;
-  int h1,v1,h2,v2,h3,v3;
+  int h1=1;
+  int h2=1;
+  int h3=1;
+  int v1=1;
+  int v2=1;
+  int v3=1;
 	for(int i=1; i<argc; i++) {
         if (strcmp(argv[i],"--h" ) == 0 || strcmp(argv[i], "--help") == 0 ) {
           printf("Voilà les options : \n \t --outfile=nomdufichier renomme la sortie en nomdufichier.jpg (ne supporte pas les espaces) \n");
@@ -38,8 +45,12 @@ int main( int argc, char * argv[] )
           h3 = atoi(&argv[i][17]);
           v3 = atoi(&argv[i][19]);
           if (h1 == 0 || v1 == 0 || h2 == 0 || v2 == 0 || h3 == 0 || v3 == 0) {
-            perror("Une ou plusieurs composantes rentrée n'est pas un chiffre compris entre 1 et 3!");
+            perror("Une ou plusieurs composantes rentrée n'est pas un chiffre !");
             exit(EXIT_FAILURE);
+          if ( !(h1 != 1 ^ h1 != 2) || !(h2 != 1 ^ h2 != 2)|| !(h3 != 1 ^ h3 != 2)) { //A CORRIGER, NE MARCHE PAS !
+            perror("Les valeurs des hi et vi doivent être des 1 ou des 2 !");
+            exit(EXIT_FAILURE);
+          }
           }
         }
         else if (strcmp(argv[i], "--verbose") == 0 ) {
@@ -54,20 +65,29 @@ int main( int argc, char * argv[] )
           exit(EXIT_FAILURE);
         }
   }
-  if (verbose) {
+  if (verbose) { //Pour l'instant seul le verbose fait quelque chose
       printf("-- Mode verbose activé -- \n");
       if (sample) {
         printf("-- Mode sample activé -- \n ");
         printf("\t Les coefficients rentrés sont %dx%d,%dx%d,%dx%d \n", h1,v1,h2,v2,h3,v3);
       }
       for (int i=0; i<nombre_dimages; i++) {
-        printf("-- Image %d / %d à traiter : %s -- \n", i+1, nombre_dimages, noms_des_images[i]);
+        printf("\n \n -- Image %d / %d à traiter : %s -- \n \n ", i+1, nombre_dimages, noms_des_images[i]);
         if (i >= nombre_de_renommage) {
           char* buffer = malloc(sizeof(char*));
           strncpy(buffer, noms_des_images[i], strlen(noms_des_images[i])-4);
           renommage[i] = buffer;
         }
           printf("\t %s  --> %s.jpg \n", noms_des_images[i], renommage[i] );
+          printf("\n \n \n \t initialisation de l'image ! \n \n \n ");
+          struct Image *pic = initialisation(noms_des_images[i]);
+          afficher_pic(pic);
+          printf("\n \n \n \t Passage MCU8 ! \n \n \n");
+          struct Image_MCU_8 *image = decoupe(pic, 1, 1);
+          afficher_image_8(image);
         }
     }
+  else {
+    printf("Vous n'êtes pas dans le mode verbose, il ne se passe donc rien pour l'instant ! =D \n Faire --verbose \n");
+  }
 }
