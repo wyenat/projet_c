@@ -2,6 +2,7 @@
 #include "recuperer_image.h"
 #include "decoupage_MCU.h"
 #include "jpeg_writer_prof.h"
+#include "RGB2YCbCr.h"
 
 int main( int argc, char * argv[] )
 { if (argc == 1) {
@@ -74,14 +75,17 @@ int main( int argc, char * argv[] )
           strncpy(buffer, noms_des_images[i], strlen(noms_des_images[i])-4);
           renommage[i] = buffer;
         }
-          printf("\t %s  --> %s.jpg \n", noms_des_images[i], renommage[i] );
-          printf("\n \n \n \t initialisation de l'image ! \n \n \n ");
-          struct Image *pic = initialisation(noms_des_images[i]);
-          afficher_pic(pic);
-          printf("\n \n \n \t Passage MCU8 ! \n \n \n");
-          struct Image_MCU_8 *image = decoupe(pic, 1, 1);
-          afficher_image_8(image);
-          free_image(pic);
+        printf("\t %s  --> %s.jpg \n", noms_des_images[i], renommage[i] );
+        printf("\n \n \n \t initialisation de l'image ! \n \n \n ");
+        struct Image *pic = initialisation(noms_des_images[i]);
+        afficher_pic(pic);
+        printf("\n \n \n \t Passage MCU8 ! \n \n \n");
+        struct Image_MCU_8 *image = decoupe(pic, 1, 1);
+        afficher_image_8(image);
+
+        printf("\n \n \n \t Conversion de RGB à YCbCr ! \n \n \n");
+        Image_RGB2YCbCr(image);
+        afficher_image_8(image);
         }
     }
   else {
