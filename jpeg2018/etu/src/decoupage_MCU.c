@@ -79,7 +79,7 @@ void afficher_MCU_8(struct MCU_8 *MCU)
                 printf("\t");
             }
             for (uint32_t indice = 0; indice < 64; indice++) {
-                printf("%u\t", MCU->flux[64*taille_pixel*bloc + 64*couleur + indice]);
+                printf("%u\t", MCU->flux[64*taille_pixel*bloc + taille_pixel*indice + couleur]); //Les couleurs sont RGB*64, tu faisais R*64, G*64, B*64
                 if ((indice+1)%8 == 0) {
                     printf("\n\t");
                 }
