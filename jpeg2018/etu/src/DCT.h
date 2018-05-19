@@ -24,8 +24,24 @@ struct MCU_16 {                // information sur un octet (RGB, YCbCr et échan
     int16_t *flux;
 };
 
+struct Image_MCU_16 {
+    int couleur;              //0 si en noir et blanc, 1 sinon.
+    uint32_t largeur;         // en MCUs
+    uint32_t hauteur;         // en MCUs
+    struct MCU_16 **MCUs;
+};
+
 
 int16_t * transformation_DCT(uint8_t *bloc_spatial, size_t indice_depart);
 
 
 struct MCU_16 * transfo_MCU(struct MCU_8 *MCU_entree);
+
+
+struct Image_MCU_16 * Image_DCT(struct Image_MCU_8 *Image_entree);
+
+
+void afficher_DCT(struct MCU_16 *MCU);
+
+
+void afficher_image_DCT(struct Image_MCU_16 *image);

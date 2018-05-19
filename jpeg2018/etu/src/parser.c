@@ -89,6 +89,10 @@ int main( int argc, char * argv[] )
         printf("\n \n \n \t Conversion de RGB à YCbCr ! \n \n \n");
         Image_RGB2YCbCr(image);
         afficher_image_YCbCr(image);
+
+        printf("\n \n \n \t Conversion de YCbCr à DCT ! (On n'a pas encore de compression pour le moment) \n \n \n");
+        struct Image_MCU_16 *new_image = Image_DCT(image);
+        afficher_image_DCT(new_image);
         }
     }
   else {

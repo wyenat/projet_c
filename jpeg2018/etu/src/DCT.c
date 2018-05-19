@@ -83,6 +83,58 @@ struct MCU_16 * transfo_MCU(struct MCU_8 *MCU_entree) {
 }
 
 
+struct Image_MCU_16 * Image_DCT(struct Image_MCU_8 *Image_entree)   {
+    // Convertit une image composée de MCU_8 en version YCbCR en des MCU_16 en version DCT.
+
+    uint64_t nombre_MCUs = Image_entree->largeur * Image_entree->hauteur;
+    struct Image_MCU_16 *new_image = malloc(sizeof(struct Image_MCU_16));
+    new_image->couleur = Image_entree->couleur;
+    new_image->largeur = Image_entree->largeur;
+    new_image->hauteur = Image_entree->hauteur;
+    new_image->MCUs = malloc(nombre_MCUs * sizeof(struct MCU_16));
+    for (uint64_t i = 0; i < nombre_MCUs; i++) {
+        new_image->MCUs[i] = transfo_MCU(Image_entree->MCUs[i]);
+    }
+    free(Image_entree);
+    return new_image;
+}
+
+
+void afficher_DCT(struct MCU_16 *MCU)
+{
+    uint8_t nombre_composantes = 1 + 2*MCU->couleur;         // 1 si noir et blanc, 3 si couleur, nombre d'octets par pixel
+    uint8_t nombre_blocs = MCU->largeur*MCU->hauteur;
+    for (int composante = 0; composante < nombre_composantes; composante++) {
+        if (composante == 0) {
+            printf("Y\t");
+        } else if (composante == 1) {
+            printf("Cb\t");
+        } else {
+            printf("Cr\t");
+        }
+        for (uint32_t indice = 0; indice < 64 * nombre_blocs; indice++) {
+            printf("%d\t", MCU->flux[64 * nombre_blocs * composante + indice]);
+            if ((indice + 1) % 8 == 0) {
+                printf("\n\t");
+            }
+        }
+        printf("\n");
+    }
+}
+
+
+void afficher_image_DCT(struct Image_MCU_16 *image)
+{
+    struct MCU_16 **MCUs = image->MCUs;
+    printf("Image MCU de taille %ux%u\n", image->hauteur, image->largeur);
+    for (uint32_t indice = 0; indice < image->largeur*image->hauteur; indice++) {
+        struct MCU_16 *MCU = MCUs[indice];
+        printf("MCU numéro : %u\n", indice);
+        afficher_DCT(MCU);
+    }
+}
+
+
 // int main(void)  {
 //     uint8_t bloc_spatial[64] = {  0,  1,  5,  6, 14, 15, 27, 28,
 //                       2,  4,  7, 13, 16, 26, 29, 42,
