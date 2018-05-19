@@ -45,9 +45,9 @@ struct MCU_8 *MCU_RGB(struct MCU_8 *MCU);
 struct Image *redimensionner(struct Image *image, uint8_t largeur_MCU, uint8_t hauteur_MCU);
 
 // rajoute la valeur de la dernière colonne de pixels sur la droite pour coller avec la taille des MCUs
-uint8_t *elargir(struct Image *image, uint8_t *stream_tmp, uint32_t new_largeur);
+char *elargir(struct Image *image, char *stream_tmp, uint32_t new_largeur);
 
 // rajoute la valeur de la dernière ligne de pixels en bas pour coller avec la taille des MCUs
-uint8_t *agrandir(struct Image *image, uint8_t *stream_tmp, uint32_t new_hauteur);
+char *agrandir(char *stream_tmp, uint32_t new_hauteur, uint32_t last_hauteur, uint32_t new_largeur, uint8_t taille_pixel);
 
 #endif //DECOUPAGE_MCU
