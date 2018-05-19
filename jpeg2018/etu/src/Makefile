@@ -1,7 +1,7 @@
 CC=clang
 CFLAGS=-std=c99 -Wall -Wextra -g -lm
 
-all:  parser
+all:  parser jpeg_w
 
 parser: parser.o recuperer_image.o decoupage_MCU.o jpeg_writer_prof.o RGB2YCbCr.o zig_zag.o DCT.o quantification.o
 	$(CC) -o parser recuperer_image.o parser.o decoupage_MCU.o RGB2YCbCr.o zig_zag.o DCT.o quantification.o $(CFLAGS)
