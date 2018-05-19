@@ -21,7 +21,7 @@ struct MCU_8 *RGB2YCbCr_couleur(struct MCU_8 *MCU_entree)  {
     MCU_YCbCr->echant_l = MCU_entree->echant_l;
     MCU_YCbCr->flux = malloc(3 * nombre_pixels * sizeof(uint8_t));
 
-    for (size_t i = 0; i < nombre_pixels; i+=3) {
+    for (size_t i = 0; i < nombre_pixels; i++) {
         MCU_YCbCr->flux[i] = (uint8_t) (0.299 * MCU_entree->flux[3*i] + 0.587 * MCU_entree->flux[3*i+1] +
                                    0.114 * MCU_entree->flux[3*i+2]);
         MCU_YCbCr->flux[i + nombre_pixels] = (uint8_t) (-0.1687 * MCU_entree->flux[3*i] - 0.3313 * MCU_entree->flux[3*i+1] +
