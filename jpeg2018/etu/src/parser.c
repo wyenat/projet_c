@@ -5,7 +5,7 @@
 #include "RGB2YCbCr.h"
 #include "zig_zag.h"
 #include "DCT.h"
-//#include "quantification.h"
+#include "quantification.h"
 
 int main( int argc, char * argv[] )
 { if (argc == 1) {
@@ -79,20 +79,26 @@ int main( int argc, char * argv[] )
           renommage[i] = buffer;
         }
         printf("\t %s  --> %s.jpg \n", noms_des_images[i], renommage[i] );
+        
         printf("\n \n \n \t initialisation de l'image ! \n \n \n ");
         struct Image *pic = initialisation(noms_des_images[i]);
         afficher_pic(pic);
+        
         printf("\n \n \n \t Passage MCU8 ! \n \n \n");
         struct Image_MCU_8 *image = decoupe(pic, 1, 1);
         afficher_image_8(image);
 
         printf("\n \n \n \t Conversion de RGB à YCbCr ! \n \n \n");
         Image_RGB2YCbCr(image);
-        afficher_image_YCbCr(image);
-
-        printf("\n \n \n \t Conversion de YCbCr à DCT ! (On n'a pas encore de compression pour le moment) \n \n \n");
-        struct Image_MCU_16 *new_image = Image_DCT(image);
-        afficher_image_DCT(new_image);
+        afficher_image_8(image);
+        
+        printf("\n \n \n \t DCT : Dinosaures Coquins près de chez Toi! \n \n \n");
+        // on manipule un struct Image_MCU_8 *, et on veut ressortir un void. 
+        
+        printf("\n \n \n \t Zig Zag me up daddy ! \n \n ");
+        //Ne marche toujours pas des masses hihihi mon adaptation est pas terrible je crois.
+        zag_zig(image);
+        afficher_image_8(image);
         }
     }
   else {

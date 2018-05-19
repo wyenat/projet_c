@@ -16,7 +16,7 @@ void fin_jpeg(FILE *fichier){
 
 void marqueur_app(FILE *fichier){
  int app = 57599; //e0 ff
- int longueur = 16; //10
+ int longueur = 0016; // 0 10 
  char *jiff = "JFIF";
  int version = 1; //01, je ne sais pas si on doit le tester ou pas...
  int donnees_spe_non_traitees = 0; //0 0 0 0 0 0 0

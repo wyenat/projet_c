@@ -14,8 +14,8 @@ Après cette fonction, l'image JPEG est NORMALEMENT lisible
 */
 void fin_jpeg(FILE *fichier);
 
-//Les marqueurs : à utiliser pour rentrer ledit marqueur dans le fichier
-
+/*Les marqueurs : à utiliser pour rentrer ledit marqueur dans le fichier
+On suit la structure telle qu'elle est donnée dans le pdf */
 /* Pour APP */
 void marqueur_app(FILE *fichier);
 

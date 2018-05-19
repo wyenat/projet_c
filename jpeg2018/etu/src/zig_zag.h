@@ -9,6 +9,9 @@
 #include <stdio.h>
 #include <stdint.h>
 
-int16_t *zig_zag(int16_t *vecteur_initial);
+int8_t *zig_zag(int8_t *vecteur_initial);
+
+/* Fait zig_zag sur tous les MCUs */
+void zag_zig(struct Image_MCU_8 *entree);
 
 #endif //ETU_ZIG_ZAG_H

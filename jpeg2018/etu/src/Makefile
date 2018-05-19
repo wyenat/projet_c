@@ -16,7 +16,7 @@ quantification.o: quantification.h ../include/qtables.h quantification.c
 DCT.o: DCT.h decoupage_MCU.h recuperer_image.h DCT.c 
 	$(CC) -o DCT.o -c DCT.c $(CFLAGS)
 
-zig_zag.o: zig_zag.c
+zig_zag.o: decoupage_MCU.h zig_zag.h zig_zag.c
 	$(CC) -o zig_zag.o -c zig_zag.c $(CFLAGS)
 
 jpeg_writer_prof.o: jpeg_writer_prof.h
