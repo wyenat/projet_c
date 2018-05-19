@@ -47,10 +47,6 @@ int main( int argc, char * argv[] )
           if (h1 == 0 || v1 == 0 || h2 == 0 || v2 == 0 || h3 == 0 || v3 == 0) {
             perror("Une ou plusieurs composantes rentrée n'est pas un chiffre !");
             exit(EXIT_FAILURE);
-          if ( !(h1 != 1 ^ h1 != 2) || !(h2 != 1 ^ h2 != 2)|| !(h3 != 1 ^ h3 != 2)) { //A CORRIGER, NE MARCHE PAS !
-            perror("Les valeurs des hi et vi doivent être des 1 ou des 2 !");
-            exit(EXIT_FAILURE);
-          }
           }
         }
         else if (strcmp(argv[i], "--verbose") == 0 ) {
@@ -74,7 +70,7 @@ int main( int argc, char * argv[] )
       for (int i=0; i<nombre_dimages; i++) {
         printf("\n \n -- Image %d / %d à traiter : %s -- \n \n ", i+1, nombre_dimages, noms_des_images[i]);
         if (i >= nombre_de_renommage) {
-          char* buffer = malloc(sizeof(char*));
+          char* buffer = malloc(strlen(noms_des_images[i])*sizeof(char));
           strncpy(buffer, noms_des_images[i], strlen(noms_des_images[i])-4);
           renommage[i] = buffer;
         }
@@ -85,6 +81,7 @@ int main( int argc, char * argv[] )
           printf("\n \n \n \t Passage MCU8 ! \n \n \n");
           struct Image_MCU_8 *image = decoupe(pic, 1, 1);
           afficher_image_8(image);
+          free_image(pic);
         }
     }
   else {

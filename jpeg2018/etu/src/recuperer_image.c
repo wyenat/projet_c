@@ -102,7 +102,7 @@ struct Image *initialisation(char *name_file){
   buffer = malloc(sizeof(char)*hauteur*largeur*3);
   size_t taille_stream = recuperer_jusqua_fin(lecture, buffer);
   if (taille_stream != hauteur*largeur*(1+2*couleur)) {
-    perror("Nombre de données incohérent : l'image est incomplète ou surchargée ! \n");
+    printf("Nombre de données incohérent : l'image est incomplète ou surchargée ! \n %zu octets obtenus et %i octets attendus ! \n", taille_stream, hauteur*largeur*(1+2*couleur));
     exit(EXIT_FAILURE);
   }
   //initialisation de struct image pic
