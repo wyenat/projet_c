@@ -34,14 +34,14 @@ int16_t *zig_zag(const int16_t *vecteur_initial)
      printf("\n");
  }
 
- // parce qu'il faut bien tester
- int main(void)
- {
-     int16_t vecteur_test[64];
-     for (int indice = 0; indice < 64; indice++) {
-         vecteur_test[indice] = (int16_t) (indice % 8);
-     }
-     afficher(vecteur_test);
-     int16_t *vecteur_zigzag = zig_zag(vecteur_test);
-     afficher(vecteur_zigzag);
- }
+ // // parce qu'il faut bien tester
+ // int main(void)
+ // {
+ //     int16_t vecteur_test[64];
+ //     for (int indice = 0; indice < 64; indice++) {
+ //         vecteur_test[indice] = (int16_t) (indice % 8);
+ //     }
+ //     afficher(vecteur_test);
+ //     int16_t *vecteur_zigzag = zig_zag(vecteur_test);
+ //     afficher(vecteur_zigzag);
+ // }

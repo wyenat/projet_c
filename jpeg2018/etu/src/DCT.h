@@ -11,7 +11,6 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <math.h>
-#include <complex.h>
 #include "decoupage_MCU.h"
 #include "recuperer_image.h"
 
