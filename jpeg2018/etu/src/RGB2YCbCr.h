@@ -20,3 +20,9 @@ struct MCU_8 *RGB2YCbCr_gris(struct MCU_8 *MCU_entree);
 
 
 void Image_RGB2YCbCr(struct Image_MCU_8 *Image_entree);
+
+
+void afficher_YCbCr(struct MCU_8 *MCU);
+
+
+void afficher_image_YCbCr(struct Image_MCU_8 *image);

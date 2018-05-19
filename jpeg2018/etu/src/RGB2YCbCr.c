@@ -68,6 +68,41 @@ void Image_RGB2YCbCr(struct Image_MCU_8 *Image_entree)  {
 }
 
 
+void afficher_YCbCr(struct MCU_8 *MCU)
+{
+    uint8_t nombre_composantes = 1 + 2*MCU->couleur;         // 1 si noir et blanc, 3 si couleur, nombre d'octets par pixel
+    uint8_t nombre_blocs = MCU->largeur*MCU->hauteur;
+    for (int composante = 0; composante < nombre_composantes; composante++) {
+        if (composante == 0) {
+            printf("Y\t");
+        } else if (composante == 1) {
+            printf("Cb\t");
+        } else {
+            printf("Cr\t");
+        }
+        for (uint32_t indice = 0; indice < 64 * nombre_blocs; indice++) {
+            printf("%u\t", MCU->flux[64 * nombre_blocs * composante + indice]);
+            if ((indice + 1) % 8 == 0) {
+                printf("\n\t");
+            }
+        }
+        printf("\n");
+    }
+}
+
+
+void afficher_image_YCbCr(struct Image_MCU_8 *image)
+{
+    struct MCU_8 **MCUs = image->MCUs;
+    printf("Image MCU de taille %ux%u\n", image->hauteur, image->largeur);
+    for (uint32_t indice = 0; indice < image->largeur*image->hauteur; indice++) {
+        struct MCU_8 *MCU = MCUs[indice];
+        printf("MCU numéro : %u\n", indice);
+        afficher_YCbCr(MCU);
+    }
+}
+
+
 //int main(void)    {
 //    struct Image *pic = initialisation("../images/zig-zag.ppm");
 //    afficher_pic(pic);

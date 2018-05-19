@@ -88,7 +88,7 @@ int main( int argc, char * argv[] )
 
         printf("\n \n \n \t Conversion de RGB à YCbCr ! \n \n \n");
         Image_RGB2YCbCr(image);
-        afficher_image_8(image);
+        afficher_image_YCbCr(image);
         }
     }
   else {
