@@ -3,13 +3,16 @@
 #include "decoupage_MCU.h"
 #include "jpeg_writer_prof.h"
 #include "RGB2YCbCr.h"
+#include "zig_zag.h"
+#include "DCT.h"
+//#include "quantification.h"
 
 int main( int argc, char * argv[] )
 { if (argc == 1) {
   perror("Aucun arguments rentré ! Tapez --h ou --help pour plus d'informations \n");
   exit(EXIT_FAILURE);
 }
-  int verbose = 0;
+  int verbose = 1; // A remettre à 0 pour rendre le projet final
   int sample  = 0;
   char* noms_des_images[argc];
   char* renommage[argc];
