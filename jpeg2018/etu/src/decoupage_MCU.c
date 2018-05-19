@@ -37,7 +37,7 @@ struct Image_MCU_8 *decoupe(struct Image *image, uint8_t largeur_MCU, uint8_t ha
     for (uint32_t ligne = 0; ligne < hauteur; ligne++) {
         for (uint32_t colonne = 0; colonne < largeur; colonne++) {
             struct MCU_8 *MCU = creer_MCU(image, ligne, colonne, largeur, largeur_MCU, hauteur_MCU);
-            MCU = MCU_RGB(MCU);
+//            MCU = MCU_RGB(MCU);
             MCUs[largeur*ligne + colonne] = MCU;
         }
     }

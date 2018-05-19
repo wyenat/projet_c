@@ -12,6 +12,7 @@
 struct MCU_8 *RGB2YCbCr_couleur(struct MCU_8 *MCU_entree)  {
     //Convertit le MCU en COULEUR de RGB à YCbCr
     uint8_t nombre_pixels = (uint8_t) (64 * MCU_entree->largeur * MCU_entree->hauteur);
+    printf("Nombre de pixels : %d\n", nombre_pixels);
     // la longueur totale est égal à 3 fois le nombre de pixel (3 octets pour le RGB)
     struct MCU_8 *MCU_YCbCr = malloc(sizeof(struct MCU_8));
     MCU_YCbCr->largeur = MCU_entree->largeur;
