@@ -5,7 +5,6 @@
 #include <math.h>
 #include <stdlib.h>
 
-
 char calculer_coeff(int *entree,int puissance){
   int coeff = 0;
   int copie_entree = *entree;
@@ -73,23 +72,40 @@ char calculer_coeff(int *entree,int puissance){
 }
 
 char *hexme(int entree){
+  int decal = 0;
   if (!entree){
-    return "0";
+    return "/00";
   }
   int puissance = floor(log(entree)/log(16));
-  char *hex = malloc(puissance * sizeof(char));
+  if (puissance%2 == 0){
+    decal++;
+  }
+  char *hex = malloc((2*puissance * sizeof(char)));
   int indice=0;
-  while (entree >= 0 && puissance >= 0){
+  while (puissance >= 0){
     // printf("entrée = %d, puissance = %d \n", entree, puissance);
-    hex[indice] = calculer_coeff(&entree, puissance);
-    puissance = puissance - 1;
-    indice++;   
+    if (decal && indice==1){
+      hex[1] = '0';
+      indice++;
+    }
+    if (indice%3 == 0){
+      hex[indice] = '/';
+      indice++;
+    } else {
+      hex[indice] = calculer_coeff(&entree, puissance);
+      puissance = puissance - 1;
+      indice++;}   
   }
   return hex;
 }
 
-int main(void){
-  for (int entree = 14; entree < 300; entree++){
-    printf("%d = %s \n",entree, hexme(entree));
+char *binme_n(int entree, int magnetude){
+  char *bin = malloc((magnetude+1)*sizeof(char));
+  int indice = 0;
+  while (indice < magnetude){
+    if (entree - pow(2, magnetude - indice) >= 0){
+        bin[indice] = '1';
+    } else { bin[indice] = '0';}
   }
+  return bin;
 }
