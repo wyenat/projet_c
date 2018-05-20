@@ -9,7 +9,7 @@
 // en sortie ce vecteur réordonné suivant zig_zag
 int16_t *zig_zag(int16_t *vecteur_initial)
 {
-    int8_t correspondance_zigzag[64] = {  0,  1,  5,  6, 14, 15, 27, 28,
+    int16_t correspondance_zigzag[64] = {  0,  1,  5,  6, 14, 15, 27, 28,
                                            2,  4,  7, 13, 16, 26, 29, 42,
                                            3,  8, 12, 17, 25, 30, 41, 43,
                                            9, 11, 18, 24, 31, 40, 44, 53,
@@ -24,7 +24,7 @@ int16_t *zig_zag(int16_t *vecteur_initial)
     return vecteur_zigzag;
 }
 
- void afficher(int8_t *vecteur)
+ void afficher(int16_t *vecteur)
  {
      printf("\n");
      for (int indice = 0; indice < 64; indice++) {
@@ -44,15 +44,3 @@ int16_t *zig_zag(int16_t *vecteur_initial)
          }
      }
  }
-
- // // parce qu'il faut bien tester
- // int main(void)
- // {
- //     int8_t vecteur_test[64];
- //     for (int indice = 0; indice < 64; indice++) {
- //         vecteur_test[indice] = (int8_t) (indice % 8);
- //     }
- //     afficher(vecteur_test);
- //     int8_t *vecteur_zigzag = zig_zag(vecteur_test);
- //     afficher(vecteur_zigzag);
- // }
