@@ -5,6 +5,7 @@
 #include "RGB2YCbCr.h"
 #include "zig_zag.h"
 #include "quantification.h"
+#include "Downsampling.h"
 
 int main( int argc, char * argv[] )
 { if (argc == 1) {
@@ -84,11 +85,15 @@ int main( int argc, char * argv[] )
         afficher_pic(pic);
         
         printf("\n \n \n \t Passage MCU8 ! \n \n \n");
-        struct Image_MCU_8 *image = decoupe(pic, 1, 1);
+        struct Image_MCU_8 *image = decoupe(pic, 2, 2);
         afficher_image_8(image);
 
         printf("\n \n \n \t Conversion de RGB à YCbCr ! \n \n \n");
         Image_RGB2YCbCr(image);
+        afficher_image_YCbCr(image);
+
+        printf("\n \n \n \t Compression des images (pour le moment on compresse en vertical et en horizontal) \n \n \n");
+        Image_downsampling(image, 1, 1);
         afficher_image_YCbCr(image);
         
         printf("\n \n \n \t Conversion de YCbCr à DCT \n \n \n");
