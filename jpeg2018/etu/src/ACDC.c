@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <math.h>
 #include <stdio.h>
+#include "hex.h"
+
 
 int8_t  obtenir_magnetude(int16_t entree){
   if (entree == 0){
@@ -19,7 +21,7 @@ int8_t  obtenir_indice(int16_t entree, int8_t  magnetude){
   if (entree > 0){
     indice = indice + pow(2, magnetude-1);
   } else {
-    indice = abs(indice - pow(2,magnetude-1)) - 1;
+    indice = floor(fabs(indice - pow(2,magnetude-1)) - 1);
   }
   return indice;
 }
@@ -48,11 +50,11 @@ int compter_zero(int *entree, int *courant){
   }
 
 void ZRL(){
-  printf("On retourne 0xF0 \n");
+  printf("/F0");
 }
 
 void EOB(){
-  printf("On retourne 0x00 \n");
+  printf("/00");
 }
 
 void balise_std(nb_zero, valeur){
@@ -61,8 +63,21 @@ void balise_std(nb_zero, valeur){
     perror("On ne lit pas assez de 0 ! \n");
     exit(EXIT_FAILURE);
   }
-  int code = nb_zero * 1000 + magnetude; //pas le bon code, à hexa
-  printf("On écrira le code %d\n", code);
+  char *code = malloc(11*sizeof(char));
+  char *bitforts = hexme(nb_zero);
+  char *faiblebit = hexme(magnetude);
+  for (int i=0; i<3; i++){
+    code[i] = bitforts[i];
+  }
+  for (int i=3; i<6; i++){
+    code[i] = faiblebit[i-3];
+  }
+  printf("%s", code);
+  free(faiblebit);
+  free(bitforts);
+  free(code);
+  int8_t indice = obtenir_indice(valeur);
+  
 }
 
 void LRE(int *entree){
@@ -77,7 +92,6 @@ void LRE(int *entree){
       balise_std(nb_zero, entree[courant]);
       courant++;
     }
-    printf("indice = %d, nb = %d \n",courant, nb_zero);
   }
 }
 
@@ -88,4 +102,8 @@ int  main(){
   }
   tab[55] = 1;
   LRE(tab);
+  printf("\n")
+  for (int i=16; i<31; i++){
+    printf("%d = %s \n", i, binme_n(obtenir_indice(i, 5), 5))
+  }
 }
