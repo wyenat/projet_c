@@ -4,7 +4,6 @@
 #include <stdio.h>
 #include "hex.h"
 
-
 int8_t  obtenir_magnetude(int16_t entree){
   if (entree == 0){
     return 0;
@@ -73,10 +72,11 @@ void balise_std(nb_zero, valeur){
     code[i] = faiblebit[i-3];
   }
   printf("%s", code);
-  free(faiblebit);
-  free(bitforts);
-  free(code);
-  int8_t indice = obtenir_indice(valeur);
+  // free(faiblebit);
+  // free(bitforts);
+  // free(code);
+  int8_t indice = obtenir_indice(valeur, magnetude);
+  printf("%s", binme_n(indice, magnetude));
   
 }
 
@@ -98,12 +98,12 @@ void LRE(int *entree){
 int  main(){
   int *tab = malloc(8*64);
   for (int i=0; i<64; i++){
+    // printf("e = %d, m = %d, i = %d \n", i, obtenir_magnetude(i), obtenir_indice(i, obtenir_magnetude(i)));
     tab[i] = 0;
   }
   tab[55] = 1;
+  tab[22] = 5;
+  tab[23] = 14;
   LRE(tab);
-  printf("\n")
-  for (int i=16; i<31; i++){
-    printf("%d = %s \n", i, binme_n(obtenir_indice(i, 5), 5))
-  }
+  printf("\n");
 }

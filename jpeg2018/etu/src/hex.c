@@ -100,12 +100,14 @@ char *hexme(int entree){
 }
 
 char *binme_n(int entree, int magnetude){
-  char *bin = malloc((magnetude+1)*sizeof(char));
-  int indice = 0;
-  while (indice < magnetude){
+  char *bin = malloc((magnetude+4)*sizeof(char));
+  int indice = 1;
+  while (indice < magnetude+1){
     if (entree - pow(2, magnetude - indice) >= 0){
-        bin[indice] = '1';
-    } else { bin[indice] = '0';}
+        entree = entree - pow(2, magnetude - indice);
+        bin[indice-1] = '1';
+    } else { bin[indice-1] = '0';}
+    indice++;
   }
   return bin;
 }
