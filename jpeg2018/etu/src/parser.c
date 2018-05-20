@@ -90,7 +90,7 @@ int main( int argc, char * argv[] )
 
         printf("\n \n \n \t Conversion de RGB à YCbCr ! \n \n \n");
         Image_RGB2YCbCr(image);
-        afficher_image_8(image);
+        afficher_image_8(image); //L'affichage est pas bon mais le vecteur si ! ;)
         
         printf("\n \n \n \t DCT : Dinosaures Coquins près de chez Toi! \n \n \n");
         // on manipule un struct Image_MCU_8 *, et on veut ressortir un void. 
