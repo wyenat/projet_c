@@ -4,7 +4,6 @@
 #include "jpeg_writer_prof.h"
 #include "RGB2YCbCr.h"
 #include "zig_zag.h"
-#include "DCT.h"
 #include "quantification.h"
 
 int main( int argc, char * argv[] )
