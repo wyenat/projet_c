@@ -4,6 +4,7 @@
 #include "decoupage_MCU.h"
 #include "zig_zag.h"
 
+
 // en entrée un vecteur de longueur 64
 // en sortie ce vecteur réordonné suivant zig_zag
 int16_t *zig_zag(int16_t *vecteur_initial)

@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
+#include "DCT.h"
 
 int16_t *zig_zag(int16_t *vecteur_initial);
 

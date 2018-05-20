@@ -4,7 +4,6 @@
 #include "jpeg_writer_prof.h"
 #include "RGB2YCbCr.h"
 #include "zig_zag.h"
-#include "DCT.h"
 #include "quantification.h"
 
 int main( int argc, char * argv[] )
@@ -90,15 +89,17 @@ int main( int argc, char * argv[] )
 
         printf("\n \n \n \t Conversion de RGB à YCbCr ! \n \n \n");
         Image_RGB2YCbCr(image);
-        afficher_image_8(image); //L'affichage est pas bon mais le vecteur si ! ;)
+        afficher_image_YCbCr(image);
         
-        printf("\n \n \n \t DCT : Dinosaures Coquins près de chez Toi! \n \n \n");
-        // on manipule un struct Image_MCU_8 *, et on veut ressortir un void. 
+        printf("\n \n \n \t Conversion de YCbCr à DCT \n \n \n");
+        // ATTENTION : image devient new_image !!!! (On a besoin d'en recréer une nouvelle vu q'uon change de type d'image.)
+        struct Image_MCU_16 *new_image = Image_DCT(image);
+        afficher_image_DCT(new_image);
         
         printf("\n \n \n \t Zig Zag me up daddy ! \n \n ");
         //Ne marche toujours pas des masses hihihi mon adaptation est pas terrible je crois.
-        zag_zig(image);
-        afficher_image_8(image);
+        zag_zig(new_image);
+        afficher_image_DCT(new_image);
         }
     }
   else {
