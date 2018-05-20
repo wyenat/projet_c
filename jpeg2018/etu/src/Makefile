@@ -1,17 +1,25 @@
 CC=clang
 CFLAGS=-std=c99 -Wall -Wextra -Wabsolute-value -g -lm
 
-all:  parser ACDC hex
+all:  parser ACDC
+
+ACDC: ACDC.o hex.o
+	$(CC) -o ACDC ACDC.o hex.o $(CFLAGS)
+
+ACDC.o: ACDC.c hex.h
+	$(CC) -o ACDC.o -c ACDC.c $(CFLAGS)
+
+hex.o: hex.c
+	$(CC) -o hex.o -c hex.c $(CFLAGS)
 
 parser: parser.o recuperer_image.o decoupage_MCU.o jpeg_writer_prof.o RGB2YCbCr.o zig_zag.o DCT.o quantification.o Downsampling.o
 	$(CC) -o parser recuperer_image.o parser.o decoupage_MCU.o RGB2YCbCr.o zig_zag.o DCT.o quantification.o Downsampling.o $(CFLAGS)
 
-parser.o: parser.c recuperer_image.h decoupage_MCU.h RGB2YCbCr.h zig_zag.h DCT.h Downsampling.h
+parser.o: parser.c recuperer_image.h decoupage_MCU.h RGB2YCbCr.h zig_zag.h DCT.h
 	$(CC) -o parser.o -c parser.c $(CFLAGS)
 
 quantification.o: quantification.h ../include/qtables.h quantification.c
 	$(CC) -o quantification.o -c quantification.c $(CFLAGS)
-
 
 DCT.o: DCT.h decoupage_MCU.h recuperer_image.h DCT.c
 	$(CC) -o DCT.o -c DCT.c $(CFLAGS)
