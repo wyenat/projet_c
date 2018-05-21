@@ -46,16 +46,6 @@ int16_t * transformation_DCT(uint8_t *bloc_spatial, size_t indice_depart)  {
 }
 
 
-//struct MCU_8 {                // information sur un octet (RGB, YCbCr et échantillonnage)
-//    int couleur;              //0 si en noir et blanc, 1 sinon.
-//    uint8_t largeur;          // 1 ou 2 (blocs de 8x8)
-//    uint8_t hauteur;          // 1 ou 2 (blocs de 8x8)
-//    uint8_t echant_l;         // 1 si on échantillonne en largeur, 0 sinon
-//    uint8_t echant_h;         // 1 si on échantillonne en hauteur, 0 sinon
-//    uint8_t *flux;
-//};
-
-
 struct MCU_16 * transfo_MCU(struct MCU_8 *MCU_entree) {
     // Récupère le MCU d'entrée et crée un MCU de fréquences.
 

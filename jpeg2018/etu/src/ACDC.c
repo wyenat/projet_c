@@ -1,10 +1,17 @@
 #include <stdint.h>
 #include <stdlib.h>
+#include <string.h>
 #include <math.h>
 #include <stdio.h>
 #include "hex.h"
+#include "DCT.h"
 
-int8_t  obtenir_magnetude(int16_t entree){
+//Je ne comprends pas bien comment gerer le byte stuffing mais sinon tout fonctionne.
+//Tout le module ne fait pour l'instant que de l'affichage, il sortira des char* ou 
+//des ints par la suite selon ce que le bitstream prendra
+
+// Partie magnétude, indice
+uint8_t  obtenir_magnetude(int16_t entree){
   if (entree == 0){
     return 0;
   }
@@ -12,27 +19,25 @@ int8_t  obtenir_magnetude(int16_t entree){
   return magnetude;
 }
 
-int8_t  obtenir_indice(int16_t entree, int8_t  magnetude){
+uint8_t  obtenir_indice(int16_t entree, int8_t  magnetude){
   if (magnetude == 0){
     return 0;
   }
-  int8_t  indice = abs(entree)-pow(2,magnetude-1);
-  if (entree > 0){
-    indice = indice + pow(2, magnetude-1);
-  } else {
-    indice = floor(fabs(indice - pow(2,magnetude-1)) - 1);
+  uint8_t indice = abs(entree);
+  if (entree < 0){
+    indice = pow(2, magnetude) - indice - 1;
   }
   return indice;
 }
 
-void affichage(int16_t entree){
-  int8_t  magnetude = obtenir_magnetude(entree);
-  int8_t  indice = obtenir_indice(entree, magnetude);
-  printf("Le nombre %d a pour magnétude %d, pour indice %d \n", entree, magnetude, indice);
+void affichage_ind_magn(int16_t entree){
+  uint8_t  magnetude = obtenir_magnetude(entree);
+  uint8_t  indice = obtenir_indice(entree, magnetude);
+  printf("\n Le nombre %d a pour magnétude %d, pour indice %d \n", entree, magnetude, indice);
 }
 
 // Partie symbole symbole LRE
-int compter_zero(int *entree, int *courant){
+int compter_zero(int16_t *entree, int *courant){
   int nb_zero = 0;
   while (*courant < 64 && entree[*courant] == 0){
     // printf("Indice : %d On lit : %d \n", *courant, entree[*courant]);
@@ -53,57 +58,69 @@ void ZRL(){
 }
 
 void EOB(){
-  printf("/00");
+  printf("/00\n");
 }
 
-void balise_std(nb_zero, valeur){
-  int8_t magnetude = obtenir_magnetude(valeur);
+void balise_std(int nb_zero, int valeur){
+  uint8_t magnetude = obtenir_magnetude(valeur);
   if (magnetude == 0) {
     perror("On ne lit pas assez de 0 ! \n");
     exit(EXIT_FAILURE);
   }
   char *code = malloc(11*sizeof(char));
-  char *bitforts = hexme(nb_zero);
-  char *faiblebit = hexme(magnetude);
-  for (int i=0; i<3; i++){
-    code[i] = bitforts[i];
-  }
-  for (int i=3; i<6; i++){
-    code[i] = faiblebit[i-3];
+  code[0]='/';
+  code[1] = hexme(nb_zero)[2];
+  code[2] = hexme(magnetude)[2];
+  if (strncmp(code, "/FF", 3)==0){ //byte_stuffing
+    code[3] = '/';
+    code[4] = '0';
+    code[5] = '0';
   }
   printf("%s", code);
-  // free(faiblebit);
-  // free(bitforts);
-  // free(code);
-  int8_t indice = obtenir_indice(valeur, magnetude);
+  uint8_t indice = obtenir_indice(valeur, magnetude);
   printf("%s", binme_n(indice, magnetude));
-  
+  free(code);
 }
 
-void LRE(int *entree){
+void LRE(int16_t *entree){
   int courant = 0;
   while (courant < 64) {
     int nb_zero = compter_zero(entree, &courant);
-    if (nb_zero == 16) {
-      ZRL();
-    } else if (nb_zero == 64) {
-      EOB();
-    } else {
-      balise_std(nb_zero, entree[courant]);
-      courant++;
+    // affichage_ind_magn(entree[courant]);
+    switch(nb_zero){
+      case 16:
+        ZRL();
+        break;
+      case 64:
+        EOB();
+        break;
+      default:
+        balise_std(nb_zero, entree[courant]);
+        courant++;
+        break;
     }
   }
 }
 
-int  main(){
-  int *tab = malloc(8*64);
-  for (int i=0; i<64; i++){
-    // printf("e = %d, m = %d, i = %d \n", i, obtenir_magnetude(i), obtenir_indice(i, obtenir_magnetude(i)));
-    tab[i] = 0;
+//Partie adaptation à la structure;
+
+int calcul_DC(int16_t *flux){
+    int somme=0;
+    for (int i=0; i<64; i++){
+      somme += flux[i];
+    }
+    somme = somme / 64;
+    for (int i=0; i<64; i++){
+      flux[i] -= somme;
+    }
+    return somme;
+}
+
+void ACDC_me(struct Image_MCU_16 *entree){
+  for (uint32_t hauteur=0; hauteur < entree->hauteur; hauteur++){
+    for (uint32_t largeur=0; largeur < entree->largeur; largeur++){
+      printf("DC = %d \n", calcul_DC(entree->MCUs[8*hauteur + largeur]->flux));
+      LRE(entree->MCUs[8*hauteur + largeur]->flux);
+    }
   }
-  tab[55] = 1;
-  tab[22] = 5;
-  tab[23] = 14;
-  LRE(tab);
-  printf("\n");
 }
