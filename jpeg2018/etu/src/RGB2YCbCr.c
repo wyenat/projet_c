@@ -11,7 +11,7 @@
 
 struct MCU_8 *RGB2YCbCr_couleur(struct MCU_8 *MCU_entree)  {
     //Convertit le MCU en COULEUR de RGB à YCbCr
-    uint8_t nombre_pixels = (uint8_t) (64 * MCU_entree->largeur * MCU_entree->hauteur);
+    uint16_t nombre_pixels = (uint16_t) (64 * MCU_entree->largeur * MCU_entree->hauteur);
     printf("Nombre de pixels : %d\n", nombre_pixels);
     // la longueur totale est égal à 3 fois le nombre de pixel (3 octets pour le RGB)
     struct MCU_8 *MCU_YCbCr = malloc(sizeof(struct MCU_8));
@@ -37,7 +37,7 @@ struct MCU_8 *RGB2YCbCr_couleur(struct MCU_8 *MCU_entree)  {
 
 struct MCU_8 *RGB2YCbCr_gris(struct MCU_8 *MCU_entree)  {
     //Convertit le MCU en NIVEAUX DE GRIS de RGB à YCbCr
-    uint8_t nombre_pixels = (uint8_t) (64 * MCU_entree->largeur * MCU_entree->hauteur);
+    uint16_t nombre_pixels = (uint16_t) (64 * MCU_entree->largeur * MCU_entree->hauteur);
     struct MCU_8 *MCU_YCbCr = malloc(sizeof(struct MCU_8));
     MCU_YCbCr->largeur = MCU_entree->largeur;
     MCU_YCbCr->hauteur = MCU_entree->hauteur;
@@ -62,6 +62,8 @@ void Image_RGB2YCbCr(struct Image_MCU_8 *Image_entree)  {
     }
     else    {
         for (uint64_t i = 0; i < nombre_MCUs; i++) {
+//            printf("Hauteur du MCU : %d\n", Image_entree->MCUs[i]->hauteur);
+//            printf("Largeur du MCU : %d\n", Image_entree->MCUs[i]->largeur);
             Image_entree->MCUs[i] = RGB2YCbCr_couleur(Image_entree->MCUs[i]);
         }
     }
@@ -72,6 +74,7 @@ void afficher_YCbCr(struct MCU_8 *MCU)
 {
     uint8_t nombre_composantes = 1 + 2*MCU->couleur;         // 1 si noir et blanc, 3 si couleur, nombre d'octets par pixel
     uint8_t nombre_blocs = MCU->largeur*MCU->hauteur;
+    printf("Nombre de blocs dans le MCU : %d\n", nombre_blocs);
     for (int composante = 0; composante < nombre_composantes; composante++) {
         if (composante == 0) {
             printf("Y\t");

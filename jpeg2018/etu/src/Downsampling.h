@@ -7,13 +7,19 @@
 
 #endif //ETU_DOWNSAMPLING_H
 
-#include "DCT.h"
+#include "decoupage_MCU.h"
 
 
-struct MCU_16 * downsampling_horizontal_2_blocs(struct MCU_16 * MCU_entree);
+struct MCU_8 * downsampling_horizontal_2_blocs(struct MCU_8 * MCU_entree);
 
 
-struct MCU_16 * downsampling_vertical_2_blocs(struct MCU_16 * MCU_entree);
+struct MCU_8 * downsampling_vertical_2_blocs(struct MCU_8 * MCU_entree);
 
 
-void Image_downsampling(struct Image_MCU_16 * Image_entree, int compression_horizontale, int compression_verticale);
+void Image_downsampling(struct Image_MCU_8 * Image_entree, int compression_horizontale, int compression_verticale);
+
+
+void afficher_apres_compression(struct MCU_8 *MCU);
+
+
+void afficher_image_compressee(struct Image_MCU_8 * Image_entree);
