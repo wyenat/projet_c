@@ -104,9 +104,11 @@ int main( int argc, char * argv[] )
         struct Image_MCU_16 *new_image = Image_DCT(image);
         afficher_image_DCT(new_image);
 
-        printf("\n \n \n \t Zig Zag me up daddy ! \n \n ");
-        //Ne marche toujours pas des masses hihihi mon adaptation est pas terrible je crois.
+        printf("\n \n \n \t Zig Zag ! \n \n ");
         zig_zag_image(new_image);
+
+        printf("\n \n \n \t Quantification ! \n \n ");
+        quantifier_image(new_image);
         afficher_image_DCT(new_image);
 
         printf("\n \n \n \t ACDC ! \n \n");

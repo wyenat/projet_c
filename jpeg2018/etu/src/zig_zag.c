@@ -90,7 +90,7 @@ void zig_zag_8x8(int16_t *vecteur)
 
 
 
-void afficher(int16_t *vecteur)
+void afficher_zig_zag(int16_t *vecteur)
 {
     printf("\n");
     for (int indice = 0; indice < 64; indice++) {

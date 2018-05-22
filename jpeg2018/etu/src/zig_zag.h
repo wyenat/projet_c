@@ -22,6 +22,6 @@ void zig_zag_MCU(struct MCU_16 *MCU);
 // en sortie ce vecteur réordonné suivant zig_zag
 void zig_zag_8x8(int16_t *vecteur);
 
-void afficher(int16_t *vecteur);
+void afficher_zig_zag(int16_t *vecteur);
 
 #endif //ETU_ZIG_ZAG_H
