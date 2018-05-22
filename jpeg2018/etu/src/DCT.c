@@ -148,4 +148,3 @@ void afficher_image_DCT(struct Image_MCU_16 *image)
 //     free(new_MCU);
 //     return 1;
 // }
-

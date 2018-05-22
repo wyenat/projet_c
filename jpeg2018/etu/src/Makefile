@@ -1,14 +1,14 @@
 CC=clang
-CFLAGS=-std=c99 -Wall -Wextra -Wabsolute-value -g -lm
+CFLAGS=-std=c99 -Wall -Wextra -g -lm
 
-all:  parser 
+all:  parser
 
 parser: parser.o recuperer_image.o decoupage_MCU.o jpeg_writer_prof.o RGB2YCbCr.o zig_zag.o DCT.o quantification.o Downsampling.o ACDC.o hex.o
 	$(CC) -o parser recuperer_image.o parser.o decoupage_MCU.o RGB2YCbCr.o zig_zag.o DCT.o quantification.o Downsampling.o ACDC.o hex.o $(CFLAGS)
 
 parser.o: parser.c recuperer_image.h decoupage_MCU.h RGB2YCbCr.h zig_zag.h DCT.h
 	$(CC) -o parser.o -c parser.c $(CFLAGS)
-	
+
 ACDC.o: ACDC.c hex.h
 	$(CC) -o ACDC.o -c ACDC.c $(CFLAGS)
 

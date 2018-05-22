@@ -17,7 +17,6 @@ struct Image {int couleur; // 0 si noir et blanc, 1 si couleur
                     char *stream; // Le premier bit est stream[0], le i_ième est stream[i-1]. Pour observer ces bits, printf("%0hhx", stream[i])
                     size_t taille_stream;};
 
-
 #include <stdlib.h>
 
 /* Crée une structure Image du fichier rentré et la retourne. */
