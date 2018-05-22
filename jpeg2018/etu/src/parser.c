@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include "recuperer_image.h"
 #include "decoupage_MCU.h"
-#include "jpeg_writer_prof.h"
 #include "RGB2YCbCr.h"
 #include "zig_zag.h"
 #include "quantification.h"
 #include "Downsampling.h"
 #include "ACDC.h"
+#include "bitstream.h"
 
 int main( int argc, char * argv[] )
 { if (argc == 1) {
@@ -80,11 +80,15 @@ int main( int argc, char * argv[] )
           renommage[i] = buffer;
         }
         printf("\t %s  --> %s.jpg \n", noms_des_images[i], renommage[i] );
-        
+
+        struct bitstream *btstr = bitstream_create("sortie2");
+        bitstream_write_nbits(btstr, 1, 8, 0);
+        bitstream_flush(btstr);
+
         printf("\n \n \n \t initialisation de l'image ! \n \n \n ");
         struct Image *pic = initialisation(noms_des_images[i]);
         afficher_pic(pic);
-        
+
         printf("\n \n \n \t Passage MCU8 ! \n \n \n");
         struct Image_MCU_8 *image = decoupe(pic, 1, 1);
         afficher_image_8(image);
@@ -98,13 +102,13 @@ int main( int argc, char * argv[] )
         // afficher_image_compressee(image);
         // printf("Hauteur du MCU de l'image : %d\n", image->MCUs[0]->hauteur);
         // printf("Largeur du MCU de l'image : %d\n", image->MCUs[0]->largeur);
-        
+
         printf("\n \n \n \t Conversion de YCbCr à DCT \n \n \n");
         // ATTENTION : image devient new_image !!!! (On a besoin d'en recréer une nouvelle vu q'uon change de type d'image.)
         struct Image_MCU_16 *new_image = Image_DCT(image);
         afficher_image_DCT(new_image);
-        
-        printf("\n \n \n \t Zig Zag me up daddy ! \n \n ");
+
+        printf("\n \n \n \t Zig Zag ! \n \n ");
         //Ne marche toujours pas des masses hihihi mon adaptation est pas terrible je crois.
         zag_zig(new_image);
         afficher_image_DCT(new_image);
@@ -112,9 +116,10 @@ int main( int argc, char * argv[] )
         printf("\n \n \n \t ACDC ! \n \n");
         ACDC_me(new_image);
         }
-        
+
     }
   else {
     printf("Vous n'êtes pas dans le mode verbose, il ne se passe donc rien pour l'instant ! =D \n Faire --verbose \n");
   }
+  printf("\n");
 }
