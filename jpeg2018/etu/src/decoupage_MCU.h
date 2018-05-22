@@ -29,12 +29,15 @@ struct Image_MCU_8 {
 
 // découpage d'une image en MCUs
 // largeur et hauteur MCU valent 1 ou 2
+// renvoie l'image découpé, c'est à dire avec un pointeur sur des pointeurs sur des MCUs
 struct Image_MCU_8 *decoupe(struct Image *image, uint8_t largeur_MCU, uint8_t hauteur_MCU);
 
 void afficher_image_8(struct Image_MCU_8 *image);
 
 void afficher_MCU_8(struct MCU_8 *MCU);
 
+// récupére la partie de l'image concerné
+// la stock dans le flux du MCU
 struct MCU_8 *creer_MCU(struct Image *image, uint32_t ligne, uint32_t colonne, uint32_t largeur, uint8_t largeur_MCU, uint8_t hauteur_MCU);
 
 // s'il y de la couleur, il faut réaranger en 3 blocs ou plus 8x8 (RGB)
@@ -42,6 +45,8 @@ struct MCU_8 *creer_MCU(struct Image *image, uint32_t ligne, uint32_t colonne, u
 struct MCU_8 *MCU_RGB(struct MCU_8 *MCU);
 
 // Les images n'ont pas forcement une taille multiple de la taille des MTU
+// on élargit donc si besoin en copiant la dernière colonne
+// puis on agrandit si besoin avec la dernière ligne
 struct Image *redimensionner(struct Image *image, uint8_t largeur_MCU, uint8_t hauteur_MCU);
 
 // rajoute la valeur de la dernière colonne de pixels sur la droite pour coller avec la taille des MCUs

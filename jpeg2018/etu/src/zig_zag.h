@@ -10,9 +10,18 @@
 #include <stdint.h>
 #include "DCT.h"
 
-int16_t *zig_zag(int16_t *vecteur_initial);
+// fonction principale qui sera appelée par le programme
+// prend en entrée une image
+// renvoie cette image ou chaque bloc 8x8 (x16 bits) a été zig-zagué
+void zig_zag_image(struct Image_MCU_16 *image);
 
-/* Fait zig_zag sur tous les MCUs */
-void zag_zig(struct Image_MCU_16 *entree);
+// zig-zag chaque bloc 8x8 du MCU
+void zig_zag_MCU(struct MCU_16 *MCU);
+
+// en entrée un vecteur de longueur 64
+// en sortie ce vecteur réordonné suivant zig_zag
+void zig_zag_8x8(int16_t *vecteur);
+
+void afficher_zig_zag(int16_t *vecteur);
 
 #endif //ETU_ZIG_ZAG_H
