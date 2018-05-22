@@ -36,16 +36,15 @@ void zig_zag_MCU(struct MCU_16 *MCU)
 {
     uint8_t larg = MCU->largeur;
     uint8_t haut = MCU->hauteur;
+    uint8_t n_blocs = larg*haut;
     if (MCU->couleur == 1) {
         // Le nombre de blocs différent est toujours largeur * hauteur pour Y, mais pour Cb et Cr il dépend de l'échantillonage.
         // Si l'échantillonage est vertical, il n'y a plus que hauteur/2 blocs, et idem pour un échantillonage horizontal.
-        uint8_t n_blocs = (larg*haut + 2*(larg - MCU->echant_h*larg/2)*(haut - MCU->echant_h*haut/2));
-    } else {
-        uint8_t n_blocs = larg*haut;
+        n_blocs += 2*(larg - MCU->echant_h*larg/2)*(haut - MCU->echant_h*haut/2);
     }
 
     int16_t *vecteur = malloc(64*sizeof(int16_t));
-    for (uint8_t bloc; bloc < n_blocs; bloc++) {
+    for (uint8_t bloc = 0; bloc < n_blocs; bloc++) {
         for (int indice = 0; indice < 64; indice++) {
             vecteur[indice] = MCU->flux[64*bloc + indice];
         }
@@ -85,7 +84,7 @@ void zig_zag_8x8(int16_t *vecteur)
         vecteur_zigzag[indice] = vecteur[correspondance_zigzag[indice]];
     }
     for (int indice = 0; indice < 64; indice++) {
-        vecteur[indice] = vecteur_zigzag[indice]
+        vecteur[indice] = vecteur_zigzag[indice];
     }
 }
 
