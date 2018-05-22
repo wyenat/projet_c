@@ -22,6 +22,6 @@ void balise_std(int nb_zero, int valeur);
 
 void LRE(int16_t *entree);
 
-int calcul_DC(int16_t *flux);
+int calcul_DC(int16_t *flux, int premier, int8_t DC);
 
 void ACDC_me(struct Image_MCU_16 *entree);

@@ -7,7 +7,7 @@
 #include "DCT.h"
 
 //Je ne comprends pas bien comment gerer le byte stuffing mais sinon tout fonctionne.
-//Tout le module ne fait pour l'instant que de l'affichage, il sortira des char* ou 
+//Tout le module ne fait pour l'instant que de l'affichage, il sortira des char* ou
 //des ints par la suite selon ce que le bitstream prendra
 
 // Partie magnétude, indice
@@ -54,10 +54,12 @@ int compter_zero(int16_t *entree, int *courant){
   }
 
 void ZRL(){
+  // uint8_t zrl = 240;
   printf("/F0");
 }
 
 void EOB(){
+  // uint8_t eob = 0;
   printf("/00\n");
 }
 
@@ -77,6 +79,8 @@ void balise_std(int nb_zero, int valeur){
     code[5] = '0';
   }
   printf("%s", code);
+  // Partie écriture dans le fichier
+  // uint16_t ecriture = pow(16,4)*nb_zero + magnetude;
   uint8_t indice = obtenir_indice(valeur, magnetude);
   printf("%s", binme_n(indice, magnetude));
   free(code);
@@ -104,7 +108,7 @@ void LRE(int16_t *entree){
 
 //Partie adaptation à la structure;
 
-int calcul_DC(int16_t *flux){
+int calcul_DC(int16_t *flux, int premier, int8_t DC){
     int somme=0;
     for (int i=0; i<64; i++){
       somme += flux[i];
@@ -113,14 +117,23 @@ int calcul_DC(int16_t *flux){
     for (int i=0; i<64; i++){
       flux[i] -= somme;
     }
+    if (premier == 1){
+      somme -= DC;
+    }
     return somme;
 }
 
 void ACDC_me(struct Image_MCU_16 *entree){
+  int premier = 0;
+  int8_t DC = 0;
   for (uint32_t hauteur=0; hauteur < entree->hauteur; hauteur++){
     for (uint32_t largeur=0; largeur < entree->largeur; largeur++){
-      printf("DC = %d \n", calcul_DC(entree->MCUs[8*hauteur + largeur]->flux));
+      DC = calcul_DC(entree->MCUs[8*hauteur + largeur]->flux, premier, DC);
+      uint8_t m = obtenir_magnetude(DC);
+      uint8_t i = obtenir_indice(DC, i);
+      printf("\n DC = %d \n", DC);
       LRE(entree->MCUs[8*hauteur + largeur]->flux);
+      if (premier == 0){premier++;}
     }
   }
 }

@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include "recuperer_image.h"
 #include "decoupage_MCU.h"
-#include "jpeg_writer_prof.h"
 #include "RGB2YCbCr.h"
 #include "zig_zag.h"
 #include "quantification.h"
 #include "Downsampling.h"
 #include "ACDC.h"
+#include "bitstream.h"
 
 int main( int argc, char * argv[] )
 { if (argc == 1) {
@@ -81,6 +81,10 @@ int main( int argc, char * argv[] )
         }
         printf("\t %s  --> %s.jpg \n", noms_des_images[i], renommage[i] );
 
+        struct bitstream *btstr = bitstream_create("sortie2");
+        bitstream_write_nbits(btstr, 1, 8, 0);
+        bitstream_flush(btstr);
+
         printf("\n \n \n \t initialisation de l'image ! \n \n \n ");
         struct Image *pic = initialisation(noms_des_images[i]);
         afficher_pic(pic);
@@ -105,10 +109,15 @@ int main( int argc, char * argv[] )
         afficher_image_DCT(new_image);
 
         printf("\n \n \n \t Zig Zag ! \n \n ");
+<<<<<<< HEAD
+        //Ne marche toujours pas des masses hihihi mon adaptation est pas terrible je crois.
+        zag_zig(new_image);
+=======
         zig_zag_image(new_image);
 
         printf("\n \n \n \t Quantification ! \n \n ");
         quantifier_image(new_image);
+>>>>>>> bb25e424b1a68ec00abff9c66c97938923345c57
         afficher_image_DCT(new_image);
 
         printf("\n \n \n \t ACDC ! \n \n");
@@ -119,4 +128,5 @@ int main( int argc, char * argv[] )
   else {
     printf("Vous n'êtes pas dans le mode verbose, il ne se passe donc rien pour l'instant ! =D \n Faire --verbose \n");
   }
+  printf("\n");
 }
