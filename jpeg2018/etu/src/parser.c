@@ -109,15 +109,10 @@ int main( int argc, char * argv[] )
         afficher_image_DCT(new_image);
 
         printf("\n \n \n \t Zig Zag ! \n \n ");
-<<<<<<< HEAD
-        //Ne marche toujours pas des masses hihihi mon adaptation est pas terrible je crois.
-        zag_zig(new_image);
-=======
         zig_zag_image(new_image);
 
         printf("\n \n \n \t Quantification ! \n \n ");
         quantifier_image(new_image);
->>>>>>> bb25e424b1a68ec00abff9c66c97938923345c57
         afficher_image_DCT(new_image);
 
         printf("\n \n \n \t ACDC ! \n \n");
