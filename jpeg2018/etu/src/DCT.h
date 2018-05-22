@@ -5,8 +5,6 @@
 #ifndef ETU_DCT_H
 #define ETU_DCT_H
 
-#endif //ETU_DCT_H
-
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -45,3 +43,5 @@ void afficher_DCT(struct MCU_16 *MCU);
 
 
 void afficher_image_DCT(struct Image_MCU_16 *image);
+
+#endif //ETU_DCT_H
