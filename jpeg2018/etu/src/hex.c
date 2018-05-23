@@ -76,11 +76,11 @@ int decme(char *hex)
     int8_t val1 = hex[1];
     if (val1 > 64) {
       val1 -= 55;
-    }
+    } else { val1 -= 48;}
     int8_t val2 = hex[2];
     if (val2 > 64) {
       val2 -= 55;
-    }
+    } else { val2 -= 48;}
     return 16*val1+val2;
 }
 

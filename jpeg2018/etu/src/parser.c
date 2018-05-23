@@ -146,12 +146,11 @@ int main( int argc, char * argv[] )
 
         printf("\n \n \n \t ACDC ! \n \n");
         ACDC_me(new_image, bitstream_jpeg);
+        //bitstream_flush(bitstream_jpeg);
         jpeg_write_footer(jpeg);
 
-        printf(" Le chiffre %d à pour hex : %s, l'hex %s a pour décimal %d \n", 68, hexme(68), hexme(68), decme(hexme(68)));
-        }
-
     }
+  }
   else {
     printf("Vous n'êtes pas dans le mode verbose, il ne se passe donc rien pour l'instant ! =D \n Faire --verbose \n");
   }

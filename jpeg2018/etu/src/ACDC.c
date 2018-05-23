@@ -81,10 +81,12 @@ void balise_std(int nb_zero, int valeur, struct bitstream *bitstream_jpeg){
     code[4] = '0';
     code[5] = '0';
   }
+  bitstream_write_nbits(bitstream_jpeg, decme(code), 8, 0);
   printf("%s", code);
   // Partie écriture dans le fichier
   // uint16_t ecriture = pow(16,4)*nb_zero + magnetude;
   uint8_t indice = obtenir_indice(valeur, magnetude);
+  bitstream_write_nbits(bitstream_jpeg, indice, magnetude, 0);
   printf("%s", binme_n(indice, magnetude));
   free(code);
 }
@@ -96,13 +98,13 @@ void LRE(int16_t *entree, struct bitstream *bitstream_jpeg){
     // affichage_ind_magn(entree[courant]);
     switch(nb_zero){
       case 16:
-        ZRL();
+        ZRL(bitstream_jpeg);
         break;
       case 64:
-        EOB();
+        EOB(bitstream_jpeg);
         break;
       default:
-        balise_std(nb_zero, entree[courant]);
+        balise_std(nb_zero, entree[courant], bitstream_jpeg);
         courant++;
         break;
     }
