@@ -14,14 +14,14 @@ void affichage_ind_magn(int16_t entree);
 
 int compter_zero(int16_t *entree, int *courant);
 
-void ZRL();
+void ZRL(struct bitstream *bitstream_jpeg);
 
-void EOB();
+void EOB(struct bitstream *bitstream_jpeg);
 
-void balise_std(int nb_zero, int valeur);
+void balise_std(int nb_zero, int valeur, struct bitstream *bitstream_jpeg);
 
-void LRE(int16_t *entree);
+void LRE(int16_t *entree, struct bitstream *bitstream_jpeg);
 
 int calcul_DC(int16_t *flux, int premier, int8_t DC);
 
-void ACDC_me(struct Image_MCU_16 *entree);
+void ACDC_me(struct Image_MCU_16 *entree, struct bitstream *bitstream_jpeg);
