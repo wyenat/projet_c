@@ -123,15 +123,18 @@ int calcul_DC(int16_t *flux, int premier, int8_t DC){
     return somme;
 }
 
-void ACDC_me(struct Image_MCU_16 *entree){
+char *ACDC_me(struct Image_MCU_16 *entree){
+  char *acdc = malloc(sizeof(char)*64*20); //maxi 20 caractère par MCU
   int premier = 0;
   int8_t DC = 0;
   for (uint32_t hauteur=0; hauteur < entree->hauteur; hauteur++){
     for (uint32_t largeur=0; largeur < entree->largeur; largeur++){
       DC = calcul_DC(entree->MCUs[8*hauteur + largeur]->flux, premier, DC);
       uint8_t m = obtenir_magnetude(DC);
-      uint8_t i = obtenir_indice(DC, i);
-      printf("\n DC = %d \n", DC);
+      uint8_t i = obtenir_indice(DC, m);
+      char *dc = malloc(sizeof(char)*(m+i));
+      strncpy(&dc, m, strlen(m));
+      printf("\n DC = %s \n", dc);
       LRE(entree->MCUs[8*hauteur + largeur]->flux);
       if (premier == 0){premier++;}
     }

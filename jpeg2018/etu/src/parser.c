@@ -7,6 +7,11 @@
 #include "Downsampling.h"
 #include "ACDC.h"
 #include "bitstream.h"
+#include "jpeg_writer.h"
+#include "htables.h"
+#include "huffman.h"
+#include "jpeg.h"
+
 
 int main( int argc, char * argv[] )
 { if (argc == 1) {
@@ -19,12 +24,12 @@ int main( int argc, char * argv[] )
   char* renommage[argc];
   int nombre_de_renommage=0;
   int nombre_dimages = 0;
-  int h1=1;
-  int h2=1;
-  int h3=1;
-  int v1=1;
-  int v2=1;
-  int v3=1;
+  uint8_t h1=1;
+  uint8_t h2=1;
+  uint8_t h3=1;
+  uint8_t v1=1;
+  uint8_t v2=1;
+  uint8_t v3=1;
 	for(int i=1; i<argc; i++) {
         if (strcmp(argv[i],"--h" ) == 0 || strcmp(argv[i], "--help") == 0 ) {
           printf("Voilà les options : \n \t --outfile=nomdufichier renomme la sortie en nomdufichier.jpg (ne supporte pas les espaces) \n");
@@ -81,21 +86,47 @@ int main( int argc, char * argv[] )
         }
         printf("\t %s  --> %s.jpg \n", noms_des_images[i], renommage[i] );
 
-        struct bitstream *btstr = bitstream_create("sortie2");
-        bitstream_write_nbits(btstr, 1, 8, 0);
-        bitstream_flush(btstr);
+        printf("\t Création du jpeg \n");
+        struct jpeg_desc *jpeg = jpeg_desc_create();
+        // Si c'est un PPM
+        if (strcmp(noms_des_images[i]+strlen(noms_des_images[i])-4, ".ppm") == 0){
+          jpeg_desc_set_ppm_filename(jpeg, noms_des_images[i]);
+          printf("On ajoute %s dans le filename \n", jpeg_desc_get_ppm_filename(jpeg));
+          jpeg_desc_set_jpeg_filename(jpeg, renommage[i]);
+          printf("Le nom est changé en %s dans le filename \n",jpeg_desc_get_jpeg_filename(jpeg));
+        }
 
         printf("\n \n \n \t initialisation de l'image ! \n \n \n ");
         struct Image *pic = initialisation(noms_des_images[i]);
-        afficher_pic(pic);
+        // afficher_pic(pic);
 
         printf("\n \n \n \t Passage MCU8 ! \n \n \n");
         struct Image_MCU_8 *image = decoupe(pic, 1, 1);
-        afficher_image_8(image);
+        // afficher_image_8(image);
+
+
+        // Partie écriture jpeg (kinda)
+        uint32_t hauteur_n = image->hauteur*8*(image->MCUs[0]->hauteur);
+        uint32_t largeur_n = image->largeur*8*(image->MCUs[0]->largeur);
+        jpeg_desc_set_image_height(jpeg, hauteur_n);
+        printf("La hauteur écrite dans le fichier est %u \n", jpeg_desc_get_image_height(jpeg));
+        jpeg_desc_set_image_width(jpeg, largeur_n);
+        printf("La largeur écrite dans le fichier est %u \n", jpeg_desc_get_image_width(jpeg));
+        uint8_t nb_couleur = 1 + 2*image->couleur;
+        jpeg_desc_set_nb_components(jpeg, nb_couleur);
+        printf("Il y a %u couleurs \n",  jpeg_desc_get_nb_components(jpeg));
+        struct bitstream *bitstream_jpeg = jpeg_desc_get_bitstream(jpeg);
+
+
+        //Ecriture des sampling factors
+        ecrire_facteur(jpeg,h1, h2, h3, v1, v2, v3);
+
+        //Ecriture des tables de Huffman
+        ecrire_huffman(jpeg);
 
         printf("\n \n \n \t Conversion de RGB à YCbCr ! \n \n \n");
         Image_RGB2YCbCr(image);
-        afficher_image_YCbCr(image);
+        // afficher_image_YCbCr(image);
 
         // printf("\n \n \n \t Compression des images (pour le moment on compresse en vertical et en horizontal) \n \n \n");
         // Image_downsampling(image, 1, 1);
@@ -106,17 +137,17 @@ int main( int argc, char * argv[] )
         printf("\n \n \n \t Conversion de YCbCr à DCT \n \n \n");
         // ATTENTION : image devient new_image !!!! (On a besoin d'en recréer une nouvelle vu q'uon change de type d'image.)
         struct Image_MCU_16 *new_image = Image_DCT(image);
-        afficher_image_DCT(new_image);
+        // afficher_image_DCT(new_image);
 
         printf("\n \n \n \t Zig Zag ! \n \n ");
         zig_zag_image(new_image);
 
         printf("\n \n \n \t Quantification ! \n \n ");
         quantifier_image(new_image);
-        afficher_image_DCT(new_image);
+        // afficher_image_DCT(new_image);
 
         printf("\n \n \n \t ACDC ! \n \n");
-        ACDC_me(new_image);
+        // ACDC_me(new_image);
         }
 
     }
