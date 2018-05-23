@@ -147,6 +147,8 @@ int main( int argc, char * argv[] )
         printf("\n \n \n \t ACDC ! \n \n");
         ACDC_me(new_image, bitstream_jpeg);
         jpeg_write_footer(jpeg);
+
+        printf(" Le chiffre %d à pour hex : %s, l'hex %s a pour décimal %d \n", 68, hexme(68), hexme(68), decme(hexme(68)));
         }
 
     }
