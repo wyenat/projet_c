@@ -89,12 +89,10 @@ int main( int argc, char * argv[] )
         printf("\t Création du jpeg \n");
         struct jpeg_desc *jpeg = jpeg_desc_create();
         // Si c'est un PPM
-        if (strcmp(noms_des_images[i]+strlen(noms_des_images[i])-4, ".ppm") == 0){
-          jpeg_desc_set_ppm_filename(jpeg, noms_des_images[i]);
-          printf("On ajoute %s dans le filename \n", jpeg_desc_get_ppm_filename(jpeg));
-          jpeg_desc_set_jpeg_filename(jpeg, renommage[i]);
-          printf("Le nom est changé en %s dans le filename \n",jpeg_desc_get_jpeg_filename(jpeg));
-        }
+        jpeg_desc_set_ppm_filename(jpeg, noms_des_images[i]);
+        printf("On ajoute %s dans le filename \n", jpeg_desc_get_ppm_filename(jpeg));
+        jpeg_desc_set_jpeg_filename(jpeg, renommage[i]);
+        printf("Le nom est changé en %s dans le filename \n",jpeg_desc_get_jpeg_filename(jpeg));
 
         printf("\n \n \n \t initialisation de l'image ! \n \n \n ");
         struct Image *pic = initialisation(noms_des_images[i]);
@@ -118,11 +116,11 @@ int main( int argc, char * argv[] )
         struct bitstream *bitstream_jpeg = jpeg_desc_get_bitstream(jpeg);
 
 
-        //Ecriture des sampling factors
-        ecrire_facteur(jpeg,h1, h2, h3, v1, v2, v3);
 
-        //Ecriture des tables de Huffman
-        ecrire_huffman(jpeg);
+        //Ecriture de l'entête
+        ecrire_entete(jpeg ,h1, h2, h3, v1, v2, v3);
+
+
 
         printf("\n \n \n \t Conversion de RGB à YCbCr ! \n \n \n");
         Image_RGB2YCbCr(image);
@@ -147,7 +145,8 @@ int main( int argc, char * argv[] )
         // afficher_image_DCT(new_image);
 
         printf("\n \n \n \t ACDC ! \n \n");
-        // ACDC_me(new_image);
+        ACDC_me(new_image, bitstream_jpeg);
+        jpeg_write_footer(jpeg);
         }
 
     }

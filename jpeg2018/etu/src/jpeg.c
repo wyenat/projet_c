@@ -32,8 +32,15 @@ void ecrire_huffman(struct jpeg_desc *jpeg){
   }
 }
 
-// void ecrire_quantification(struct jpeg_desc *jpeg){
-//   for (enum color_component cc = 0; cc < 3; cc++){
-//   }
-//   // jpeg_desc_set_quantization_table(jpeg)
-// }
+void ecrire_quantification(struct jpeg_desc *jpeg){
+  jpeg_desc_set_quantization_table(jpeg, Y, compressed_Y_table);
+  jpeg_desc_set_quantization_table(jpeg, Cb, compressed_CbCr_table);
+  jpeg_desc_set_quantization_table(jpeg, Cr, compressed_CbCr_table);
+}
+
+void ecrire_entete(struct jpeg_desc *jpeg, int h1, int h2, int h3, int v1, int v2, int v3){
+  ecrire_facteur(jpeg, h1, h2, h3, v1, v2, v3);
+  ecrire_huffman(jpeg);
+  ecrire_quantification(jpeg);
+  jpeg_write_header(jpeg);
+}

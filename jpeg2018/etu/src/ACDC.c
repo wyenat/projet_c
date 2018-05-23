@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include "hex.h"
 #include "DCT.h"
+#include "bitstream.h"
 
 //Je ne comprends pas bien comment gerer le byte stuffing mais sinon tout fonctionne.
 //Tout le module ne fait pour l'instant que de l'affichage, il sortira des char* ou
@@ -53,17 +54,19 @@ int compter_zero(int16_t *entree, int *courant){
     return nb_zero;
   }
 
-void ZRL(){
+void ZRL(struct bitstream *bitstream_jpeg){
   // uint8_t zrl = 240;
+  bitstream_write_nbits(bitstream_jpeg, 240, 8, 0);
   printf("/F0");
 }
 
-void EOB(){
+void EOB(struct bitstream *bitstream_jpeg){
   // uint8_t eob = 0;
+  bitstream_write_nbits(bitstream_jpeg, 0, 8, 0);
   printf("/00\n");
 }
 
-void balise_std(int nb_zero, int valeur){
+void balise_std(int nb_zero, int valeur, struct bitstream *bitstream_jpeg){
   uint8_t magnetude = obtenir_magnetude(valeur);
   if (magnetude == 0) {
     perror("On ne lit pas assez de 0 ! \n");
@@ -86,7 +89,7 @@ void balise_std(int nb_zero, int valeur){
   free(code);
 }
 
-void LRE(int16_t *entree){
+void LRE(int16_t *entree, struct bitstream *bitstream_jpeg){
   int courant = 0;
   while (courant < 64) {
     int nb_zero = compter_zero(entree, &courant);
@@ -123,7 +126,7 @@ int calcul_DC(int16_t *flux, int premier, int8_t DC){
     return somme;
 }
 
-char *ACDC_me(struct Image_MCU_16 *entree){
+char *ACDC_me(struct Image_MCU_16 *entree, struct bitstream *bitstream_jpeg){
   char *acdc = malloc(sizeof(char)*64*20); //maxi 20 caractère par MCU
   int premier = 0;
   int8_t DC = 0;
@@ -132,10 +135,7 @@ char *ACDC_me(struct Image_MCU_16 *entree){
       DC = calcul_DC(entree->MCUs[8*hauteur + largeur]->flux, premier, DC);
       uint8_t m = obtenir_magnetude(DC);
       uint8_t i = obtenir_indice(DC, m);
-      char *dc = malloc(sizeof(char)*(m+i));
-      strncpy(&dc, m, strlen(m));
-      printf("\n DC = %s \n", dc);
-      LRE(entree->MCUs[8*hauteur + largeur]->flux);
+      LRE(entree->MCUs[8*hauteur + largeur]->flux, bitstream_jpeg);
       if (premier == 0){premier++;}
     }
   }
