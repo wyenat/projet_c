@@ -113,29 +113,30 @@ void LRE(int16_t *entree, struct bitstream *bitstream_jpeg, struct jpeg_desc *jp
 
 //Partie adaptation à la structure;
 
-int calcul_DC(int16_t *flux, int premier, int8_t DC){
-    int val_DC = flux[0];
+int32_t calcul_DC(int16_t *flux, int premier, int8_t DC){
+    int32_t val_DC = flux[0];
     if (premier != 0){
-      val_DC = DC - val_DC;
+      val_DC = val_DC - premier;
     }
     return val_DC;
 }
 
 void ACDC_me(struct Image_MCU_16 *entree, struct bitstream *bitstream_jpeg, struct jpeg_desc *jpeg){
   int premier = 0;
-  int DC_valeur = 0;
+  int32_t DC_valeur = 0;
   uint8_t len_chemin = 0;
   uint32_t code_dc = 0;
   for (uint32_t hauteur=0; hauteur < entree->hauteur; hauteur++){
     for (uint32_t largeur=0; largeur < entree->largeur; largeur++){
-      DC_valeur = calcul_DC(entree->MCUs[8*hauteur + largeur]->flux, premier, DC_valeur);
+      DC_valeur = calcul_DC(entree->MCUs[hauteur + largeur]->flux, premier, DC_valeur);
       uint8_t m = obtenir_magnetude(DC_valeur);
       uint8_t i = obtenir_indice(DC_valeur, m);
       code_dc = huffman_table_get_path(jpeg_desc_get_huffman_table(jpeg, DC, Y), m, &len_chemin);
+      printf("DC = %d, m=%d, encodé = %s, indice = %s \n", DC_valeur, m, binme_n(code_dc, len_chemin), binme_n(i,m));
       bitstream_write_nbits(bitstream_jpeg, code_dc, len_chemin, 0);
       bitstream_write_nbits(bitstream_jpeg, i, m, 0);
-      LRE(entree->MCUs[8*hauteur + largeur]->flux, bitstream_jpeg, jpeg);
-      if (premier == 0){premier++;}
+      LRE(entree->MCUs[hauteur + largeur]->flux, bitstream_jpeg, jpeg);
+      if (premier == 0){premier = DC_valeur;}
     }
   }
 }

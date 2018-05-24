@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
+#include <stdint.h>
 
 char calculer_coeff(int *entree,int puissance);
 
-int decme(char *hex);
+uint32_t decme(char *hex);
 
 char *hexme(int entree);
 

@@ -89,6 +89,9 @@ char *hexme(int entree){
   if (!entree){
     return "/00";
   }
+  if (entree < 0){
+    entree = pow(256, 2) - abs(entree);
+  }
   int puissance = floor(log(entree)/log(16));
   if (puissance%2 == 0){
     decal++;
