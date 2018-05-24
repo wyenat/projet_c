@@ -113,12 +113,13 @@ int main( int argc, char * argv[] )
         uint8_t nb_couleur = 1 + 2*image->couleur;
         jpeg_desc_set_nb_components(jpeg, nb_couleur);
         printf("Il y a %u couleurs \n",  jpeg_desc_get_nb_components(jpeg));
-        struct bitstream *bitstream_jpeg = jpeg_desc_get_bitstream(jpeg);
 
 
 
         //Ecriture de l'entête
         ecrire_entete(jpeg ,h1, h2, h3, v1, v2, v3);
+        struct bitstream *bitstream_jpeg = jpeg_desc_get_bitstream(jpeg);
+        printf("\n ==> %s \n",bitstream_jpeg);
 
 
 
@@ -143,6 +144,9 @@ int main( int argc, char * argv[] )
         printf("\n \n \n \t Quantification ! \n \n ");
         quantifier_image(new_image);
         // afficher_image_DCT(new_image);
+
+        printf("\n Tentative d'écriture en dehors de jpeg.c  \n");
+        bitstream_write_nbits(bitstream_jpeg, 8, 8, 0);
 
         printf("\n \n \n \t ACDC ! \n \n");
         ACDC_me(new_image, bitstream_jpeg);
