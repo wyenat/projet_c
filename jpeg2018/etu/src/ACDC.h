@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include "hex.h"
 #include "DCT.h"
+#include "bitstream.h"
 
 uint8_t  obtenir_magnetude(int16_t entree);
 
