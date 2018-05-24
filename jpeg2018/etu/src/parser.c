@@ -90,9 +90,9 @@ int main( int argc, char * argv[] )
         struct jpeg_desc *jpeg = jpeg_desc_create();
         // Si c'est un PPM
         jpeg_desc_set_ppm_filename(jpeg, noms_des_images[i]);
-        printf("On ajoute %s dans le filename \n", jpeg_desc_get_ppm_filename(jpeg));
+        // printf("On ajoute %s dans le filename \n", jpeg_desc_get_ppm_filename(jpeg));
         jpeg_desc_set_jpeg_filename(jpeg, renommage[i]);
-        printf("Le nom est changé en %s dans le filename \n",jpeg_desc_get_jpeg_filename(jpeg));
+        // printf("Le nom est changé en %s dans le filename \n",jpeg_desc_get_jpeg_filename(jpeg));
 
         printf("\n \n \n \t initialisation de l'image ! \n \n \n ");
         struct Image *pic = initialisation(noms_des_images[i]);
@@ -107,19 +107,18 @@ int main( int argc, char * argv[] )
         uint32_t hauteur_n = image->hauteur*8*(image->MCUs[0]->hauteur);
         uint32_t largeur_n = image->largeur*8*(image->MCUs[0]->largeur);
         jpeg_desc_set_image_height(jpeg, hauteur_n);
-        printf("La hauteur écrite dans le fichier est %u \n", jpeg_desc_get_image_height(jpeg));
+        // printf("La hauteur écrite dans le fichier est %u \n", jpeg_desc_get_image_height(jpeg));
         jpeg_desc_set_image_width(jpeg, largeur_n);
-        printf("La largeur écrite dans le fichier est %u \n", jpeg_desc_get_image_width(jpeg));
+        // printf("La largeur écrite dans le fichier est %u \n", jpeg_desc_get_image_width(jpeg));
         uint8_t nb_couleur = 1 + 2*image->couleur;
         jpeg_desc_set_nb_components(jpeg, nb_couleur);
-        printf("Il y a %u couleurs \n",  jpeg_desc_get_nb_components(jpeg));
+        // printf("Il y a %u couleurs \n",  jpeg_desc_get_nb_components(jpeg));
 
 
 
         //Ecriture de l'entête
         ecrire_entete(jpeg ,h1, h2, h3, v1, v2, v3);
         struct bitstream *bitstream_jpeg = jpeg_desc_get_bitstream(jpeg);
-        printf("\n ==> %s \n",bitstream_jpeg);
 
 
 
@@ -140,19 +139,16 @@ int main( int argc, char * argv[] )
 
         printf("\n \n \n \t Zig Zag ! \n \n ");
         zig_zag_image(new_image);
+        // afficher_image_DCT(new_image);
 
         printf("\n \n \n \t Quantification ! \n \n ");
         quantifier_image(new_image);
         // afficher_image_DCT(new_image);
 
-        printf("\n Tentative d'écriture en dehors de jpeg.c  \n");
-        bitstream_write_nbits(bitstream_jpeg, 8, 8, 0);
-
         printf("\n \n \n \t ACDC ! \n \n");
-        ACDC_me(new_image, bitstream_jpeg);
-        //bitstream_flush(bitstream_jpeg);
+        ACDC_me(new_image, bitstream_jpeg, jpeg);
+        // bitstream_flush(bitstream_jpeg);
         jpeg_write_footer(jpeg);
-
     }
   }
   else {

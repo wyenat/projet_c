@@ -109,6 +109,7 @@ char *hexme(int entree){
       puissance = puissance - 1;
       indice++;}
   }
+  hex[indice]='\0';
   return hex;
 }
 

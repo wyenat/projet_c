@@ -15,14 +15,17 @@ struct huff_table   {
     /* Valeur du noeud, NULL si ce n'est pas une feuille. */
     uint8_t etiquette;
 
+    /* Indique si unnoeud est une feuille ou bien un noeud intermediare */
+    uint8_t est_feuille;
+
     /* entier valant 0 ou 1, qui indique si un noeud est saturé ou non. Utilisé pour la recherche du prochain noeud libre. */
     uint8_t est_sature;
 
     /* Indique la profondeur du noeud. */
     uint8_t profondeur;
 
-    /* Indique le nombre de noeuds des fils du noeud courant. */
-    uint16_t nombre_noeuds_fils;
+    /* Indique le nombre de symboles des fils du noeud courant. (nombre de feuilles des sous-arbres fils) */
+    uint16_t nombre_symboles_fils;
 
     /* Indique si un noeud a été visité. Utilisé dans la recherche d'un élément. ATTENTION : dans la fonction de
      * recherche d'une valeur dans un noeud, a_ete_visite vaut 1 si le noeud a déjà été visité. Dans la fonction
@@ -45,7 +48,7 @@ struct huff_table   {
 /*
     Initialise un noeud avec les valeurs d'etiquette, de parent et de profondeur données en paramètres.
 */
-void init_noeud(struct huff_table * noeud, uint8_t etiquette, struct huff_table *parent, uint8_t profondeur);
+void init_noeud(struct huff_table * noeud, struct huff_table *parent, uint8_t profondeur);
 
 
 
@@ -77,9 +80,6 @@ extern struct huff_table *huffman_table_build(uint8_t *nb_symb_per_lengths,
 
 
 
-
-
-
 /*
     Retourne le chemin dans l'arbre ht permettant d'atteindre la feuille de
     valeur value. nbits est un paramètre de sortie permettant de stocker la
@@ -88,7 +88,6 @@ extern struct huff_table *huffman_table_build(uint8_t *nb_symb_per_lengths,
 extern uint32_t huffman_table_get_path(struct huff_table *ht,
                                        uint8_t value,
                                        uint8_t *nbits);
-
 
 
 /*
@@ -112,6 +111,15 @@ extern uint8_t *huffman_table_get_length_vector(struct huff_table *ht);
     qui lui est associée.
 */
 extern void huffman_table_destroy(struct huff_table *ht);
+
+
+
+/*
+    Affichage de la table de Huffman : on affiche les tableaux de chaque profondeur.
+*/
+extern void afficher_table_huffman(struct huff_table *table_huffman);
+
+
 
 
 #endif //ETU_HUFFMAN_PERSO_H
