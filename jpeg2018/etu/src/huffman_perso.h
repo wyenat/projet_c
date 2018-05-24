@@ -13,7 +13,10 @@
 // Structure d'arbre de Huffman
 struct huff_table   {
     /* Valeur du noeud, NULL si ce n'est pas une feuille. */
-    uint8_t *etiquette;
+    uint8_t etiquette;
+
+    /* Indique si unnoeud est une feuille ou bien un noeud intermediare */
+    uint8_t est_feuille;
 
     /* entier valant 0 ou 1, qui indique si un noeud est saturé ou non. Utilisé pour la recherche du prochain noeud libre. */
     uint8_t est_sature;
@@ -45,7 +48,7 @@ struct huff_table   {
 /*
     Initialise un noeud avec les valeurs d'etiquette, de parent et de profondeur données en paramètres.
 */
-void init_noeud(struct huff_table * noeud, uint8_t etiquette, struct huff_table *parent, uint8_t profondeur);
+void init_noeud(struct huff_table * noeud, struct huff_table *parent, uint8_t profondeur);
 
 
 
