@@ -48,7 +48,7 @@ struct huff_table   {
 /*
     Initialise un noeud avec les valeurs d'etiquette, de parent et de profondeur données en paramètres.
 */
-void init_noeud(struct huff_table * noeud, struct huff_table *parent, uint8_t profondeur);
+struct huff_table * init_noeud(struct huff_table *parent, uint8_t profondeur);
 
 
 
