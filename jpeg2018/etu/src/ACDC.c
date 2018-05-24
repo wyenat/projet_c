@@ -6,6 +6,8 @@
 #include "hex.h"
 #include "DCT.h"
 #include "bitstream.h"
+#include "huffman.h"
+#include "jpeg_writer.h"
 
 //Je ne comprends pas bien comment gerer le byte stuffing mais sinon tout fonctionne.
 //Tout le module ne fait pour l'instant que de l'affichage, il sortira des char* ou
@@ -54,57 +56,55 @@ int compter_zero(int16_t *entree, int *courant){
     return nb_zero;
   }
 
-void ZRL(struct bitstream *bitstream_jpeg){
+void ZRL(struct bitstream *bitstream_jpeg, struct jpeg_desc *jpeg){
   // uint8_t zrl = 240;
-  bitstream_write_nbits(bitstream_jpeg, 240, 8, 0);
-  printf("/F0");
+  uint8_t valeur_symbole = 240;
+  uint8_t longeur_huffman = 0;
+  uint32_t chemin_huffman = 0;
+  chemin_huffman = huffman_table_get_path(jpeg_desc_get_huffman_table(jpeg, AC, Y), valeur_symbole, &longeur_huffman);
+  bitstream_write_nbits(bitstream_jpeg, chemin_huffman, longeur_huffman, 0);
+  printf("/F0 \n");
 }
 
-void EOB(struct bitstream *bitstream_jpeg){
+void EOB(struct bitstream *bitstream_jpeg, struct jpeg_desc *jpeg){
   // uint8_t eob = 0;
-  bitstream_write_nbits(bitstream_jpeg, 0, 8, 0);
+  uint8_t valeur_symbole = 0;
+  uint8_t longeur_huffman = 0;
+  uint32_t chemin_huffman = 0;
+  chemin_huffman = huffman_table_get_path(jpeg_desc_get_huffman_table(jpeg, AC, Y), valeur_symbole, &longeur_huffman);
+  bitstream_write_nbits(bitstream_jpeg, chemin_huffman, longeur_huffman, 0);
   printf("/00\n");
 }
 
-void balise_std(int nb_zero, int valeur, struct bitstream *bitstream_jpeg){
-  uint8_t magnetude = obtenir_magnetude(valeur);
-  if (magnetude == 0) {
+void balise_std(int nb_zero, int valeur, struct bitstream *bitstream_jpeg, struct jpeg_desc *jpeg){
+  uint8_t m = obtenir_magnetude(valeur);
+  uint8_t i = obtenir_indice(valeur, m);
+  if (m == 0) {
     perror("On ne lit pas assez de 0 ! \n");
     exit(EXIT_FAILURE);
   }
-  char *code = malloc(11*sizeof(char));
-  code[0]='/';
-  code[1] = hexme(nb_zero)[2];
-  code[2] = hexme(magnetude)[2];
-  if (strncmp(code, "/FF", 3)==0){ //byte_stuffing
-    code[3] = '/';
-    code[4] = '0';
-    code[5] = '0';
-  }
-  bitstream_write_nbits(bitstream_jpeg, decme(code), 8, 0);
-  printf("%s", code);
-  // Partie écriture dans le fichier
-  // uint16_t ecriture = pow(16,4)*nb_zero + magnetude;
-  uint8_t indice = obtenir_indice(valeur, magnetude);
-  bitstream_write_nbits(bitstream_jpeg, indice, magnetude, 0);
-  printf("%s", binme_n(indice, magnetude));
-  free(code);
+  uint8_t valeur_symbole = 16*nb_zero + m;
+  uint8_t longeur_huffman = 0;
+  uint32_t chemin_huffman = huffman_table_get_path(jpeg_desc_get_huffman_table(jpeg, AC, Y), valeur_symbole, &longeur_huffman);
+  bitstream_write_nbits(bitstream_jpeg, chemin_huffman, longeur_huffman, 0);
+  bitstream_write_nbits(bitstream_jpeg, i, m, 0);
+  // printf("nb_zero = %u, valeur = %d, symbole = %s, huffman = %s, sur %d bits, indice = %s \n",nb_zero, valeur, hexme(valeur_symbole), binme_n(chemin_huffman, longeur_huffman), longeur_huffman, binme_n(i,m));
 }
 
-void LRE(int16_t *entree, struct bitstream *bitstream_jpeg){
-  int courant = 0;
+void LRE(int16_t *entree, struct bitstream *bitstream_jpeg, struct jpeg_desc *jpeg){
+  int courant = 1;
   while (courant < 64) {
     int nb_zero = compter_zero(entree, &courant);
     // affichage_ind_magn(entree[courant]);
     switch(nb_zero){
       case 16:
-        ZRL(bitstream_jpeg);
+        ZRL(bitstream_jpeg, jpeg);
         break;
       case 64:
-        EOB(bitstream_jpeg);
+        EOB(bitstream_jpeg, jpeg);
         break;
       default:
-        balise_std(nb_zero, entree[courant], bitstream_jpeg);
+        balise_std(nb_zero, entree[courant], bitstream_jpeg, jpeg);
         courant++;
         break;
     }
@@ -114,30 +114,27 @@ void LRE(int16_t *entree, struct bitstream *bitstream_jpeg){
 //Partie adaptation à la structure;
 
 int calcul_DC(int16_t *flux, int premier, int8_t DC){
-    int somme=0;
-    for (int i=0; i<64; i++){
-      somme += flux[i];
+    int val_DC = flux[0];
+    if (premier != 0){
+      val_DC = DC - val_DC;
     }
-    somme = somme / 64;
-    for (int i=0; i<64; i++){
-      flux[i] -= somme;
-    }
-    if (premier == 1){
-      somme -= DC;
-    }
-    return somme;
+    return val_DC;
 }
 
-char *ACDC_me(struct Image_MCU_16 *entree, struct bitstream *bitstream_jpeg){
-  char *acdc = malloc(sizeof(char)*64*20); //maxi 20 caractère par MCU
+void ACDC_me(struct Image_MCU_16 *entree, struct bitstream *bitstream_jpeg, struct jpeg_desc *jpeg){
   int premier = 0;
-  int8_t DC = 0;
+  int DC_valeur = 0;
+  uint8_t len_chemin = 0;
+  uint32_t code_dc = 0;
   for (uint32_t hauteur=0; hauteur < entree->hauteur; hauteur++){
     for (uint32_t largeur=0; largeur < entree->largeur; largeur++){
-      DC = calcul_DC(entree->MCUs[8*hauteur + largeur]->flux, premier, DC);
-      uint8_t m = obtenir_magnetude(DC);
-      uint8_t i = obtenir_indice(DC, m);
-      LRE(entree->MCUs[8*hauteur + largeur]->flux, bitstream_jpeg);
+      DC_valeur = calcul_DC(entree->MCUs[8*hauteur + largeur]->flux, premier, DC_valeur);
+      uint8_t m = obtenir_magnetude(DC_valeur);
+      uint8_t i = obtenir_indice(DC_valeur, m);
+      code_dc = huffman_table_get_path(jpeg_desc_get_huffman_table(jpeg, DC, Y), m, &len_chemin);
+      bitstream_write_nbits(bitstream_jpeg, code_dc, len_chemin, 0);
+      bitstream_write_nbits(bitstream_jpeg, i, m, 0);
+      LRE(entree->MCUs[8*hauteur + largeur]->flux, bitstream_jpeg, jpeg);
       if (premier == 0){premier++;}
     }
   }

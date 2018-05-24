@@ -103,10 +103,10 @@ struct Image *initialisation(char *name_file){
   // initialisation de stream et de taille_stream
   buffer = malloc(sizeof(char)*hauteur*largeur*3);
   size_t taille_stream = recuperer_jusqua_fin(lecture, buffer);
-  if (taille_stream != hauteur*largeur*(1+2*couleur)) {
-    printf("Nombre de données incohérent : l'image est incomplète ou surchargée ! \n %zu octets obtenus et %i octets attendus ! \n", taille_stream, hauteur*largeur*(1+2*couleur));
-    exit(EXIT_FAILURE);
-  }
+  // if (taille_stream != hauteur*largeur*(1+2*couleur)) {
+    // printf("Nombre de données incohérent : l'image est incomplète ou surchargée ! \n %zu octets obtenus et %i octets attendus ! \n", taille_stream, hauteur*largeur*(1+2*couleur));
+    // exit(EXIT_FAILURE);
+  // }
   //initialisation de struct image pic
   struct Image *pic = malloc(sizeof(couleur) + 3*32 + sizeof(taille_stream) + sizeof(buffer));
   pic->couleur = couleur;

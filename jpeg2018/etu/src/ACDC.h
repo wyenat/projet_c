@@ -6,6 +6,7 @@
 #include "hex.h"
 #include "DCT.h"
 #include "bitstream.h"
+#include "jpeg_writer.h"
 
 uint8_t  obtenir_magnetude(int16_t entree);
 
@@ -15,14 +16,14 @@ void affichage_ind_magn(int16_t entree);
 
 int compter_zero(int16_t *entree, int *courant);
 
-void ZRL(struct bitstream *bitstream_jpeg);
+void ZRL(struct bitstream *bitstream_jpeg, struct jpeg_desc *jpeg);
 
-void EOB(struct bitstream *bitstream_jpeg);
+void EOB(struct bitstream *bitstream_jpeg, struct jpeg_desc *jpeg);
 
-void balise_std(int nb_zero, int valeur, struct bitstream *bitstream_jpeg);
+void balise_std(int nb_zero, int valeur, struct bitstream *bitstream_jpeg, struct jpeg_desc *jpeg);
 
-void LRE(int16_t *entree, struct bitstream *bitstream_jpeg);
+void LRE(int16_t *entree, struct bitstream *bitstream_jpeg, struct jpeg_desc *jpeg);
 
-int calcul_DC(int16_t *flux, int premier, int8_t DC);
+int calcul_DC(int16_t *flux, int premier,int8_t DC);
 
-void ACDC_me(struct Image_MCU_16 *entree, struct bitstream *bitstream_jpeg);
+void ACDC_me(struct Image_MCU_16 *entree, struct bitstream *bitstream_jpeg, struct jpeg_desc *jpeg);
