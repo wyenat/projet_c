@@ -128,9 +128,9 @@ void ACDC_me(struct Image_MCU_16 *entree, struct bitstream *bitstream_jpeg, stru
     int32_t DC_precedent[] = {0,0,0};
     uint8_t len_chemin[] = {0,0,0};
     uint32_t code_dc[] = {0,0,0};
-    for (int couleur =0; couleur < 1 + 2*entree->couleur; couleur++){
-      printf("PASSAGE A LA COULEUR %d \n \n \n", couleur);
       for (uint32_t parcours=0; parcours < entree->hauteur * entree->largeur; parcours++){
+          for (int couleur =0; couleur < 1 + 2*entree->couleur; couleur++){
+          printf("PASSAGE A LA COULEUR %d \n \n \n", couleur);
           DC_valeur[couleur] = calcul_DC(entree->MCUs[parcours]->flux, premier[couleur], &DC_precedent[couleur], couleur);
           uint32_t m = obtenir_magnetude(DC_valeur[couleur]);
           uint32_t i = obtenir_indice(DC_valeur[couleur], m);

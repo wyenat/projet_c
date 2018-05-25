@@ -1,0 +1,1065 @@
+ppm_check_header:
+	 presence de P5 ou P6 dans l'entete... PASS
+	 presence des dimensions HxV dans l'entete... 8x16
+	 presence de 255 dans l'entete... PASS
+
+ppm2blabla v4 (22/05/18)
+[MCU #0] Valeurs RGB initiales:
+ff0000 ff0000 ff0000 ff0000 ff0000 ff0000 ff0000 ff0000    
+ff0000 ffffff ffffff ffffff ffffff ffffff ffffff 4eff00    
+ff0000 00fcff 00fcff 00fcff 00fcff 00fcff ffffff 4eff00    
+ff0000 ffffff 00fcff ffffff ffffff 00fcff ffffff 4eff00    
+ff0000 ffffff 00fcff ffffff ffffff 00fcff ffffff 4eff00    
+ff0000 ffffff 00fcff ffffff ffffff 00fcff ffffff 4eff00    
+ff0000 ffffff 00fcff ffffff ffffff 00fcff ffffff 4eff00    
+ff0000 ffffff 00fcff ffffff ffffff 00fcff ffffff 4eff00    
+
+[MCU #0] Conversion RGB -> YCbCr:
+[Y]:
+	4c 4c 4c 4c 4c 4c 4c 4c 
+	4c ff ff ff ff ff ff ad 
+	4c b1 b1 b1 b1 b1 ff ad 
+	4c ff b1 ff ff b1 ff ad 
+	4c ff b1 ff ff b1 ff ad 
+	4c ff b1 ff ff b1 ff ad 
+	4c ff b1 ff ff b1 ff ad 
+	4c ff b1 ff ff b1 ff ad 
+
+[Cb]:
+	55 55 55 55 55 55 55 55 
+	55 80 80 80 80 80 80 1e 
+	55 ac ac ac ac ac 80 1e 
+	55 80 ac 80 80 ac 80 1e 
+	55 80 ac 80 80 ac 80 1e 
+	55 80 ac 80 80 ac 80 1e 
+	55 80 ac 80 80 ac 80 1e 
+	55 80 ac 80 80 ac 80 1e 
+
+[Cr]:
+	ff ff ff ff ff ff ff ff 
+	ff 80 80 80 80 80 80 3c 
+	ff 02 02 02 02 02 80 3c 
+	ff 80 02 80 80 02 80 3c 
+	ff 80 02 80 80 02 80 3c 
+	ff 80 02 80 80 02 80 3c 
+	ff 80 02 80 80 02 80 3c 
+	ff 80 02 80 80 02 80 3c 
+
+[MCU #0] Downsampling:
+[Y]:
+	4c 4c 4c 4c 4c 4c 4c 4c 
+	4c ff ff ff ff ff ff ad 
+	4c b1 b1 b1 b1 b1 ff ad 
+	4c ff b1 ff ff b1 ff ad 
+	4c ff b1 ff ff b1 ff ad 
+	4c ff b1 ff ff b1 ff ad 
+	4c ff b1 ff ff b1 ff ad 
+	4c ff b1 ff ff b1 ff ad 
+
+[Cb]:
+	55 55 55 55 55 55 55 55 
+	55 80 80 80 80 80 80 1e 
+	55 ac ac ac ac ac 80 1e 
+	55 80 ac 80 80 ac 80 1e 
+	55 80 ac 80 80 ac 80 1e 
+	55 80 ac 80 80 ac 80 1e 
+	55 80 ac 80 80 ac 80 1e 
+	55 80 ac 80 80 ac 80 1e 
+
+[Cr]:
+	ff ff ff ff ff ff ff ff 
+	ff 80 80 80 80 80 80 3c 
+	ff 02 02 02 02 02 80 3c 
+	ff 80 02 80 80 02 80 3c 
+	ff 80 02 80 80 02 80 3c 
+	ff 80 02 80 80 02 80 3c 
+	ff 80 02 80 80 02 80 3c 
+	ff 80 02 80 80 02 80 3c 
+
+[MCU #0] DCT:
+[Y]:
+	01ce ff7e ff29 ff9e ff86 ffca ff02 fff0 
+	ff50 000e 0030 0015 fff3 0017 006c 000a 
+	ff74 001c 0019 0011 000b 0005 0039 0000 
+	ff8e 0023 000c 000d 0022 fff8 000b fff9 
+	ff8a 001c 0016 000b 002a fffc fffa fffb 
+	ff79 000a 002d 000c 0022 000b 0005 0004 
+	ff7b fffa 0039 000b 0013 0016 0014 000b 
+	ffab fff7 0028 0007 0007 0012 0013 0009 
+
+[Cb]:
+	ffac 0049 ff2f 0037 ff48 001e 0006 0009 
+	ffcd fff7 0026 fff3 0039 fff2 ffde fffa 
+	ffc1 fff0 002f fff6 0028 fffd fff9 ffff 
+	ffc1 ffeb 0030 fff8 0017 0004 0010 0003 
+	ffd6 fff0 0022 fff9 000c 0002 0016 0002 
+	fff7 fffa 000b fff9 0008 fff9 000c fffd 
+	0010 0003 fff9 fff9 0008 fff3 ffff fff9 
+	0012 0005 fff5 fffc 0005 fff5 fffa fffa 
+
+[Cr]:
+	ffc6 00da 00ca 00cd 00e0 009b ff4a 003b 
+	00d1 ffc2 ffe0 ffdb ff98 fff6 0081 0000 
+	00f0 ffdd ffc2 ffd8 ffc4 ffdb 0032 fff0 
+	00ea fff1 ffb8 ffd8 fff0 ffcb ffec ffe6 
+	00a6 fff0 ffd5 ffdf 0008 ffd7 ffd6 ffec 
+	003e ffe0 000b ffea 0008 fff7 ffee fffe 
+	ffea ffd5 0032 fff6 ffff 0012 000f 000c 
+	ffd9 ffe0 002c fffd fffb 0014 0016 000c 
+
+[MCU #0] ZZ:
+[Y]:
+	01ce ff7e ff50 ff74 000e ff29 ff9e 0030 
+	001c ff8e ff8a 0023 0019 0015 ff86 ffca 
+	fff3 0011 000c 001c ff79 ff7b 000a 0016 
+	000d 000b 0017 ff02 fff0 006c 0005 0022 
+	000b 002d fffa ffab fff7 0039 000c 002a 
+	fff8 0039 000a 0000 000b fffc 0022 000b 
+	0028 0007 0013 000b fffa fff9 fffb 0005 
+	0016 0007 0012 0014 0004 000b 0013 0009 
+
+[Cb]:
+	ffac 0049 ffcd ffc1 fff7 ff2f 0037 0026 
+	fff0 ffc1 ffd6 ffeb 002f fff3 ff48 001e 
+	0039 fff6 0030 fff0 fff7 0010 fffa 0022 
+	fff8 0028 fff2 0006 0009 ffde fffd 0017 
+	fff9 000b 0003 0012 0005 fff9 fff9 000c 
+	0004 fff9 fffa ffff 0010 0002 0008 fff9 
+	fff5 fffc 0008 fff9 0016 0003 0002 000c 
+	fff3 0005 fff5 ffff fffd fff9 fffa fffa 
+
+[Cr]:
+	ffc6 00da 00d1 00f0 ffc2 00ca 00cd ffe0 
+	ffdd 00ea 00a6 fff1 ffc2 ffdb 00e0 009b 
+	ff98 ffd8 ffb8 fff0 003e ffea ffe0 ffd5 
+	ffd8 ffc4 fff6 ff4a 003b 0081 ffdb fff0 
+	ffdf 000b ffd5 ffd9 ffe0 0032 ffea 0008 
+	ffcb 0032 0000 fff0 ffec ffd7 0008 fff6 
+	002c fffd ffff fff7 ffd6 ffe6 ffec ffee 
+	0012 fffb 0014 000f fffe 000c 0016 000c 
+
+[MCU #0] Quantification:
+[Y]:
+	005c ffd5 ffc6 ffe4 0002 ffef fffa 0002 
+	0007 ffe4 ffe3 0005 0003 0001 fffa fffd 
+	fffd 0004 0002 0004 fff5 fff9 0000 0001 
+	0003 0002 0003 ffe4 ffff 0004 0000 0001 
+	0002 0006 0000 fffb 0000 0001 0000 0001 
+	ffff 0005 0000 0000 0000 0000 0001 0000 
+	0002 0000 0000 0000 0000 0000 0000 0000 
+	0001 0000 0000 0000 0000 0000 0000 0000 
+
+[Cb]:
+	fff0 000e fff9 fffc 0000 fffa 0001 0001 
+	fffd fff6 fffb ffff 0001 0000 fffa 0001 
+	0008 ffff 0002 0000 0000 0000 0000 0001 
+	0000 0002 0000 0000 0000 ffff 0000 0000 
+	0000 0000 0000 0000 0000 0000 0000 0000 
+	0000 0000 0000 0000 0000 0000 0000 0000 
+	0000 0000 0000 0000 0000 0000 0000 0000 
+	0000 0000 0000 0000 0000 0000 0000 0000 
+
+[Cr]:
+	fff5 002b 001d 0011 fffe 0006 0006 ffff 
+	fff9 0027 0014 0000 fffe ffff 0007 0005 
+	fff2 fffb fffc 0000 0002 0000 ffff ffff 
+	fffe fffd 0000 fffa 0001 0004 ffff 0000 
+	ffff 0000 ffff ffff ffff 0001 0000 0000 
+	ffff 0001 0000 0000 0000 ffff 0000 0000 
+	0001 0000 0000 0000 ffff 0000 0000 0000 
+	0000 0000 0000 0000 0000 0000 0000 0000 
+
+[MCU #0] Compression AC/DC puis écriture dans le flux.
+[acdc] block 0
+DC:
+	value = 92, magnitude = 7, index = 92
+		bitstream => writing 30 over 5 bits
+		bitstream => writing 92 over 7 bits
+
+AC:
+	value = -43, magnitude = 6, index = 20
+	RLE code = 6, huffman path = 120, nbits = 7
+		bitstream => writing 120 over 7 bits
+		bitstream => writing 20 over 6 bits
+	value = -58, magnitude = 6, index = 5
+	RLE code = 6, huffman path = 120, nbits = 7
+		bitstream => writing 120 over 7 bits
+		bitstream => writing 5 over 6 bits
+	value = -28, magnitude = 5, index = 3
+	RLE code = 5, huffman path = 26, nbits = 5
+		bitstream => writing 26 over 5 bits
+		bitstream => writing 3 over 5 bits
+	value = 2, magnitude = 2, index = 2
+	RLE code = 2, huffman path = 1, nbits = 2
+		bitstream => writing 1 over 2 bits
+		bitstream => writing 2 over 2 bits
+	value = -17, magnitude = 5, index = 14
+	RLE code = 5, huffman path = 26, nbits = 5
+		bitstream => writing 26 over 5 bits
+		bitstream => writing 14 over 5 bits
+	value = -6, magnitude = 3, index = 1
+	RLE code = 3, huffman path = 4, nbits = 3
+		bitstream => writing 4 over 3 bits
+		bitstream => writing 1 over 3 bits
+	value = 2, magnitude = 2, index = 2
+	RLE code = 2, huffman path = 1, nbits = 2
+		bitstream => writing 1 over 2 bits
+		bitstream => writing 2 over 2 bits
+	value = 7, magnitude = 3, index = 7
+	RLE code = 3, huffman path = 4, nbits = 3
+		bitstream => writing 4 over 3 bits
+		bitstream => writing 7 over 3 bits
+	value = -28, magnitude = 5, index = 3
+	RLE code = 5, huffman path = 26, nbits = 5
+		bitstream => writing 26 over 5 bits
+		bitstream => writing 3 over 5 bits
+	value = -29, magnitude = 5, index = 2
+	RLE code = 5, huffman path = 26, nbits = 5
+		bitstream => writing 26 over 5 bits
+		bitstream => writing 2 over 5 bits
+	value = 5, magnitude = 3, index = 5
+	RLE code = 3, huffman path = 4, nbits = 3
+		bitstream => writing 4 over 3 bits
+		bitstream => writing 5 over 3 bits
+	value = 3, magnitude = 2, index = 3
+	RLE code = 2, huffman path = 1, nbits = 2
+		bitstream => writing 1 over 2 bits
+		bitstream => writing 3 over 2 bits
+	value = 1, magnitude = 1, index = 1
+	RLE code = 1, huffman path = 0, nbits = 2
+		bitstream => writing 0 over 2 bits
+		bitstream => writing 1 over 1 bits
+	value = -6, magnitude = 3, index = 1
+	RLE code = 3, huffman path = 4, nbits = 3
+		bitstream => writing 4 over 3 bits
+		bitstream => writing 1 over 3 bits
+	value = -3, magnitude = 2, index = 0
+	RLE code = 2, huffman path = 1, nbits = 2
+		bitstream => writing 1 over 2 bits
+		bitstream => writing 0 over 2 bits
+	value = -3, magnitude = 2, index = 0
+	RLE code = 2, huffman path = 1, nbits = 2
+		bitstream => writing 1 over 2 bits
+		bitstream => writing 0 over 2 bits
+	value = 4, magnitude = 3, index = 4
+	RLE code = 3, huffman path = 4, nbits = 3
+		bitstream => writing 4 over 3 bits
+		bitstream => writing 4 over 3 bits
+	value = 2, magnitude = 2, index = 2
+	RLE code = 2, huffman path = 1, nbits = 2
+		bitstream => writing 1 over 2 bits
+		bitstream => writing 2 over 2 bits
+	value = 4, magnitude = 3, index = 4
+	RLE code = 3, huffman path = 4, nbits = 3
+		bitstream => writing 4 over 3 bits
+		bitstream => writing 4 over 3 bits
+	value = -11, magnitude = 4, index = 4
+	RLE code = 4, huffman path = 11, nbits = 4
+		bitstream => writing 11 over 4 bits
+		bitstream => writing 4 over 4 bits
+	value = -7, magnitude = 3, index = 0
+	RLE code = 3, huffman path = 4, nbits = 3
+		bitstream => writing 4 over 3 bits
+		bitstream => writing 0 over 3 bits
+	value = 1, magnitude = 1, index = 1
+	RLE code = 17, huffman path = 12, nbits = 4
+		bitstream => writing 12 over 4 bits
+		bitstream => writing 1 over 1 bits
+	value = 3, magnitude = 2, index = 3
+	RLE code = 2, huffman path = 1, nbits = 2
+		bitstream => writing 1 over 2 bits
+		bitstream => writing 3 over 2 bits
+	value = 2, magnitude = 2, index = 2
+	RLE code = 2, huffman path = 1, nbits = 2
+		bitstream => writing 1 over 2 bits
+		bitstream => writing 2 over 2 bits
+	value = 3, magnitude = 2, index = 3
+	RLE code = 2, huffman path = 1, nbits = 2
+		bitstream => writing 1 over 2 bits
+		bitstream => writing 3 over 2 bits
+	value = -28, magnitude = 5, index = 3
+	RLE code = 5, huffman path = 26, nbits = 5
+		bitstream => writing 26 over 5 bits
+		bitstream => writing 3 over 5 bits
+	value = -1, magnitude = 1, index = 0
+	RLE code = 1, huffman path = 0, nbits = 2
+		bitstream => writing 0 over 2 bits
+		bitstream => writing 0 over 1 bits
+	value = 4, magnitude = 3, index = 4
+	RLE code = 3, huffman path = 4, nbits = 3
+		bitstream => writing 4 over 3 bits
+		bitstream => writing 4 over 3 bits
+	value = 1, magnitude = 1, index = 1
+	RLE code = 17, huffman path = 12, nbits = 4
+		bitstream => writing 12 over 4 bits
+		bitstream => writing 1 over 1 bits
+	value = 2, magnitude = 2, index = 2
+	RLE code = 2, huffman path = 1, nbits = 2
+		bitstream => writing 1 over 2 bits
+		bitstream => writing 2 over 2 bits
+	value = 6, magnitude = 3, index = 6
+	RLE code = 3, huffman path = 4, nbits = 3
+		bitstream => writing 4 over 3 bits
+		bitstream => writing 6 over 3 bits
+	value = -5, magnitude = 3, index = 2
+	RLE code = 19, huffman path = 121, nbits = 7
+		bitstream => writing 121 over 7 bits
+		bitstream => writing 2 over 3 bits
+	value = 1, magnitude = 1, index = 1
+	RLE code = 17, huffman path = 12, nbits = 4
+		bitstream => writing 12 over 4 bits
+		bitstream => writing 1 over 1 bits
+	value = 1, magnitude = 1, index = 1
+	RLE code = 17, huffman path = 12, nbits = 4
+		bitstream => writing 12 over 4 bits
+		bitstream => writing 1 over 1 bits
+	value = -1, magnitude = 1, index = 0
+	RLE code = 1, huffman path = 0, nbits = 2
+		bitstream => writing 0 over 2 bits
+		bitstream => writing 0 over 1 bits
+	value = 5, magnitude = 3, index = 5
+	RLE code = 3, huffman path = 4, nbits = 3
+		bitstream => writing 4 over 3 bits
+		bitstream => writing 5 over 3 bits
+	value = 1, magnitude = 1, index = 1
+	RLE code = 65, huffman path = 59, nbits = 6
+		bitstream => writing 59 over 6 bits
+		bitstream => writing 1 over 1 bits
+	value = 2, magnitude = 2, index = 2
+	RLE code = 18, huffman path = 27, nbits = 5
+		bitstream => writing 27 over 5 bits
+		bitstream => writing 2 over 2 bits
+	value = 1, magnitude = 1, index = 1
+	RLE code = 113, huffman path = 250, nbits = 8
+		bitstream => writing 250 over 8 bits
+		bitstream => writing 1 over 1 bits
+	value = endofblock, huffman_path = 10, nbits = 4
+		bitstream => writing 10 over 4 bits
+[acdc] block 0
+DC:
+	value = -16, magnitude = 5, index = 15
+		bitstream => writing 30 over 5 bits
+		bitstream => writing 15 over 5 bits
+
+AC:
+	value = 14, magnitude = 4, index = 14
+	RLE code = 4, huffman path = 24, nbits = 5
+		bitstream => writing 24 over 5 bits
+		bitstream => writing 14 over 4 bits
+	value = -7, magnitude = 3, index = 0
+	RLE code = 3, huffman path = 10, nbits = 4
+		bitstream => writing 10 over 4 bits
+		bitstream => writing 0 over 3 bits
+	value = -4, magnitude = 3, index = 3
+	RLE code = 3, huffman path = 10, nbits = 4
+		bitstream => writing 10 over 4 bits
+		bitstream => writing 3 over 3 bits
+	value = -6, magnitude = 3, index = 1
+	RLE code = 19, huffman path = 246, nbits = 8
+		bitstream => writing 246 over 8 bits
+		bitstream => writing 1 over 3 bits
+	value = 1, magnitude = 1, index = 1
+	RLE code = 1, huffman path = 1, nbits = 2
+		bitstream => writing 1 over 2 bits
+		bitstream => writing 1 over 1 bits
+	value = 1, magnitude = 1, index = 1
+	RLE code = 1, huffman path = 1, nbits = 2
+		bitstream => writing 1 over 2 bits
+		bitstream => writing 1 over 1 bits
+	value = -3, magnitude = 2, index = 0
+	RLE code = 2, huffman path = 4, nbits = 3
+		bitstream => writing 4 over 3 bits
+		bitstream => writing 0 over 2 bits
+	value = -10, magnitude = 4, index = 5
+	RLE code = 4, huffman path = 24, nbits = 5
+		bitstream => writing 24 over 5 bits
+		bitstream => writing 5 over 4 bits
+	value = -5, magnitude = 3, index = 2
+	RLE code = 3, huffman path = 10, nbits = 4
+		bitstream => writing 10 over 4 bits
+		bitstream => writing 2 over 3 bits
+	value = -1, magnitude = 1, index = 0
+	RLE code = 1, huffman path = 1, nbits = 2
+		bitstream => writing 1 over 2 bits
+		bitstream => writing 0 over 1 bits
+	value = 1, magnitude = 1, index = 1
+	RLE code = 1, huffman path = 1, nbits = 2
+		bitstream => writing 1 over 2 bits
+		bitstream => writing 1 over 1 bits
+	value = -6, magnitude = 3, index = 1
+	RLE code = 19, huffman path = 246, nbits = 8
+		bitstream => writing 246 over 8 bits
+		bitstream => writing 1 over 3 bits
+	value = 1, magnitude = 1, index = 1
+	RLE code = 1, huffman path = 1, nbits = 2
+		bitstream => writing 1 over 2 bits
+		bitstream => writing 1 over 1 bits
+	value = 8, magnitude = 4, index = 8
+	RLE code = 4, huffman path = 24, nbits = 5
+		bitstream => writing 24 over 5 bits
+		bitstream => writing 8 over 4 bits
+	value = -1, magnitude = 1, index = 0
+	RLE code = 1, huffman path = 1, nbits = 2
+		bitstream => writing 1 over 2 bits
+		bitstream => writing 0 over 1 bits
+	value = 2, magnitude = 2, index = 2
+	RLE code = 2, huffman path = 4, nbits = 3
+		bitstream => writing 4 over 3 bits
+		bitstream => writing 2 over 2 bits
+	value = 1, magnitude = 1, index = 1
+	RLE code = 65, huffman path = 58, nbits = 6
+		bitstream => writing 58 over 6 bits
+		bitstream => writing 1 over 1 bits
+	value = 2, magnitude = 2, index = 2
+	RLE code = 18, huffman path = 57, nbits = 6
+		bitstream => writing 57 over 6 bits
+		bitstream => writing 2 over 2 bits
+	value = -1, magnitude = 1, index = 0
+	RLE code = 49, huffman path = 27, nbits = 5
+		bitstream => writing 27 over 5 bits
+		bitstream => writing 0 over 1 bits
+	value = endofblock, huffman_path = 0, nbits = 2
+		bitstream => writing 0 over 2 bits
+[acdc] block 0
+DC:
+	value = -11, magnitude = 4, index = 4
+		bitstream => writing 14 over 4 bits
+		bitstream => writing 4 over 4 bits
+
+AC:
+	value = 43, magnitude = 6, index = 43
+	RLE code = 6, huffman path = 56, nbits = 6
+		bitstream => writing 56 over 6 bits
+		bitstream => writing 43 over 6 bits
+	value = 29, magnitude = 5, index = 29
+	RLE code = 5, huffman path = 25, nbits = 5
+		bitstream => writing 25 over 5 bits
+		bitstream => writing 29 over 5 bits
+	value = 17, magnitude = 5, index = 17
+	RLE code = 5, huffman path = 25, nbits = 5
+		bitstream => writing 25 over 5 bits
+		bitstream => writing 17 over 5 bits
+	value = -2, magnitude = 2, index = 1
+	RLE code = 2, huffman path = 4, nbits = 3
+		bitstream => writing 4 over 3 bits
+		bitstream => writing 1 over 2 bits
+	value = 6, magnitude = 3, index = 6
+	RLE code = 3, huffman path = 10, nbits = 4
+		bitstream => writing 10 over 4 bits
+		bitstream => writing 6 over 3 bits
+	value = 6, magnitude = 3, index = 6
+	RLE code = 3, huffman path = 10, nbits = 4
+		bitstream => writing 10 over 4 bits
+		bitstream => writing 6 over 3 bits
+	value = -1, magnitude = 1, index = 0
+	RLE code = 1, huffman path = 1, nbits = 2
+		bitstream => writing 1 over 2 bits
+		bitstream => writing 0 over 1 bits
+	value = -7, magnitude = 3, index = 0
+	RLE code = 3, huffman path = 10, nbits = 4
+		bitstream => writing 10 over 4 bits
+		bitstream => writing 0 over 3 bits
+	value = 39, magnitude = 6, index = 39
+	RLE code = 6, huffman path = 56, nbits = 6
+		bitstream => writing 56 over 6 bits
+		bitstream => writing 39 over 6 bits
+	value = 20, magnitude = 5, index = 20
+	RLE code = 5, huffman path = 25, nbits = 5
+		bitstream => writing 25 over 5 bits
+		bitstream => writing 20 over 5 bits
+	value = -2, magnitude = 2, index = 1
+	RLE code = 18, huffman path = 57, nbits = 6
+		bitstream => writing 57 over 6 bits
+		bitstream => writing 1 over 2 bits
+	value = -1, magnitude = 1, index = 0
+	RLE code = 1, huffman path = 1, nbits = 2
+		bitstream => writing 1 over 2 bits
+		bitstream => writing 0 over 1 bits
+	value = 7, magnitude = 3, index = 7
+	RLE code = 3, huffman path = 10, nbits = 4
+		bitstream => writing 10 over 4 bits
+		bitstream => writing 7 over 3 bits
+	value = 5, magnitude = 3, index = 5
+	RLE code = 3, huffman path = 10, nbits = 4
+		bitstream => writing 10 over 4 bits
+		bitstream => writing 5 over 3 bits
+	value = -14, magnitude = 4, index = 1
+	RLE code = 4, huffman path = 24, nbits = 5
+		bitstream => writing 24 over 5 bits
+		bitstream => writing 1 over 4 bits
+	value = -5, magnitude = 3, index = 2
+	RLE code = 3, huffman path = 10, nbits = 4
+		bitstream => writing 10 over 4 bits
+		bitstream => writing 2 over 3 bits
+	value = -4, magnitude = 3, index = 3
+	RLE code = 3, huffman path = 10, nbits = 4
+		bitstream => writing 10 over 4 bits
+		bitstream => writing 3 over 3 bits
+	value = 2, magnitude = 2, index = 2
+	RLE code = 18, huffman path = 57, nbits = 6
+		bitstream => writing 57 over 6 bits
+		bitstream => writing 2 over 2 bits
+	value = -1, magnitude = 1, index = 0
+	RLE code = 17, huffman path = 11, nbits = 4
+		bitstream => writing 11 over 4 bits
+		bitstream => writing 0 over 1 bits
+	value = -1, magnitude = 1, index = 0
+	RLE code = 1, huffman path = 1, nbits = 2
+		bitstream => writing 1 over 2 bits
+		bitstream => writing 0 over 1 bits
+	value = -2, magnitude = 2, index = 1
+	RLE code = 2, huffman path = 4, nbits = 3
+		bitstream => writing 4 over 3 bits
+		bitstream => writing 1 over 2 bits
+	value = -3, magnitude = 2, index = 0
+	RLE code = 2, huffman path = 4, nbits = 3
+		bitstream => writing 4 over 3 bits
+		bitstream => writing 0 over 2 bits
+	value = -6, magnitude = 3, index = 1
+	RLE code = 19, huffman path = 246, nbits = 8
+		bitstream => writing 246 over 8 bits
+		bitstream => writing 1 over 3 bits
+	value = 1, magnitude = 1, index = 1
+	RLE code = 1, huffman path = 1, nbits = 2
+		bitstream => writing 1 over 2 bits
+		bitstream => writing 1 over 1 bits
+	value = 4, magnitude = 3, index = 4
+	RLE code = 3, huffman path = 10, nbits = 4
+		bitstream => writing 10 over 4 bits
+		bitstream => writing 4 over 3 bits
+	value = -1, magnitude = 1, index = 0
+	RLE code = 1, huffman path = 1, nbits = 2
+		bitstream => writing 1 over 2 bits
+		bitstream => writing 0 over 1 bits
+	value = -1, magnitude = 1, index = 0
+	RLE code = 17, huffman path = 11, nbits = 4
+		bitstream => writing 11 over 4 bits
+		bitstream => writing 0 over 1 bits
+	value = -1, magnitude = 1, index = 0
+	RLE code = 17, huffman path = 11, nbits = 4
+		bitstream => writing 11 over 4 bits
+		bitstream => writing 0 over 1 bits
+	value = -1, magnitude = 1, index = 0
+	RLE code = 1, huffman path = 1, nbits = 2
+		bitstream => writing 1 over 2 bits
+		bitstream => writing 0 over 1 bits
+	value = -1, magnitude = 1, index = 0
+	RLE code = 1, huffman path = 1, nbits = 2
+		bitstream => writing 1 over 2 bits
+		bitstream => writing 0 over 1 bits
+	value = 1, magnitude = 1, index = 1
+	RLE code = 1, huffman path = 1, nbits = 2
+		bitstream => writing 1 over 2 bits
+		bitstream => writing 1 over 1 bits
+	value = -1, magnitude = 1, index = 0
+	RLE code = 33, huffman path = 26, nbits = 5
+		bitstream => writing 26 over 5 bits
+		bitstream => writing 0 over 1 bits
+	value = 1, magnitude = 1, index = 1
+	RLE code = 1, huffman path = 1, nbits = 2
+		bitstream => writing 1 over 2 bits
+		bitstream => writing 1 over 1 bits
+	value = -1, magnitude = 1, index = 0
+	RLE code = 49, huffman path = 27, nbits = 5
+		bitstream => writing 27 over 5 bits
+		bitstream => writing 0 over 1 bits
+	value = 1, magnitude = 1, index = 1
+	RLE code = 33, huffman path = 26, nbits = 5
+		bitstream => writing 26 over 5 bits
+		bitstream => writing 1 over 1 bits
+	value = -1, magnitude = 1, index = 0
+	RLE code = 49, huffman path = 27, nbits = 5
+		bitstream => writing 27 over 5 bits
+		bitstream => writing 0 over 1 bits
+	value = endofblock, huffman_path = 0, nbits = 2
+		bitstream => writing 0 over 2 bits
+ppm2blabla v4 (22/05/18)
+[MCU #1] Valeurs RGB initiales:
+ff0000 ffffff 00fcff ffffff ffffff 00fcff ffffff 4eff00    
+ff0000 ffffff 00fcff ffffff ffffff 00fcff ffffff 4eff00    
+ff0000 ffffff 00fcff ffffff ffffff 00fcff ffffff 4eff00    
+ff0000 ffffff 00fcff ffffff ffffff 00fcff ffffff 4eff00    
+ff0000 ffffff 00fcff ffffff ffffff 00fcff ffffff 4eff00    
+ff0000 ffffff 00fcff 00fcff 00fcff 00fcff 00fcff 4eff00    
+ff0000 ffffff ffffff ffffff ffffff ffffff ffffff 4eff00    
+ff0000 4eff00 4eff00 4eff00 4eff00 4eff00 4eff00 4eff00    
+
+[MCU #1] Conversion RGB -> YCbCr:
+[Y]:
+	4c ff b1 ff ff b1 ff ad 
+	4c ff b1 ff ff b1 ff ad 
+	4c ff b1 ff ff b1 ff ad 
+	4c ff b1 ff ff b1 ff ad 
+	4c ff b1 ff ff b1 ff ad 
+	4c ff b1 b1 b1 b1 b1 ad 
+	4c ff ff ff ff ff ff ad 
+	4c ad ad ad ad ad ad ad 
+
+[Cb]:
+	55 80 ac 80 80 ac 80 1e 
+	55 80 ac 80 80 ac 80 1e 
+	55 80 ac 80 80 ac 80 1e 
+	55 80 ac 80 80 ac 80 1e 
+	55 80 ac 80 80 ac 80 1e 
+	55 80 ac ac ac ac ac 1e 
+	55 80 80 80 80 80 80 1e 
+	55 1e 1e 1e 1e 1e 1e 1e 
+
+[Cr]:
+	ff 80 02 80 80 02 80 3c 
+	ff 80 02 80 80 02 80 3c 
+	ff 80 02 80 80 02 80 3c 
+	ff 80 02 80 80 02 80 3c 
+	ff 80 02 80 80 02 80 3c 
+	ff 80 02 02 02 02 02 3c 
+	ff 80 80 80 80 80 80 3c 
+	ff 3c 3c 3c 3c 3c 3c 3c 
+
+[MCU #1] Downsampling:
+[Y]:
+	4c ff b1 ff ff b1 ff ad 
+	4c ff b1 ff ff b1 ff ad 
+	4c ff b1 ff ff b1 ff ad 
+	4c ff b1 ff ff b1 ff ad 
+	4c ff b1 ff ff b1 ff ad 
+	4c ff b1 b1 b1 b1 b1 ad 
+	4c ff ff ff ff ff ff ad 
+	4c ad ad ad ad ad ad ad 
+
+[Cb]:
+	55 80 ac 80 80 ac 80 1e 
+	55 80 ac 80 80 ac 80 1e 
+	55 80 ac 80 80 ac 80 1e 
+	55 80 ac 80 80 ac 80 1e 
+	55 80 ac 80 80 ac 80 1e 
+	55 80 ac ac ac ac ac 1e 
+	55 80 80 80 80 80 80 1e 
+	55 1e 1e 1e 1e 1e 1e 1e 
+
+[Cr]:
+	ff 80 02 80 80 02 80 3c 
+	ff 80 02 80 80 02 80 3c 
+	ff 80 02 80 80 02 80 3c 
+	ff 80 02 80 80 02 80 3c 
+	ff 80 02 80 80 02 80 3c 
+	ff 80 02 02 02 02 02 3c 
+	ff 80 80 80 80 80 80 3c 
+	ff 3c 3c 3c 3c 3c 3c 3c 
+
+[MCU #1] DCT:
+[Y]:
+	0223 ff84 ff19 ff8b ff7a ffa6 fefc ffdd 
+	003a fff7 ffe6 0002 001d 000a ff9d 0006 
+	ffe3 fff9 0004 0001 fffc 0007 0031 0004 
+	000e 000f 0006 fffc ffeb ffed fffc fff5 
+	ffdf fff4 0006 0002 001e 000d fff3 0007 
+	0044 fffc ffdf 0000 ffe6 0003 0000 0002 
+	ffa9 000f 0031 fffc 000d ffee 0010 fff6 
+	003d fff2 ffdb 0003 fffb 000f ffee 0009 
+
+[Cb]:
+	ff7c 0045 ff38 0042 ff4f 0032 000a 0013 
+	0075 0005 ffcd fffe ffbd fffa 001c fffc 
+	ff82 0003 003b ffff 0031 fffb fffd fffd 
+	0077 fff7 ffc5 0002 ffe0 000a ffeb 0006 
+	ffa6 0006 002b fffe 0013 fff8 001a fffb 
+	002e 0001 ffed ffff fff1 fffd fff0 fffe 
+	fff6 fff7 fffd 0002 000c 000a 0001 0005 
+	fffb 0007 0007 fffe fff8 fff7 0004 fffa 
+
+[Cr]:
+	ff1b 0121 00ea 00e1 00f9 0083 ff57 0029 
+	001b fff1 fff3 0003 0045 0011 ff6c 0009 
+	0011 fff6 ffeb 0002 ffe4 000b 0043 0006 
+	ffde 0019 0022 fffa fff2 ffe1 0004 ffee 
+	fffc ffed fff5 0004 0020 0015 ffe3 000c 
+	0048 fffa ffdb 0001 ffe4 0006 0007 0003 
+	ff8e 0018 0043 fffa 000c ffe3 0016 ffef 
+	0055 ffea ffca 0005 fffd 0019 ffe6 000e 
+
+[MCU #1] ZZ:
+[Y]:
+	0223 ff84 003a ffe3 fff7 ff19 ff8b ffe6 
+	fff9 000e ffdf 000f 0004 0002 ff7a ffa6 
+	001d 0001 0006 fff4 0044 ffa9 fffc 0006 
+	fffc fffc 000a fefc ffdd ff9d 0007 ffeb 
+	0002 ffdf 000f 003d fff2 0031 0000 001e 
+	ffed 0031 0006 0004 fffc 000d ffe6 fffc 
+	ffdb 0003 000d 0003 fff3 fff5 0007 0000 
+	ffee fffb 000f 0010 0002 fff6 ffee 0009 
+
+[Cb]:
+	ff7c 0045 0075 ff82 0005 ff38 0042 ffcd 
+	0003 0077 ffa6 fff7 003b fffe ff4f 0032 
+	ffbd ffff ffc5 0006 002e fff6 0001 002b 
+	0002 0031 fffa 000a 0013 001c fffb ffe0 
+	fffe ffed fff7 fffb 0007 fffd ffff 0013 
+	000a fffd fffc fffd ffeb fff8 fff1 0002 
+	0007 fffe 000c fffd 001a 0006 fffb fff0 
+	000a fff8 fff7 0001 fffe 0005 0004 fffa 
+
+[Cr]:
+	ff1b 0121 001b 0011 fff1 00ea 00e1 fff3 
+	fff6 ffde fffc 0019 ffeb 0003 00f9 0083 
+	0045 0002 0022 ffed 0048 ff8e fffa fff5 
+	fffa ffe4 0011 ff57 0029 ff6c 000b fff2 
+	0004 ffdb 0018 0055 ffea 0043 0001 0020 
+	ffe1 0043 0009 0006 0004 0015 ffe4 fffa 
+	ffca 0005 000c 0006 ffe3 ffee 000c 0007 
+	ffe3 fffd 0019 0016 0003 ffef ffe6 000e 
+
+[MCU #1] Quantification:
+[Y]:
+	006d ffd7 0013 fffb ffff ffed fff9 ffff 
+	ffff 0003 fff8 0002 0000 0000 fff9 fffb 
+	0007 0000 0001 ffff 0005 fffb 0000 0000 
+	ffff 0000 0001 ffe4 fffe fffd 0000 ffff 
+	0000 fffc 0001 0003 0000 0001 0000 0001 
+	fffe 0004 0000 0000 0000 0000 0000 0000 
+	fffe 0000 0000 0000 0000 0000 0000 0000 
+	0000 0000 0000 0000 0000 0000 0000 0000 
+
+[Cb]:
+	ffe6 000d 0010 fff7 0000 fffa 0002 ffff 
+	0000 0013 fff5 0000 0001 0000 fffb 0001 
+	fff7 0000 fffd 0000 0001 0000 0000 0001 
+	0000 0002 0000 0000 0000 0000 0000 ffff 
+	0000 0000 0000 0000 0000 0000 0000 0000 
+	0000 0000 0000 0000 0000 0000 0000 0000 
+	0000 0000 0000 0000 0000 0000 0000 0000 
+	0000 0000 0000 0000 0000 0000 0000 0000 
+
+[Cr]:
+	ffd3 0039 0003 0001 0000 0007 0007 0000 
+	fffe fffb 0000 0001 0000 0000 0008 0004 
+	0009 0000 0002 0000 0002 fffd 0000 0000 
+	0000 ffff 0000 fffb 0001 fffc 0000 0000 
+	0000 ffff 0000 0002 0000 0002 0000 0001 
+	ffff 0002 0000 0000 0000 0000 0000 0000 
+	ffff 0000 0000 0000 0000 0000 0000 0000 
+	0000 0000 0000 0000 0000 0000 0000 0000 
+
+[MCU #1] Compression AC/DC puis écriture dans le flux.
+[acdc] block 0
+DC:
+	value = 17, magnitude = 5, index = 17
+		bitstream => writing 6 over 3 bits
+		bitstream => writing 17 over 5 bits
+
+AC:
+	value = -41, magnitude = 6, index = 22
+	RLE code = 6, huffman path = 120, nbits = 7
+		bitstream => writing 120 over 7 bits
+		bitstream => writing 22 over 6 bits
+	value = 19, magnitude = 5, index = 19
+	RLE code = 5, huffman path = 26, nbits = 5
+		bitstream => writing 26 over 5 bits
+		bitstream => writing 19 over 5 bits
+	value = -5, magnitude = 3, index = 2
+	RLE code = 3, huffman path = 4, nbits = 3
+		bitstream => writing 4 over 3 bits
+		bitstream => writing 2 over 3 bits
+	value = -1, magnitude = 1, index = 0
+	RLE code = 1, huffman path = 0, nbits = 2
+		bitstream => writing 0 over 2 bits
+		bitstream => writing 0 over 1 bits
+	value = -19, magnitude = 5, index = 12
+	RLE code = 5, huffman path = 26, nbits = 5
+		bitstream => writing 26 over 5 bits
+		bitstream => writing 12 over 5 bits
+	value = -7, magnitude = 3, index = 0
+	RLE code = 3, huffman path = 4, nbits = 3
+		bitstream => writing 4 over 3 bits
+		bitstream => writing 0 over 3 bits
+	value = -1, magnitude = 1, index = 0
+	RLE code = 1, huffman path = 0, nbits = 2
+		bitstream => writing 0 over 2 bits
+		bitstream => writing 0 over 1 bits
+	value = -1, magnitude = 1, index = 0
+	RLE code = 1, huffman path = 0, nbits = 2
+		bitstream => writing 0 over 2 bits
+		bitstream => writing 0 over 1 bits
+	value = 3, magnitude = 2, index = 3
+	RLE code = 2, huffman path = 1, nbits = 2
+		bitstream => writing 1 over 2 bits
+		bitstream => writing 3 over 2 bits
+	value = -8, magnitude = 4, index = 7
+	RLE code = 4, huffman path = 11, nbits = 4
+		bitstream => writing 11 over 4 bits
+		bitstream => writing 7 over 4 bits
+	value = 2, magnitude = 2, index = 2
+	RLE code = 2, huffman path = 1, nbits = 2
+		bitstream => writing 1 over 2 bits
+		bitstream => writing 2 over 2 bits
+	value = -7, magnitude = 3, index = 0
+	RLE code = 35, huffman path = 1015, nbits = 10
+		bitstream => writing 1015 over 10 bits
+		bitstream => writing 0 over 3 bits
+	value = -5, magnitude = 3, index = 2
+	RLE code = 3, huffman path = 4, nbits = 3
+		bitstream => writing 4 over 3 bits
+		bitstream => writing 2 over 3 bits
+	value = 7, magnitude = 3, index = 7
+	RLE code = 3, huffman path = 4, nbits = 3
+		bitstream => writing 4 over 3 bits
+		bitstream => writing 7 over 3 bits
+	value = 1, magnitude = 1, index = 1
+	RLE code = 17, huffman path = 12, nbits = 4
+		bitstream => writing 12 over 4 bits
+		bitstream => writing 1 over 1 bits
+	value = -1, magnitude = 1, index = 0
+	RLE code = 1, huffman path = 0, nbits = 2
+		bitstream => writing 0 over 2 bits
+		bitstream => writing 0 over 1 bits
+	value = 5, magnitude = 3, index = 5
+	RLE code = 3, huffman path = 4, nbits = 3
+		bitstream => writing 4 over 3 bits
+		bitstream => writing 5 over 3 bits
+	value = -5, magnitude = 3, index = 2
+	RLE code = 3, huffman path = 4, nbits = 3
+		bitstream => writing 4 over 3 bits
+		bitstream => writing 2 over 3 bits
+	value = -1, magnitude = 1, index = 0
+	RLE code = 33, huffman path = 28, nbits = 5
+		bitstream => writing 28 over 5 bits
+		bitstream => writing 0 over 1 bits
+	value = 1, magnitude = 1, index = 1
+	RLE code = 17, huffman path = 12, nbits = 4
+		bitstream => writing 12 over 4 bits
+		bitstream => writing 1 over 1 bits
+	value = -28, magnitude = 5, index = 3
+	RLE code = 5, huffman path = 26, nbits = 5
+		bitstream => writing 26 over 5 bits
+		bitstream => writing 3 over 5 bits
+	value = -2, magnitude = 2, index = 1
+	RLE code = 2, huffman path = 1, nbits = 2
+		bitstream => writing 1 over 2 bits
+		bitstream => writing 1 over 2 bits
+	value = -3, magnitude = 2, index = 0
+	RLE code = 2, huffman path = 1, nbits = 2
+		bitstream => writing 1 over 2 bits
+		bitstream => writing 0 over 2 bits
+	value = -1, magnitude = 1, index = 0
+	RLE code = 17, huffman path = 12, nbits = 4
+		bitstream => writing 12 over 4 bits
+		bitstream => writing 0 over 1 bits
+	value = -4, magnitude = 3, index = 3
+	RLE code = 19, huffman path = 121, nbits = 7
+		bitstream => writing 121 over 7 bits
+		bitstream => writing 3 over 3 bits
+	value = 1, magnitude = 1, index = 1
+	RLE code = 1, huffman path = 0, nbits = 2
+		bitstream => writing 0 over 2 bits
+		bitstream => writing 1 over 1 bits
+	value = 3, magnitude = 2, index = 3
+	RLE code = 2, huffman path = 1, nbits = 2
+		bitstream => writing 1 over 2 bits
+		bitstream => writing 3 over 2 bits
+	value = 1, magnitude = 1, index = 1
+	RLE code = 17, huffman path = 12, nbits = 4
+		bitstream => writing 12 over 4 bits
+		bitstream => writing 1 over 1 bits
+	value = 1, magnitude = 1, index = 1
+	RLE code = 17, huffman path = 12, nbits = 4
+		bitstream => writing 12 over 4 bits
+		bitstream => writing 1 over 1 bits
+	value = -2, magnitude = 2, index = 1
+	RLE code = 2, huffman path = 1, nbits = 2
+		bitstream => writing 1 over 2 bits
+		bitstream => writing 1 over 2 bits
+	value = 4, magnitude = 3, index = 4
+	RLE code = 3, huffman path = 4, nbits = 3
+		bitstream => writing 4 over 3 bits
+		bitstream => writing 4 over 3 bits
+	value = -2, magnitude = 2, index = 1
+	RLE code = 98, huffman path = 4086, nbits = 12
+		bitstream => writing 4086 over 12 bits
+		bitstream => writing 1 over 2 bits
+	value = endofblock, huffman_path = 10, nbits = 4
+		bitstream => writing 10 over 4 bits
+[acdc] block 0
+DC:
+	value = -10, magnitude = 4, index = 5
+		bitstream => writing 14 over 4 bits
+		bitstream => writing 5 over 4 bits
+
+AC:
+	value = 13, magnitude = 4, index = 13
+	RLE code = 4, huffman path = 24, nbits = 5
+		bitstream => writing 24 over 5 bits
+		bitstream => writing 13 over 4 bits
+	value = 16, magnitude = 5, index = 16
+	RLE code = 5, huffman path = 25, nbits = 5
+		bitstream => writing 25 over 5 bits
+		bitstream => writing 16 over 5 bits
+	value = -9, magnitude = 4, index = 6
+	RLE code = 4, huffman path = 24, nbits = 5
+		bitstream => writing 24 over 5 bits
+		bitstream => writing 6 over 4 bits
+	value = -6, magnitude = 3, index = 1
+	RLE code = 19, huffman path = 246, nbits = 8
+		bitstream => writing 246 over 8 bits
+		bitstream => writing 1 over 3 bits
+	value = 2, magnitude = 2, index = 2
+	RLE code = 2, huffman path = 4, nbits = 3
+		bitstream => writing 4 over 3 bits
+		bitstream => writing 2 over 2 bits
+	value = -1, magnitude = 1, index = 0
+	RLE code = 1, huffman path = 1, nbits = 2
+		bitstream => writing 1 over 2 bits
+		bitstream => writing 0 over 1 bits
+	value = 19, magnitude = 5, index = 19
+	RLE code = 21, huffman path = 2038, nbits = 11
+		bitstream => writing 2038 over 11 bits
+		bitstream => writing 19 over 5 bits
+	value = -11, magnitude = 4, index = 4
+	RLE code = 4, huffman path = 24, nbits = 5
+		bitstream => writing 24 over 5 bits
+		bitstream => writing 4 over 4 bits
+	value = 1, magnitude = 1, index = 1
+	RLE code = 17, huffman path = 11, nbits = 4
+		bitstream => writing 11 over 4 bits
+		bitstream => writing 1 over 1 bits
+	value = -5, magnitude = 3, index = 2
+	RLE code = 19, huffman path = 246, nbits = 8
+		bitstream => writing 246 over 8 bits
+		bitstream => writing 2 over 3 bits
+	value = 1, magnitude = 1, index = 1
+	RLE code = 1, huffman path = 1, nbits = 2
+		bitstream => writing 1 over 2 bits
+		bitstream => writing 1 over 1 bits
+	value = -9, magnitude = 4, index = 6
+	RLE code = 4, huffman path = 24, nbits = 5
+		bitstream => writing 24 over 5 bits
+		bitstream => writing 6 over 4 bits
+	value = -3, magnitude = 2, index = 0
+	RLE code = 18, huffman path = 57, nbits = 6
+		bitstream => writing 57 over 6 bits
+		bitstream => writing 0 over 2 bits
+	value = 1, magnitude = 1, index = 1
+	RLE code = 17, huffman path = 11, nbits = 4
+		bitstream => writing 11 over 4 bits
+		bitstream => writing 1 over 1 bits
+	value = 1, magnitude = 1, index = 1
+	RLE code = 33, huffman path = 26, nbits = 5
+		bitstream => writing 26 over 5 bits
+		bitstream => writing 1 over 1 bits
+	value = 2, magnitude = 2, index = 2
+	RLE code = 18, huffman path = 57, nbits = 6
+		bitstream => writing 57 over 6 bits
+		bitstream => writing 2 over 2 bits
+	value = -1, magnitude = 1, index = 0
+	RLE code = 81, huffman path = 59, nbits = 6
+		bitstream => writing 59 over 6 bits
+		bitstream => writing 0 over 1 bits
+	value = endofblock, huffman_path = 0, nbits = 2
+		bitstream => writing 0 over 2 bits
+[acdc] block 0
+DC:
+	value = -34, magnitude = 6, index = 29
+		bitstream => writing 62 over 6 bits
+		bitstream => writing 29 over 6 bits
+
+AC:
+	value = 57, magnitude = 6, index = 57
+	RLE code = 6, huffman path = 56, nbits = 6
+		bitstream => writing 56 over 6 bits
+		bitstream => writing 57 over 6 bits
+	value = 3, magnitude = 2, index = 3
+	RLE code = 2, huffman path = 4, nbits = 3
+		bitstream => writing 4 over 3 bits
+		bitstream => writing 3 over 2 bits
+	value = 1, magnitude = 1, index = 1
+	RLE code = 1, huffman path = 1, nbits = 2
+		bitstream => writing 1 over 2 bits
+		bitstream => writing 1 over 1 bits
+	value = 7, magnitude = 3, index = 7
+	RLE code = 19, huffman path = 246, nbits = 8
+		bitstream => writing 246 over 8 bits
+		bitstream => writing 7 over 3 bits
+	value = 7, magnitude = 3, index = 7
+	RLE code = 3, huffman path = 10, nbits = 4
+		bitstream => writing 10 over 4 bits
+		bitstream => writing 7 over 3 bits
+	value = -2, magnitude = 2, index = 1
+	RLE code = 18, huffman path = 57, nbits = 6
+		bitstream => writing 57 over 6 bits
+		bitstream => writing 1 over 2 bits
+	value = -5, magnitude = 3, index = 2
+	RLE code = 3, huffman path = 10, nbits = 4
+		bitstream => writing 10 over 4 bits
+		bitstream => writing 2 over 3 bits
+	value = 1, magnitude = 1, index = 1
+	RLE code = 17, huffman path = 11, nbits = 4
+		bitstream => writing 11 over 4 bits
+		bitstream => writing 1 over 1 bits
+	value = 8, magnitude = 4, index = 8
+	RLE code = 36, huffman path = 4086, nbits = 12
+		bitstream => writing 4086 over 12 bits
+		bitstream => writing 8 over 4 bits
+	value = 4, magnitude = 3, index = 4
+	RLE code = 3, huffman path = 10, nbits = 4
+		bitstream => writing 10 over 4 bits
+		bitstream => writing 4 over 3 bits
+	value = 9, magnitude = 4, index = 9
+	RLE code = 4, huffman path = 24, nbits = 5
+		bitstream => writing 24 over 5 bits
+		bitstream => writing 9 over 4 bits
+	value = 2, magnitude = 2, index = 2
+	RLE code = 18, huffman path = 57, nbits = 6
+		bitstream => writing 57 over 6 bits
+		bitstream => writing 2 over 2 bits
+	value = 2, magnitude = 2, index = 2
+	RLE code = 18, huffman path = 57, nbits = 6
+		bitstream => writing 57 over 6 bits
+		bitstream => writing 2 over 2 bits
+	value = -3, magnitude = 2, index = 0
+	RLE code = 2, huffman path = 4, nbits = 3
+		bitstream => writing 4 over 3 bits
+		bitstream => writing 0 over 2 bits
+	value = -1, magnitude = 1, index = 0
+	RLE code = 49, huffman path = 27, nbits = 5
+		bitstream => writing 27 over 5 bits
+		bitstream => writing 0 over 1 bits
+	value = -5, magnitude = 3, index = 2
+	RLE code = 19, huffman path = 246, nbits = 8
+		bitstream => writing 246 over 8 bits
+		bitstream => writing 2 over 3 bits
+	value = 1, magnitude = 1, index = 1
+	RLE code = 1, huffman path = 1, nbits = 2
+		bitstream => writing 1 over 2 bits
+		bitstream => writing 1 over 1 bits
+	value = -4, magnitude = 3, index = 3
+	RLE code = 3, huffman path = 10, nbits = 4
+		bitstream => writing 10 over 4 bits
+		bitstream => writing 3 over 3 bits
+	value = -1, magnitude = 1, index = 0
+	RLE code = 49, huffman path = 27, nbits = 5
+		bitstream => writing 27 over 5 bits
+		bitstream => writing 0 over 1 bits
+	value = 2, magnitude = 2, index = 2
+	RLE code = 18, huffman path = 57, nbits = 6
+		bitstream => writing 57 over 6 bits
+		bitstream => writing 2 over 2 bits
+	value = 2, magnitude = 2, index = 2
+	RLE code = 18, huffman path = 57, nbits = 6
+		bitstream => writing 57 over 6 bits
+		bitstream => writing 2 over 2 bits
+	value = 1, magnitude = 1, index = 1
+	RLE code = 17, huffman path = 11, nbits = 4
+		bitstream => writing 11 over 4 bits
+		bitstream => writing 1 over 1 bits
+	value = -1, magnitude = 1, index = 0
+	RLE code = 1, huffman path = 1, nbits = 2
+		bitstream => writing 1 over 2 bits
+		bitstream => writing 0 over 1 bits
+	value = 2, magnitude = 2, index = 2
+	RLE code = 2, huffman path = 4, nbits = 3
+		bitstream => writing 4 over 3 bits
+		bitstream => writing 2 over 2 bits
+	value = -1, magnitude = 1, index = 0
+	RLE code = 97, huffman path = 121, nbits = 7
+		bitstream => writing 121 over 7 bits
+		bitstream => writing 0 over 1 bits
+	value = endofblock, huffman_path = 0, nbits = 2
+		bitstream => writing 0 over 2 bits
