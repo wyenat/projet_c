@@ -11,7 +11,6 @@
 struct huff_table * init_noeud(struct huff_table *parent, uint8_t profondeur)   {
     struct huff_table *noeud_retour = malloc(sizeof(struct huff_table));
 
-    noeud_retour->parent = malloc(sizeof(struct huff_table));
     noeud_retour->parent = parent;
 
     noeud_retour->fils = NULL;
@@ -194,11 +193,11 @@ uint32_t huffman_table_get_path(struct huff_table *ht, uint8_t value, uint8_t *n
     while (nombre_symboles_visites < nombre_symboles_total) {
         if (ht->est_feuille == 1) {
             if (ht->etiquette == value) {
-                return path;
+                return path / 2;       // Fait comme ça, le programme retourne toujours un 0 en trop à la fin, donc on s'en débarasse.
             }
             else    {
                 ht->a_ete_visite = 1;
-                path = path / 10;
+                path = path / 2;
                 *nbits = *nbits - (uint8_t)1;
                 nombre_symboles_visites ++;
 
@@ -208,18 +207,18 @@ uint32_t huffman_table_get_path(struct huff_table *ht, uint8_t value, uint8_t *n
         else    {
             if (ht->fils[0]->a_ete_visite != 1) {
                 ht = ht->fils[0];
-                path *= 10;
+                path = path * 2;
                 *nbits = *nbits + (uint8_t)1;
             }
             else if (ht->fils[1]->a_ete_visite != 1)    {
                 ht = ht->fils[1];
-                path = (path + 1) * 10;
+                path = (path + 1) * 2;
                 *nbits = *nbits + (uint8_t)1;
             }
             else    {
                 // Les deux fils ont déjà été completment visités, on remonte donc d'un cran
                 ht->a_ete_visite = 1;
-                path = path / 10;
+                path = path / 2;
                 *nbits = *nbits - (uint8_t)1;
 
                 ht = ht->parent;
@@ -255,6 +254,9 @@ uint8_t *huffman_table_get_symbols(struct huff_table *ht)   {
             symbols[nombre_symboles_visites] = ht->etiquette;
 
             nombre_symboles_visites ++;
+
+            ht->a_ete_visite = 10;
+            ht = ht->parent;
         }
         else    {
             if (ht->fils[0]->a_ete_visite != 10) {
@@ -271,6 +273,7 @@ uint8_t *huffman_table_get_symbols(struct huff_table *ht)   {
             }
         }
     }
+    return symbols;
 }
 
 
@@ -284,7 +287,7 @@ uint8_t *huffman_table_get_length_vector(struct huff_table *ht) {
     uint16_t nombre_symboles_total = ht->nombre_symboles_fils;
     uint16_t nombre_symboles_visites = 0;
 
-    uint8_t *nb_symb_per_lengths = malloc(nombre_symboles_total * sizeof(uint8_t)); /* A priori on alloue trop de mémoire,
+    uint8_t *nb_symb_per_lengths = calloc(16, sizeof(uint8_t)); /* A priori on alloue trop de mémoire,
                                         mais avec la strucuture utilisée, on ne pe pas prévoir exactement combien de mémoire il faut allouer. */
 
     while   (nombre_symboles_visites < nombre_symboles_total)   {
@@ -292,6 +295,9 @@ uint8_t *huffman_table_get_length_vector(struct huff_table *ht) {
             nb_symb_per_lengths[(ht->profondeur) -1] ++;
 
             nombre_symboles_visites ++;
+
+            ht->a_ete_visite = 20;
+            ht = ht->parent;
         }
         else    {
             if (ht->fils[0]->a_ete_visite != 20) {
@@ -308,6 +314,7 @@ uint8_t *huffman_table_get_length_vector(struct huff_table *ht) {
             }
         }
     }
+    return nb_symb_per_lengths;
 }
 
 
@@ -315,14 +322,20 @@ void huffman_table_destroy(struct huff_table *ht)   {
 
     struct huff_table *racine = ht;
 
+    uint16_t temp = 0;
+
     while (! (racine->fils[0]->a_ete_visite == 200 && racine->fils[1]->a_ete_visite == 200)) {
+
+
         // Tant que les fils de la racine ne sont pas marqués comme étant à supprimer, on continue la suppression en profondeur.
 
         if (ht->fils == NULL){
             ht->a_ete_visite = 200;     // Il faut le libérer.
             ht = ht->parent;
+
         }
         else if (ht->fils[0]->a_ete_visite == 200 && ht->fils[1]->a_ete_visite == 200)  {
+
             free(ht->fils);
 
             ht->a_ete_visite = 200;     // Les fils ont été supprimés, il faut marquer le noeud comme étant lui-même à supprimer.
@@ -336,7 +349,6 @@ void huffman_table_destroy(struct huff_table *ht)   {
             ht = ht->fils[1];
         }
     }
-
     free(ht);
 }
 
@@ -407,24 +419,58 @@ void afficher_table_huffman(struct huff_table *table_huffman)   {
             printf("%d ]\n\n", symboles_par_profondeur[profondeur][indice]);
         }
     }
+    for (int i = 0; i < 16; i++)    {
+        free(symboles_par_profondeur[i]);
+    }
     free(symboles_par_profondeur);
     free(indices_par_profondeur);
 }
 
 
-//int main(void) {
-//
-//    uint8_t *nb_symb_per_lengths = malloc(16 * sizeof(uint8_t));
-//    uint8_t temp_length[16] = {0,3,0,0,0,0,3,0,0,1,0,3,0,0,0};
-//    nb_symb_per_lengths = temp_length;
-//
-//    uint8_t *symbols = malloc(10 * sizeof(uint8_t));
-//    uint8_t temp_symbols[10] = {1,2,3,4,5,6,7,8,9,10};
-//    symbols = temp_symbols;
-//
-//    struct huff_table *table_huffman = huffman_table_build(nb_symb_per_lengths, symbols, 10);
-//
-//    afficher_table_huffman(table_huffman);
-//
-//    huffman_table_destroy(table_huffman);
-//}
+int main(void) {
+
+    uint8_t *nb_symb_per_lengths = malloc(16 * sizeof(uint8_t));
+    uint8_t temp_length[16] = {0,3,0,0,0,0,3,0,0,1,0,3,0,0,0};
+    nb_symb_per_lengths = temp_length;
+
+    uint8_t *symbols = malloc(10 * sizeof(uint8_t));
+    uint8_t temp_symbols[10] = {1,2,3,4,5,6,7,8,9,10};
+    symbols = temp_symbols;
+
+    struct huff_table *table_huffman = huffman_table_build(nb_symb_per_lengths, symbols, 10);
+
+    uint8_t *nbits = malloc(sizeof(uint8_t));
+    *nbits = 0;
+
+    uint32_t path = huffman_table_get_path(table_huffman, (uint8_t)2, nbits);
+
+    printf("Path : %u\n", path);
+    printf("nbits : %d\n", *nbits);
+
+    free(nbits);
+
+    afficher_table_huffman(table_huffman);
+
+    uint8_t *get_symbols = huffman_table_get_symbols(table_huffman);
+
+    for (int i = 0; i<10; i++)  {
+        printf("Symbole dans l'arbre par ordre de longueur de chemin : %d\n", get_symbols[i]);
+    }
+
+    free(get_symbols);
+
+    uint8_t * get_nb_symbols_per_length = huffman_table_get_length_vector(table_huffman);
+
+
+    for (int j=0; j<16; j++)    {
+        printf("Profondeur : %d\n", j+1);
+        printf("Nombre de symboles à cette profondeur : %d\n", get_nb_symbols_per_length[j]);
+    }
+
+    free(get_nb_symbols_per_length);
+
+
+
+    huffman_table_destroy(table_huffman);
+
+}
