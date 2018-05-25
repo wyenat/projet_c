@@ -87,7 +87,7 @@ int decme(char *hex)
 char *hexme(int entree){
   int decal = 0;
   if (!entree){
-    return "/00";
+    return "00";
   }
   if (entree < 0){
     entree = pow(256, 2) - abs(entree);
@@ -101,11 +101,7 @@ char *hexme(int entree){
   while (puissance >= 0){
     // printf("entrée = %d, puissance = %d \n", entree, puissance);
     if (decal && indice==1){
-      hex[1] = '0';
-      indice++;
-    }
-    if (indice%3 == 0){
-      hex[indice] = '/';
+      hex[0] = '0';
       indice++;
     } else {
       hex[indice] = calculer_coeff(&entree, puissance);

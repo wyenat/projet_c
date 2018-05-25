@@ -43,7 +43,6 @@ void affichage_ind_magn(int16_t entree){
 int compter_zero(int16_t *entree, int *courant){
   int nb_zero = 0;
   while (*courant%64 != 0 && entree[*courant] == 0){
-    // printf("Indice : %d On lit : %d \n", *courant, entree[*courant]);
     *courant = *courant + 1;
     nb_zero++;
   }
@@ -56,27 +55,31 @@ int compter_zero(int16_t *entree, int *courant){
     return nb_zero;
   }
 
-void ZRL(struct bitstream *bitstream_jpeg, struct jpeg_desc *jpeg, int couleur){
+void ZRL(struct bitstream *bitstream_jpeg, struct jpeg_desc *jpeg, int couleur, int verbose){
   // uint8_t zrl = 240;
   uint8_t valeur_symbole = 240;
   uint8_t longeur_huffman = 0;
   uint32_t chemin_huffman = 0;
   chemin_huffman = huffman_table_get_path(jpeg_desc_get_huffman_table(jpeg, AC, couleur), valeur_symbole, &longeur_huffman);
   bitstream_write_nbits(bitstream_jpeg, chemin_huffman, longeur_huffman, 0);
-  printf("/F0 \n");
+  if (verbose){
+    printf("AC : F0 (Balise ZRL) \n");
+  }
 }
 
-void EOB(struct bitstream *bitstream_jpeg, struct jpeg_desc *jpeg, int couleur){
+void EOB(struct bitstream *bitstream_jpeg, struct jpeg_desc *jpeg, int couleur, int verbose){
   // uint8_t eob = 0;
   uint8_t valeur_symbole = 0;
   uint8_t longeur_huffman = 0;
   uint32_t chemin_huffman = 0;
   chemin_huffman = huffman_table_get_path(jpeg_desc_get_huffman_table(jpeg, AC, couleur), valeur_symbole, &longeur_huffman);
   bitstream_write_nbits(bitstream_jpeg, chemin_huffman, longeur_huffman, 0);
-  printf("/00\n");
+  if (verbose){
+    printf("AC : 00 (EOB)\n");
+  }
 }
 
-void balise_std(int nb_zero, int valeur, struct bitstream *bitstream_jpeg, struct jpeg_desc *jpeg, int couleur){
+void balise_std(int nb_zero, int valeur, struct bitstream *bitstream_jpeg, struct jpeg_desc *jpeg, int couleur, int verbose){
   uint32_t m = obtenir_magnetude(valeur);
   uint32_t i = obtenir_indice(valeur, m);
   if (m == 0) {
@@ -88,23 +91,24 @@ void balise_std(int nb_zero, int valeur, struct bitstream *bitstream_jpeg, struc
   uint32_t chemin_huffman = huffman_table_get_path(jpeg_desc_get_huffman_table(jpeg, AC, couleur), valeur_symbole, &longeur_huffman);
   bitstream_write_nbits(bitstream_jpeg, chemin_huffman, longeur_huffman, 0);
   bitstream_write_nbits(bitstream_jpeg, i, m, 0);
-  printf("symbole = %s, huffman = %s, sur %d bits, indice = %s \n",hexme(valeur_symbole), binme_n(chemin_huffman, longeur_huffman), longeur_huffman, binme_n(i,m));
+  if (verbose){
+    printf("AC :   symbole = %s, huffman = %s, sur %d bits, indice = %s \n",hexme(valeur_symbole), binme_n(chemin_huffman, longeur_huffman), longeur_huffman, binme_n(i,m));
+  }
 }
 
-void LRE(int16_t *entree, struct bitstream *bitstream_jpeg, struct jpeg_desc *jpeg, int couleur){
+void LRE(int16_t *entree, struct bitstream *bitstream_jpeg, struct jpeg_desc *jpeg, int couleur, int verbose){
   int courant = 1+64*couleur;
   while (courant%64 != 0) {
     int nb_zero = compter_zero(entree, &courant);
-    // affichage_ind_magn(entree[courant]);
     switch(nb_zero){
       case 16:
-        ZRL(bitstream_jpeg, jpeg, couleur);
+        ZRL(bitstream_jpeg, jpeg, couleur, verbose);
         break;
       case 64:
-        EOB(bitstream_jpeg, jpeg, couleur);
+        EOB(bitstream_jpeg, jpeg, couleur, verbose);
         break;
       default:
-        balise_std(nb_zero, entree[courant], bitstream_jpeg, jpeg, couleur);
+        balise_std(nb_zero, entree[courant], bitstream_jpeg, jpeg, couleur, verbose);
         courant++;
         break;
     }
@@ -122,7 +126,7 @@ int32_t calcul_DC(int16_t *flux, int premier, int32_t *DC, int couleur){
     return val_DC;
 }
 
-void ACDC_me(struct Image_MCU_16 *entree, struct bitstream *bitstream_jpeg, struct jpeg_desc *jpeg){
+void ACDC_me(struct Image_MCU_16 *entree, struct bitstream *bitstream_jpeg, struct jpeg_desc *jpeg, int verbose){
     int premier[] = {0,0,0};
     int32_t DC_valeur[] = {0,0,0};
     int32_t DC_precedent[] = {0,0,0};
@@ -130,15 +134,19 @@ void ACDC_me(struct Image_MCU_16 *entree, struct bitstream *bitstream_jpeg, stru
     uint32_t code_dc[] = {0,0,0};
       for (uint32_t parcours=0; parcours < entree->hauteur * entree->largeur; parcours++){
           for (int couleur =0; couleur < 1 + 2*entree->couleur; couleur++){
-          printf("PASSAGE A LA COULEUR %d \n \n \n", couleur);
+          if (verbose){
+            printf("PASSAGE A LA COULEUR %d \n", couleur);
+          }
           DC_valeur[couleur] = calcul_DC(entree->MCUs[parcours]->flux, premier[couleur], &DC_precedent[couleur], couleur);
           uint32_t m = obtenir_magnetude(DC_valeur[couleur]);
           uint32_t i = obtenir_indice(DC_valeur[couleur], m);
           code_dc[couleur] = huffman_table_get_path(jpeg_desc_get_huffman_table(jpeg, DC, couleur), m, &len_chemin[couleur]);
-          printf("MCU = %d :      DC = %d, m=%d, encodé = %s, indice = %s \n",parcours, DC_valeur[couleur], m, binme_n(code_dc[couleur], len_chemin[couleur]), binme_n(i,m));
+          if (verbose){
+            printf("MCU = %d :     DC = %d, m=%d, encodé = %s, indice = %s \n",parcours, DC_valeur[couleur], m, binme_n(code_dc[couleur], len_chemin[couleur]), binme_n(i,m));
+          }
           bitstream_write_nbits(bitstream_jpeg, code_dc[couleur], len_chemin[couleur], 0);
           bitstream_write_nbits(bitstream_jpeg, i, m, 0);
-          LRE(entree->MCUs[parcours]->flux, bitstream_jpeg, jpeg, couleur);
+          LRE(entree->MCUs[parcours]->flux, bitstream_jpeg, jpeg, couleur, verbose);
           if (premier[couleur] == 0){premier[couleur]++;}
       }
     }
