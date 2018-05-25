@@ -80,11 +80,13 @@ int main( int argc, char * argv[] )
       for (int i=0; i<nombre_dimages; i++) {
         printf("\n \n -- Image %d / %d à traiter : %s -- \n \n ", i+1, nombre_dimages, noms_des_images[i]);
         if (i >= nombre_de_renommage) {
-          char* buffer = malloc(strlen(noms_des_images[i])*sizeof(char));
+          char* buffer = malloc(strlen((noms_des_images[i])+4)*sizeof(char));
           strncpy(buffer, noms_des_images[i], strlen(noms_des_images[i])-4);
+          strcat(buffer, ".jpg");
+          printf(" buffer = %s \n", buffer);
           renommage[i] = buffer;
         }
-        printf("\t %s  --> %s.jpg \n", noms_des_images[i], renommage[i] );
+        printf("\t %s  --> %s \n", noms_des_images[i], renommage[i] );
 
         printf("\t Création du jpeg \n");
         struct jpeg_desc *jpeg = jpeg_desc_create();
@@ -126,11 +128,11 @@ int main( int argc, char * argv[] )
         Image_RGB2YCbCr(image);
         // afficher_image_YCbCr(image);
 
-        printf("\n \n \n \t Compression des images (pour le moment on compresse en vertical et en horizontal) \n \n \n");
-        Image_downsampling(image, 2, 2);
-        afficher_image_compressee(image);
-        printf("Hauteur du MCU de l'image : %d\n", image->MCUs[0]->hauteur);
-        printf("Largeur du MCU de l'image : %d\n", image->MCUs[0]->largeur);
+        // printf("\n \n \n \t Compression des images (pour le moment on compresse en vertical et en horizontal) \n \n \n");
+        // Image_downsampling(image, 2, 2);
+        // afficher_image_compressee(image);
+        // printf("Hauteur du MCU de l'image : %d\n", image->MCUs[0]->hauteur);
+        // printf("Largeur du MCU de l'image : %d\n", image->MCUs[0]->largeur);
 
         printf("\n \n \n \t Conversion de YCbCr à DCT \n \n \n");
         // ATTENTION : image devient new_image !!!! (On a besoin d'en recréer une nouvelle vu q'uon change de type d'image.)
@@ -143,7 +145,7 @@ int main( int argc, char * argv[] )
 
         printf("\n \n \n \t Quantification ! \n \n ");
         quantifier_image(new_image);
-        // afficher_image_DCT(new_image);
+        afficher_image_DCT(new_image);
 
         printf("\n \n \n \t ACDC ! \n \n");
         ACDC_me(new_image, bitstream_jpeg, jpeg);
