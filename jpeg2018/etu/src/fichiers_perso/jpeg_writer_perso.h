@@ -6,6 +6,7 @@
 #include <assert.h>
 #include "bitstream.h"
 #include "huffman.h"
+#include "htables.h"
 
 /********************/
 /* Types de données */
