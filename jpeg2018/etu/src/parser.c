@@ -18,7 +18,7 @@ int main( int argc, char * argv[] )
   perror("Aucun arguments rentré ! Tapez --h ou --help pour plus d'informations \n");
   exit(EXIT_FAILURE);
 }
-  int verbose = 1; // A remettre à 0 pour rendre le projet final
+  int verbose = 0; // A remettre à 0 pour rendre le projet final
   int sample  = 0;
   char* noms_des_images[argc];
   char* renommage[argc];
@@ -38,7 +38,7 @@ int main( int argc, char * argv[] )
         }
         else if ( strncmp(argv[i], "--outfile=", 10) == 0 ) {
           if (strlen(argv[i]) == 10) {
-            printf("Impossible de renommer le fichier si aucun nom n'est rentré, vérifiez qu'il n'y a pas d'espace entre le = et le nom du fichier \n Le fichier sera nom par défaut");
+            printf("Impossible de renommer le fichier si aucun nom n'est rentré, vérifiez qu'il n'y a pas d'espace entre le = et le nom du fichier \n");
           } else {
             char* outfile = malloc(strlen(argv[i]));
             strncpy(outfile, argv[i]+10, strlen(argv[i])-10);
@@ -71,90 +71,99 @@ int main( int argc, char * argv[] )
           exit(EXIT_FAILURE);
         }
   }
-  if (verbose) { //Pour l'instant seul le verbose fait quelque chose
+  if (verbose) {
       printf("-- Mode verbose activé -- \n");
       if (sample) {
         printf("-- Mode sample activé -- \n ");
         printf("\t Les coefficients rentrés sont %dx%d,%dx%d,%dx%d \n", h1,v1,h2,v2,h3,v3);
       }
+    }
       for (int i=0; i<nombre_dimages; i++) {
         printf("\n \n -- Image %d / %d à traiter : %s -- \n \n ", i+1, nombre_dimages, noms_des_images[i]);
         if (i >= nombre_de_renommage) {
           char* buffer = malloc(strlen((noms_des_images[i])+4)*sizeof(char));
           strncpy(buffer, noms_des_images[i], strlen(noms_des_images[i])-4);
           strcat(buffer, ".jpg");
-          printf(" buffer = %s \n", buffer);
           renommage[i] = buffer;
+          printf("%s \n", buffer);
         }
-        printf("\t %s  --> %s \n", noms_des_images[i], renommage[i] );
+        if (verbose){
+          printf("\t %s  --> %s \n", noms_des_images[i], renommage[i] );
+          printf("\t Création du jpeg \n");
+        }
 
-        printf("\t Création du jpeg \n");
-        struct jpeg_desc *jpeg = jpeg_desc_create();
-        // Si c'est un PPM
-        jpeg_desc_set_ppm_filename(jpeg, noms_des_images[i]);
-        // printf("On ajoute %s dans le filename \n", jpeg_desc_get_ppm_filename(jpeg));
-        jpeg_desc_set_jpeg_filename(jpeg, renommage[i]);
-        // printf("Le nom est changé en %s dans le filename \n",jpeg_desc_get_jpeg_filename(jpeg));
-
-        printf("\n \n \n \t initialisation de l'image ! \n \n \n ");
+        //Récupération des données dans l'images
         struct Image *pic = initialisation(noms_des_images[i]);
-        // afficher_pic(pic);
+        if (verbose){
+          printf("\n \n \n \t initialisation de l'image ! \n \n \n ");
+          afficher_pic(pic);
+        }
 
-        printf("\n \n \n \t Passage MCU8 ! \n \n \n");
+
+        //Passage en MCU
         struct Image_MCU_8 *image = decoupe(pic, 1, 1);
-        // afficher_image_8(image);
+        if (verbose){
+          printf("\n \n \n \t Passage MCU8 ! \n \n \n");
+          afficher_image_8(image);
+        }
 
 
-        // Partie écriture jpeg (kinda)
-        uint32_t hauteur_n = image->hauteur*8*(image->MCUs[0]->hauteur);
-        uint32_t largeur_n = image->largeur*8*(image->MCUs[0]->largeur);
-        jpeg_desc_set_image_height(jpeg, hauteur_n);
-        // printf("La hauteur écrite dans le fichier est %u \n", jpeg_desc_get_image_height(jpeg));
-        jpeg_desc_set_image_width(jpeg, largeur_n);
-        // printf("La largeur écrite dans le fichier est %u \n", jpeg_desc_get_image_width(jpeg));
-        uint8_t nb_couleur = 1 + 2*image->couleur;
-        jpeg_desc_set_nb_components(jpeg, nb_couleur);
-        // printf("Il y a %u couleurs \n",  jpeg_desc_get_nb_components(jpeg));
+        //Création de l'entête jpeg
+        struct jpeg_desc *jpeg = jpeg_desc_create();
+        struct bitstream *bitstream_jpeg = ecrire_entete(jpeg ,noms_des_images[i], renommage[i], image->hauteur*8*(image->MCUs[0]->hauteur),  image->largeur*8*(image->MCUs[0]->largeur),1 + 2*image->couleur, h1, h2, h3, v1, v2, v3);
 
 
-
-        //Ecriture de l'entête
-        ecrire_entete(jpeg ,h1, h2, h3, v1, v2, v3);
-        struct bitstream *bitstream_jpeg = jpeg_desc_get_bitstream(jpeg);
-
-
-
-        printf("\n \n \n \t Conversion de RGB à YCbCr ! \n \n \n");
+        //Passage de RGB à YCbCr
         Image_RGB2YCbCr(image);
-        // afficher_image_YCbCr(image);
+        if (verbose){
+          printf("\n \n \n \t Conversion de RGB à YCbCr ! \n \n \n");
+          afficher_image_YCbCr(image);
+        }
 
-        // printf("\n \n \n \t Compression des images (pour le moment on compresse en vertical et en horizontal) \n \n \n");
-        // Image_downsampling(image, 2, 2);
-        // afficher_image_compressee(image);
-        // printf("Hauteur du MCU de l'image : %d\n", image->MCUs[0]->hauteur);
-        // printf("Largeur du MCU de l'image : %d\n", image->MCUs[0]->largeur);
 
-        printf("\n \n \n \t Conversion de YCbCr à DCT \n \n \n");
-        // ATTENTION : image devient new_image !!!! (On a besoin d'en recréer une nouvelle vu q'uon change de type d'image.)
+        // Sous-échantillonages
+        Image_downsampling(image, 0, 0);
+        if (verbose){
+          printf(" \n \n \n \t Sous-échantillonage ! \n \n \n");
+          printf("Hauteur du MCU de l'image : %d\n", image->MCUs[0]->hauteur);
+          printf("Largeur du MCU de l'image : %d\n", image->MCUs[0]->largeur);
+          afficher_image_compressee(image);
+        }
+
+
+        // Discrete Cosin Transform
         struct Image_MCU_16 *new_image = Image_DCT(image);
-        // afficher_image_DCT(new_image);
+        if (verbose){
+          printf("\n \n \n \t Conversion de YCbCr à DCT \n \n \n");
+          afficher_image_DCT(new_image);
+        }
 
-        printf("\n \n \n \t Zig Zag ! \n \n ");
+
+        // Zig Zag
         zig_zag_image(new_image);
-        // afficher_image_DCT(new_image);
+        if (verbose){
+          printf("\n \n \n \t Zig Zag ! \n \n ");
+          afficher_image_DCT(new_image);
+        }
 
-        printf("\n \n \n \t Quantification ! \n \n ");
+
+        // Quantification
         quantifier_image(new_image);
-        afficher_image_DCT(new_image);
+        if (verbose){
+          printf("\n \n \n \t Quantification ! \n \n ");
+          afficher_image_DCT(new_image);
+        }
 
+
+        // Compression de l'image, écriture dans le flux
+        ACDC_me(new_image, bitstream_jpeg, jpeg, verbose);
+        if (verbose){
         printf("\n \n \n \t ACDC ! \n \n");
-        ACDC_me(new_image, bitstream_jpeg, jpeg);
-        // bitstream_flush(bitstream_jpeg);
+        }
+
+
+        // Fermeture du jpeg
         jpeg_write_footer(jpeg);
+        printf("Image traitée \n");
     }
   }
-  else {
-    printf("Vous n'êtes pas dans le mode verbose, il ne se passe donc rien pour l'instant ! =D \n Faire --verbose \n");
-  }
-  printf("\n");
-}
