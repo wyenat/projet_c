@@ -9,7 +9,7 @@
 #include "decoupage_MCU.h"
 #include "recuperer_image.h"
 #include "DCT.h"
-#include "hex.h"
+
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
@@ -103,7 +103,7 @@ void afficher_DCT(struct MCU_16 *MCU)
             printf("Cr\t");
         }
         for (uint32_t indice = 0; indice < 64 * nombre_blocs; indice++) {
-            printf("%s\t", hexme(MCU->flux[64 * nombre_blocs * composante + indice]));
+            printf("%d\t", MCU->flux[64 * nombre_blocs * composante + indice]);
             if ((indice + 1) % 8 == 0) {
                 printf("\n\t");
             }

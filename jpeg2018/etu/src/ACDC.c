@@ -14,19 +14,19 @@
 //des ints par la suite selon ce que le bitstream prendra
 
 // Partie magnétude, indice
-uint8_t  obtenir_magnetude(int16_t entree){
+uint32_t  obtenir_magnetude(int16_t entree){
   if (entree == 0){
     return 0;
   }
-  int8_t  magnetude = log2(abs(entree))+1;
+  int32_t  magnetude = log2(abs(entree))+1;
   return magnetude;
 }
 
-uint8_t  obtenir_indice(int16_t entree, int8_t  magnetude){
+uint32_t  obtenir_indice(int16_t entree, int32_t  magnetude){
   if (magnetude == 0){
     return 0;
   }
-  uint8_t indice = abs(entree);
+  uint32_t indice = abs(entree);
   if (entree < 0){
     indice = pow(2, magnetude) - indice - 1;
   }
@@ -34,8 +34,8 @@ uint8_t  obtenir_indice(int16_t entree, int8_t  magnetude){
 }
 
 void affichage_ind_magn(int16_t entree){
-  uint8_t  magnetude = obtenir_magnetude(entree);
-  uint8_t  indice = obtenir_indice(entree, magnetude);
+  uint32_t  magnetude = obtenir_magnetude(entree);
+  uint32_t  indice = obtenir_indice(entree, magnetude);
   printf("\n Le nombre %d a pour magnétude %d, pour indice %d \n", entree, magnetude, indice);
 }
 
@@ -77,8 +77,8 @@ void EOB(struct bitstream *bitstream_jpeg, struct jpeg_desc *jpeg){
 }
 
 void balise_std(int nb_zero, int valeur, struct bitstream *bitstream_jpeg, struct jpeg_desc *jpeg){
-  uint8_t m = obtenir_magnetude(valeur);
-  uint8_t i = obtenir_indice(valeur, m);
+  uint32_t m = obtenir_magnetude(valeur);
+  uint32_t i = obtenir_indice(valeur, m);
   if (m == 0) {
     perror("On ne lit pas assez de 0 ! \n");
     exit(EXIT_FAILURE);
@@ -113,30 +113,30 @@ void LRE(int16_t *entree, struct bitstream *bitstream_jpeg, struct jpeg_desc *jp
 
 //Partie adaptation à la structure;
 
-int32_t calcul_DC(int16_t *flux, int premier, int8_t DC){
+int32_t calcul_DC(int16_t *flux, int premier, int32_t *DC){
     int32_t val_DC = flux[0];
     if (premier != 0){
-      val_DC = val_DC - premier;
+      val_DC = val_DC - *DC;
     }
+    *DC = flux[0];
     return val_DC;
 }
 
 void ACDC_me(struct Image_MCU_16 *entree, struct bitstream *bitstream_jpeg, struct jpeg_desc *jpeg){
   int premier = 0;
   int32_t DC_valeur = 0;
+  int32_t DC_precedent = 0;
   uint8_t len_chemin = 0;
   uint32_t code_dc = 0;
-  for (uint32_t hauteur=0; hauteur < entree->hauteur; hauteur++){
-    for (uint32_t largeur=0; largeur < entree->largeur; largeur++){
-      DC_valeur = calcul_DC(entree->MCUs[hauteur + largeur]->flux, premier, DC_valeur);
-      uint8_t m = obtenir_magnetude(DC_valeur);
-      uint8_t i = obtenir_indice(DC_valeur, m);
+  for (uint32_t parcours=0; parcours < entree->hauteur * entree->largeur; parcours++){
+      DC_valeur = calcul_DC(entree->MCUs[parcours]->flux, premier, &DC_precedent);
+      uint32_t m = obtenir_magnetude(DC_valeur);
+      uint32_t i = obtenir_indice(DC_valeur, m);
       code_dc = huffman_table_get_path(jpeg_desc_get_huffman_table(jpeg, DC, Y), m, &len_chemin);
-      printf("DC = %d, m=%d, encodé = %s, indice = %s \n", DC_valeur, m, binme_n(code_dc, len_chemin), binme_n(i,m));
+      printf("MCU = %d :      DC = %d, m=%d, encodé = %s, indice = %s \n",parcours, DC_valeur, m, binme_n(code_dc, len_chemin), binme_n(i,m));
       bitstream_write_nbits(bitstream_jpeg, code_dc, len_chemin, 0);
       bitstream_write_nbits(bitstream_jpeg, i, m, 0);
-      LRE(entree->MCUs[hauteur + largeur]->flux, bitstream_jpeg, jpeg);
-      if (premier == 0){premier = DC_valeur;}
-    }
+      LRE(entree->MCUs[parcours]->flux, bitstream_jpeg, jpeg);
+      if (premier == 0){premier++;}
   }
 }

@@ -8,9 +8,9 @@
 #include "bitstream.h"
 #include "jpeg_writer.h"
 
-uint8_t  obtenir_magnetude(int16_t entree);
+uint32_t  obtenir_magnetude(int16_t entree);
 
-uint8_t  obtenir_indice(int16_t entree, int8_t  magnetude);
+uint32_t  obtenir_indice(int16_t entree, int8_t  magnetude);
 
 void affichage_ind_magn(int16_t entree);
 
@@ -24,6 +24,6 @@ void balise_std(int nb_zero, int valeur, struct bitstream *bitstream_jpeg, struc
 
 void LRE(int16_t *entree, struct bitstream *bitstream_jpeg, struct jpeg_desc *jpeg);
 
-int calcul_DC(int16_t *flux, int premier,int8_t DC);
+int calcul_DC(int16_t *flux, int premier,int32_t *DC);
 
 void ACDC_me(struct Image_MCU_16 *entree, struct bitstream *bitstream_jpeg, struct jpeg_desc *jpeg);
