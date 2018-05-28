@@ -4,7 +4,6 @@
 #include <stdint.h>
 #include <string.h>
 #include <assert.h>
-#include <stdlib.h>
 #include "bitstream.h"
 #include "huffman.h"
 // #include "htables.h"

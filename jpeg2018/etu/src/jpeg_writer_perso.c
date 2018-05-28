@@ -1,4 +1,6 @@
 #include "jpeg_writer_perso.h"
+#include <stdlib.h>
+#include <stdio.h>
 
 
 // /* Type énuméré représentant les composantes de couleur YCbCr. */
@@ -48,13 +50,13 @@ struct huff_table;
 /* Alloue et retourne une nouvelle structure jpeg_desc. */
 extern struct jpeg_desc *jpeg_desc_create(void)
 {
-    struct jpeg_desc *jpeg = malloc(sizeof(jpeg_desc));
+    struct jpeg_desc *jpeg = malloc(sizeof(struct jpeg_desc));
     jpeg->ppm_filename = NULL;
     jpeg->jpeg_filename = NULL;
     jpeg->sampling_factor = NULL;
     jpeg->htables = NULL;
     jpeg->qtables = NULL;
-    jpeg->dct = NULL;
+    return jpeg;
 }
 
 /*
@@ -63,12 +65,11 @@ extern struct jpeg_desc *jpeg_desc_create(void)
 */
 extern void jpeg_desc_destroy(struct jpeg_desc *jpeg)
 {
-  if (jpeg->ppm_filename != NULL;) { free(jpeg->ppm_filename);}
-  if (jpeg->jpeg_filename != NULL;) { free(jpeg->jpeg_filename);}
-  if (jpeg->sampling_factor != NULL;) { free(jpeg->sampling_factor);}
-  if (jpeg->htables != NULL;) { free(jpeg->htables);}
-  if (jpeg->qtables != NULL;) { free(jpeg->qtables);}
-  if (jpeg->dct != NULL;) { free(jpeg->dct);}
+  if (jpeg->ppm_filename != NULL) { free(jpeg->ppm_filename);}
+  if (jpeg->jpeg_filename != NULL) { free(jpeg->jpeg_filename);}
+  if (jpeg->sampling_factor != NULL) { free(jpeg->sampling_factor);}
+  if (jpeg->htables != NULL) { free(jpeg->htables);}
+  if (jpeg->qtables != NULL) { free(jpeg->qtables);}
   free(jpeg);
 }
 
@@ -89,66 +90,70 @@ extern void jpeg_write_header(struct jpeg_desc *jpeg)
     bitstream_flush(jpeg->bitstream);
 
     // Début d'image : SOI 0xffd8
-    bitstream_write_nbits(jpeg->bistream, 0xffd8, 16, 1);
+    bitstream_write_nbits(jpeg->bitstream, 0xffd8, 16, 1);
+    printf("SOI écrit\n");
 
     // Application data : APPx 0xffe0
-    bitstream_write_nbits(jpeg->bistream, 0xffe0, 16, 1);                       // marqueur APP0
-    bitstream_write_nbits(jpeg->bistream, 16, 16, 0);                           // longueur 16 octets
-    bitstream_write_nbits(jpeg->bistream, 'J', 8, 0);                           // JFIF
-    bitstream_write_nbits(jpeg->bistream, 'F', 8, 0);
-    bitstream_write_nbits(jpeg->bistream, 'I', 8, 0);
-    bitstream_write_nbits(jpeg->bistream, 'F', 8, 0);
-    bitstream_write_nbits(jpeg->bistream, '\0', 8, 0);
-    bitstream_write_nbits(jpeg->bistream, 1, 8, 0);
-    bitstream_write_nbits(jpeg->bistream, 1, 8, 0);
-    bitstream_write_nbits(jpeg->bistream, 0, 56, 0);                            // données pour le JFIF
+    bitstream_write_nbits(jpeg->bitstream, 0xffe0, 16, 1);                       // marqueur APP0
+    bitstream_write_nbits(jpeg->bitstream, 16, 16, 0);                           // longueur 16 octets
+    bitstream_write_nbits(jpeg->bitstream, 'J', 8, 0);                           // JFIF
+    bitstream_write_nbits(jpeg->bitstream, 'F', 8, 0);
+    bitstream_write_nbits(jpeg->bitstream, 'I', 8, 0);
+    bitstream_write_nbits(jpeg->bitstream, 'F', 8, 0);
+    bitstream_write_nbits(jpeg->bitstream, '\0', 8, 0);
+    bitstream_write_nbits(jpeg->bitstream, 1, 8, 0);
+    bitstream_write_nbits(jpeg->bitstream, 1, 8, 0);
+    bitstream_write_nbits(jpeg->bitstream, 0, 32, 0);                            // données pour le JFIF
+    bitstream_write_nbits(jpeg->bitstream, 0, 24, 0);                            // données pour le JFIF
+    printf("APPx écrit\n");
 
     // Commentaire : COM 0xfffe
-    bitstream_write_nbits(jpeg->bistream, 0xfffe, 16, 1);                       // marqueur COM
-    bitstream_write_nbits(jpeg->bistream, 17, 16, 0);                           // longueur 17 octets
-    bitstream_write_nbits(jpeg->bistream, 'm', 8, 0);                           // made by antonin
-    bitstream_write_nbits(jpeg->bistream, 'a', 8, 0);
-    bitstream_write_nbits(jpeg->bistream, 'd', 8, 0);
-    bitstream_write_nbits(jpeg->bistream, 'e', 8, 0);
-    bitstream_write_nbits(jpeg->bistream, ' ', 8, 0);
-    bitstream_write_nbits(jpeg->bistream, 'b', 8, 0);
-    bitstream_write_nbits(jpeg->bistream, 'y', 8, 0);
-    bitstream_write_nbits(jpeg->bistream, ' ', 8, 0);
-    bitstream_write_nbits(jpeg->bistream, 'A', 8, 0);
-    bitstream_write_nbits(jpeg->bistream, 'n', 8, 0);
-    bitstream_write_nbits(jpeg->bistream, 't', 8, 0);
-    bitstream_write_nbits(jpeg->bistream, 'o', 8, 0);
-    bitstream_write_nbits(jpeg->bistream, 'n', 8, 0);
-    bitstream_write_nbits(jpeg->bistream, 'i', 8, 0);
-    bitstream_write_nbits(jpeg->bistream, 'n', 8, 0);
+    bitstream_write_nbits(jpeg->bitstream, 0xfffe, 16, 1);                       // marqueur COM
+    bitstream_write_nbits(jpeg->bitstream, 16, 16, 0);                           // longueur 17 octets
+    bitstream_write_nbits(jpeg->bitstream, '<', 8, 0);                           // made by antonin
+    bitstream_write_nbits(jpeg->bitstream, '3', 8, 0);
+    bitstream_write_nbits(jpeg->bitstream, ' ', 8, 0);
+    bitstream_write_nbits(jpeg->bitstream, 'l', 8, 0);
+    bitstream_write_nbits(jpeg->bitstream, 'e', 8, 0);
+    bitstream_write_nbits(jpeg->bitstream, ' ', 8, 0);
+    bitstream_write_nbits(jpeg->bitstream, 'p', 8, 0);
+    bitstream_write_nbits(jpeg->bitstream, 'r', 8, 0);
+    bitstream_write_nbits(jpeg->bitstream, 'o', 8, 0);
+    bitstream_write_nbits(jpeg->bitstream, 'j', 8, 0);
+    bitstream_write_nbits(jpeg->bitstream, 'e', 8, 0);
+    bitstream_write_nbits(jpeg->bitstream, 't', 8, 0);
+    bitstream_write_nbits(jpeg->bitstream, ' ', 8, 0);
+    bitstream_write_nbits(jpeg->bitstream, 'C', 8, 0);
+    printf("Commentaire écrit \n");
 
     // Define Quantization Table : DQT 0xffdb
     bitstream_flush(jpeg->bitstream);
     for (uint8_t iq = 0; iq < jpeg->nb_components; iq++) {
-        bitstream_write_nbits(jpeg->bistream, 0xffdb, 16, 1);                   // marqueur DQT
-        bitstream_write_nbits(jpeg->bistream, 67, 16, 0);                       // longueur 67 octets
-        bitstream_write_nbits(jpeg->bistream, 0, 4, 0);                         // precision 8bits
-        bitstream_write_nbits(jpeg->bistream, iq, 4, 0);                        // indice de la table
+        bitstream_write_nbits(jpeg->bitstream, 0xffdb, 16, 1);                   // marqueur DQT
+        bitstream_write_nbits(jpeg->bitstream, 67, 16, 0);                       // longueur 67 octets
+        bitstream_write_nbits(jpeg->bitstream, 0, 4, 0);                         // precision 8bits
+        bitstream_write_nbits(jpeg->bitstream, iq, 4, 0);                        // indice de la table
         for (uint8_t indice = 0; indice < 64; indice++) {                       // valeurs de la table
-            bitstream_write_nbits(jpeg->bistream, jpeg->qtables[iq][indice], 8, 0);
+            bitstream_write_nbits(jpeg->bitstream, jpeg->qtables[iq][indice], 8, 0);
         }
     }
+    printf("Quantification table écrit\n");
 
     // Start Of Frame : SOFx 0xffc0
     bitstream_flush(jpeg->bitstream);
-    bitstream_write_nbits(jpeg->bistream, 0xffc0, 16, 1);                       // marqueur SOF0
-    bitstream_write_nbits(jpeg->bistream, 8 + 3*jpeg->nb_components, 16, 0);    // longueur 3N + 8 octets
-    bitstream_write_nbits(jpeg->bistream, 8, 8, 0);                             // precision de 8
-    bitstream_write_nbits(jpeg->bistream, jpeg->height, 16, 0);                 // hauteur
-    bitstream_write_nbits(jpeg->bistream, jpeg->width, 16, 0);                  // largeur
-    bitstream_write_nbits(jpeg->bistream, jpeg->nb_components, 8, 0);           // nombre de composantes couleur
-    //TODO
+    bitstream_write_nbits(jpeg->bitstream, 0xffc0, 16, 1);                       // marqueur SOF0
+    bitstream_write_nbits(jpeg->bitstream, 8 + 3*jpeg->nb_components, 16, 0);    // longueur 3N + 8 octets
+    bitstream_write_nbits(jpeg->bitstream, 8, 8, 0);                             // precision de 8
+    bitstream_write_nbits(jpeg->bitstream, jpeg->height, 16, 0);                 // hauteur
+    bitstream_write_nbits(jpeg->bitstream, jpeg->width, 16, 0);                  // largeur
+    bitstream_write_nbits(jpeg->bitstream, jpeg->nb_components, 8, 0);           // nombre de composantes couleur
     for (uint8_t ic = 0; ic < jpeg->nb_components; ic++) {
-        bitstream_write_nbits(jpeg->bistream, ic, 8, 0);           //XXXXX      // identifiant de composante
-        bitstream_write_nbits(jpeg->bistream, jpeg->sampling_factor[2*ic], 4, 0);// facteur d'échantillonnage horizontale
-        bitstream_write_nbits(jpeg->bistream, jpeg->sampling_factor[2*ic + 1], 4, 0);// facteur d'échantillonnage verticale
-        bitstream_write_nbits(jpeg->bistream, ic, 8, 0);           //XXXXX      // table de quantification iq
+        bitstream_write_nbits(jpeg->bitstream, jpeg->nb_components, 8, 0);//XXXXX      // identifiant de composante
+        bitstream_write_nbits(jpeg->bitstream, jpeg->sampling_factor[2*ic], 4, 0);// facteur d'échantillonnage horizontale
+        bitstream_write_nbits(jpeg->bitstream, jpeg->sampling_factor[2*ic + 1], 4, 0);// facteur d'échantillonnage verticale
+        bitstream_write_nbits(jpeg->bitstream, ic, 8, 0);           //XXXXX      // table de quantification iq
     }
+    printf("Start of Frame écrit\n");
 
     // Define Huffman Table : DHT 0xffc4
     for (uint8_t ic = 0; ic < jpeg->nb_components; ic++) {
@@ -160,33 +165,35 @@ extern void jpeg_write_header(struct jpeg_desc *jpeg)
             for (uint8_t longueur = 0; longueur < 16; longueur++) {
                 longueur_totale += table_length[longueur];
             }
-            bitstream_write_nbits(jpeg->bistream, 0xffc4, 16, 1);               // marqueur DHT
-            bitstream_write_nbits(jpeg->bistream, 19 + longueur_totale, 16, 0); // longueur 19+L octets
-            bitstream_write_nbits(jpeg->bistream, 0, 3, 0);                     // toujours 0
-            bitstream_write_nbits(jpeg->bistream, ia, 1, 0);                    // 0 pour DC, 1 pour AC
-            bitstream_write_nbits(jpeg->bistream, 2*ic + ia, 4, 0); //XXXXX     // indice de Huffman
+            bitstream_write_nbits(jpeg->bitstream, 0xffc4, 16, 1);               // marqueur DHT
+            bitstream_write_nbits(jpeg->bitstream, 19 + longueur_totale, 16, 0); // longueur 19+L octets
+            bitstream_write_nbits(jpeg->bitstream, 0, 3, 0);                     // toujours 0
+            bitstream_write_nbits(jpeg->bitstream, ia, 1, 0);                    // 0 pour DC, 1 pour AC
+            bitstream_write_nbits(jpeg->bitstream, 2*ic + ia, 4, 0); //XXXXX     // indice de Huffman
             for (uint8_t longueur = 0; longueur < 16; longueur++) {
-                bitstream_write_nbits(jpeg->bistream, table_length[longueur], 8, 0);// nombre de symboles de taille longueur
+                bitstream_write_nbits(jpeg->bitstream, table_length[longueur], 8, 0);// nombre de symboles de taille longueur
             }
             for (uint8_t indice = 0; indice < longueur_totale; indice++) {
-                bitstream_write_nbits(jpeg->bistream, table_symbol[indice], 8, 0);// symbole numéro indice
+                bitstream_write_nbits(jpeg->bitstream, table_symbol[indice], 8, 0);// symbole numéro indice
             }
         }
     }
+    printf("Huffman table écrit\n");
 
 
     // Start Of Scan : SOS 0xffda
-    bitstream_write_nbits(jpeg->bistream, 0xffda, 16, 1);                       // marqueur SOS
-    bitstream_write_nbits(jpeg->bistream, 6 + 2*jpeg->nb_components, 16, 0);    // longueur 2N + 6 octets
-    bitstream_write_nbits(jpeg->bistream, jpeg->nb_components, 8, 0);           // nombre de composantes couleur
+    bitstream_write_nbits(jpeg->bitstream, 0xffda, 16, 1);                       // marqueur SOS
+    bitstream_write_nbits(jpeg->bitstream, 6 + 2*jpeg->nb_components, 16, 0);    // longueur 2N + 6 octets
+    bitstream_write_nbits(jpeg->bitstream, jpeg->nb_components, 8, 0);           // nombre de composantes couleur
     for (uint8_t ic = 0; ic < jpeg->nb_components; ic++) {
-        bitstream_write_nbits(jpeg->bistream, ic, 8, 0);                        // ic
-        bitstream_write_nbits(jpeg->bistream, 2*ic, 4, 0);                      // indice de la table de huffman pour DC
-        bitstream_write_nbits(jpeg->bistream, 2*ic + 1, 4, 0);                  // indice de la table de huffman pour DC
+        bitstream_write_nbits(jpeg->bitstream, jpeg->nb_components, 8, 0);       // ic
+        bitstream_write_nbits(jpeg->bitstream, 2*ic, 4, 0);                      // indice de la table de huffman pour DC
+        bitstream_write_nbits(jpeg->bitstream, 2*ic + 1, 4, 0);                  // indice de la table de huffman pour AC
     }
-    bitstream_write_nbits(jpeg->bistream, 0, 8, 0);                             // Ss toujours 0
-    bitstream_write_nbits(jpeg->bistream, 63, 8, 0);                            // Se toujours 63
-    bitstream_write_nbits(jpeg->bistream, 0, 8, 0);                             // Se toujours 00
+    bitstream_write_nbits(jpeg->bitstream, 0, 8, 0);                             // Ss toujours 0
+    bitstream_write_nbits(jpeg->bitstream, 63, 8, 0);                            // Se toujours 63
+    bitstream_write_nbits(jpeg->bitstream, 0, 8, 0);                             // Se toujours 00
+    printf("Start of Scan écrit\n");
 
 }
 
@@ -195,7 +202,7 @@ extern void jpeg_write_footer(struct jpeg_desc *jpeg)
 {
     bitstream_flush(jpeg->bitstream);
     // Fin d'image : SOI 0xffd9
-    bitstream_write_nbits(jpeg->bistream, 0xffd9, 16, 1);
+    bitstream_write_nbits(jpeg->bitstream, 0xffd9, 16, 1);
 }
 
 
@@ -207,7 +214,9 @@ extern void jpeg_write_footer(struct jpeg_desc *jpeg)
 extern void jpeg_desc_set_ppm_filename(struct jpeg_desc *jpeg,
                                        const char *ppm_filename)
 {
-    strcpy(jpeg->ppm_filename, ppm_filename);
+    size_t taille = strlen(ppm_filename)+1;
+    jpeg->ppm_filename = malloc(taille*sizeof(char));
+    strncpy(jpeg->ppm_filename, ppm_filename, taille);
 }
 
 
@@ -222,8 +231,10 @@ extern char *jpeg_desc_get_ppm_filename(struct jpeg_desc *jpeg)
 extern void jpeg_desc_set_jpeg_filename(struct jpeg_desc *jpeg,
                                         const char *jpeg_filename)
 {
-    strcpy(jpeg->jpeg_filename, jpeg_filename);
-    jpeg->bitstream = bitstream_create("jpeg_filename")
+    size_t taille = strlen(jpeg_filename)+1;
+    jpeg->jpeg_filename = malloc(taille*sizeof(char));
+    strncpy(jpeg->jpeg_filename, jpeg_filename, taille);
+    jpeg->bitstream = bitstream_create(jpeg->jpeg_filename);
 }
 
 
@@ -324,14 +335,15 @@ extern void jpeg_desc_set_sampling_factor(struct jpeg_desc *jpeg,
                                           uint8_t sampling_factor)
 {
     if (jpeg->sampling_factor == NULL) {
-        perror("Number of color components must be set before setting sampling factors.\n")
+        perror("Number of color components must be set before setting sampling factors.\n");
         exit(1);
     } else {
-        if (color_component >= jpeg->nb_components) {
-            perror("Color component out of range.\n")
-            exit(1);
-        } else {
+        if (jpeg->nb_components != 1) {
+            printf("Sampling factor color %u, direction %u SET\n", cc, dir);
             jpeg->sampling_factor[2*cc + dir] = sampling_factor;
+        } else {
+            printf("Sampling factor grey, direction %u SET\n", dir);
+            jpeg->sampling_factor[dir] = sampling_factor;
         }
     }
 }
@@ -360,13 +372,10 @@ extern void jpeg_desc_set_huffman_table(struct jpeg_desc *jpeg,
                                         struct huff_table *htable)
 {
     if (jpeg->htables == NULL) {
-        perror("Number of color components must be set before setting Huffman's tables.\n")
+        perror("Number of color components must be set before setting Huffman's tables.\n");
         exit(1);
     } else {
-        if (color_component >= jpeg->nb_components) {
-            perror("Color component out of range.\n")
-            exit(1);
-        } else {
+        if (cc < jpeg->nb_components) {
             jpeg->htables[2*cc + acdc] = htable;
         }
     }
@@ -382,7 +391,7 @@ extern struct huff_table *jpeg_desc_get_huffman_table(struct jpeg_desc *jpeg,
                                                       enum sample_type acdc,
                                                       enum color_component cc)
 {
-    return(jpeg->htables[2*cc + dir]);
+    return(jpeg->htables[2*cc + acdc]);
 }
 
 
@@ -395,13 +404,10 @@ extern void jpeg_desc_set_quantization_table(struct jpeg_desc *jpeg,
                                              uint8_t *qtable)
 {
     if (jpeg->qtables == NULL) {
-        perror("Number of color components must be set before setting quantification tables.\n")
+        perror("Number of color components must be set before setting quantification tables.\n");
         exit(1);
     } else {
-        if (color_component >= jpeg->nb_components) {
-            perror("Color component out of range.\n")
-            exit(1);
-        } else {
+        if (cc < jpeg->nb_components) {
             jpeg->qtables[cc] = qtable;
         }
     }
