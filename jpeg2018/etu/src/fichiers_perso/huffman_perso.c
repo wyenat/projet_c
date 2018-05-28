@@ -173,6 +173,8 @@ struct huff_table *huffman_table_build(uint8_t *nb_symb_per_lengths,
         }
         profondeur ++;
     }
+
+
     return table_huffman;
 }
 
@@ -328,12 +330,15 @@ void huffman_table_destroy(struct huff_table *ht)   {
         // Tant que les fils de la racine ne sont pas marqués comme étant à supprimer, on continue la suppression en profondeur.
 
         if (ht->fils == NULL){
+
             ht->a_ete_visite = 200;     // Il faut le libérer.
             ht = ht->parent;
 
         }
         else if (ht->fils[0]->a_ete_visite == 200 && ht->fils[1]->a_ete_visite == 200)  {
 
+            free(ht->fils[0]);
+            free(ht->fils[1]);
             free(ht->fils);
 
             ht->a_ete_visite = 200;     // Les fils ont été supprimés, il faut marquer le noeud comme étant lui-même à supprimer.
@@ -347,6 +352,10 @@ void huffman_table_destroy(struct huff_table *ht)   {
             ht = ht->fils[1];
         }
     }
+
+    free(ht->fils[0]);
+    free(ht->fils[1]);
+    free(ht->fils);
     free(ht);
 }
 
@@ -354,7 +363,7 @@ void huffman_table_destroy(struct huff_table *ht)   {
 void afficher_table_huffman(struct huff_table *table_huffman)   {
 
     uint16_t nombre_symboles_total = table_huffman->nombre_symboles_fils;
-    printf("\nNombre total de symboles : %d\n\n", nombre_symboles_total);
+//    printf("\nNombre total de symboles : %d\n\n", nombre_symboles_total);
     uint16_t nombre_symboles_visites = 0;
 
     int8_t **symboles_par_profondeur = malloc((16 * nombre_symboles_total * sizeof(int8_t *))); // Il y a au plus 2^16 sle nombre de symboles total à  chaque profondeur
@@ -425,50 +434,51 @@ void afficher_table_huffman(struct huff_table *table_huffman)   {
 }
 
 
-//int main(void) {
-//
-//    uint8_t *nb_symb_per_lengths = malloc(16 * sizeof(uint8_t));
-//    uint8_t temp_length[16] = {0,3,0,0,0,0,3,0,0,1,0,3,0,0,0};
-//    nb_symb_per_lengths = temp_length;
-//
-//    uint8_t *symbols = malloc(10 * sizeof(uint8_t));
-//    uint8_t temp_symbols[10] = {1,2,3,4,5,6,7,8,9,10};
-//    symbols = temp_symbols;
-//
-//    struct huff_table *table_huffman = huffman_table_build(nb_symb_per_lengths, symbols, 10);
-//
-//    uint8_t *nbits = malloc(sizeof(uint8_t));
-//    *nbits = 0;
-//
-//    uint32_t path = huffman_table_get_path(table_huffman, (uint8_t)2, nbits);
-//
-//    printf("Path : %u\n", path);
-//    printf("nbits : %d\n", *nbits);
-//
-//    free(nbits);
-//
-//    afficher_table_huffman(table_huffman);
-//
-//    uint8_t *get_symbols = huffman_table_get_symbols(table_huffman);
-//
-//    for (int i = 0; i<10; i++)  {
-//        printf("Symbole dans l'arbre par ordre de longueur de chemin : %d\n", get_symbols[i]);
-//    }
-//
-//    free(get_symbols);
-//
-//    uint8_t * get_nb_symbols_per_length = huffman_table_get_length_vector(table_huffman);
-//
-//
-//    for (int j=0; j<16; j++)    {
-//        printf("Profondeur : %d\n", j+1);
-//        printf("Nombre de symboles à cette profondeur : %d\n", get_nb_symbols_per_length[j]);
-//    }
-//
-//    free(get_nb_symbols_per_length);
-//
-//
-//
-//    huffman_table_destroy(table_huffman);
-//
-//}
+int main(void) {
+
+    uint8_t *nb_symb_per_lengths;
+    uint8_t temp_length[16] = {0,0,0,0,1,0,3,0,0,5,0,1,0,0,0,0};
+    nb_symb_per_lengths = temp_length;
+
+    uint8_t *symbols;
+    uint8_t temp_symbols[10] = {1,2,3,4,5,6,7,8,9,10};
+    symbols = temp_symbols;
+
+    struct huff_table *table_huffman = huffman_table_build(nb_symb_per_lengths, symbols, 10);
+
+
+    uint8_t *nbits = malloc(sizeof(uint8_t));
+    *nbits = 0;
+
+    uint32_t path = huffman_table_get_path(table_huffman, (uint8_t)1, nbits);
+
+    printf("Path : %u\n", path);
+    printf("nbits : %d\n", *nbits);
+
+    free(nbits);
+
+    afficher_table_huffman(table_huffman);
+
+    uint8_t *get_symbols = huffman_table_get_symbols(table_huffman);
+
+    for (int i = 0; i<10; i++)  {
+        printf("Symbole dans l'arbre par ordre de longueur de chemin : %d\n", get_symbols[i]);
+    }
+
+    free(get_symbols);
+
+    uint8_t * get_nb_symbols_per_length = huffman_table_get_length_vector(table_huffman);
+
+
+    for (int j=0; j<16; j++)    {
+        printf("Profondeur : %d\n", j+1);
+        printf("Nombre de symboles à cette profondeur : %d\n", get_nb_symbols_per_length[j]);
+    }
+
+    free(get_nb_symbols_per_length);
+
+
+
+    huffman_table_destroy(table_huffman);
+
+}
