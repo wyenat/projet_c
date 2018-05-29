@@ -29,19 +29,22 @@ struct Image_MCU_16 {
     struct MCU_16 **MCUs;
 };
 
-
+/* Fonction de transformation d'un bloc spatial (matrice) en bloc fréquentiel */
 int16_t * transformation_DCT(uint8_t *bloc_spatial, size_t indice_depart);
 
 
+/* Conversion d'un MCU codé en YCbCr en un MCU codé en DCT */
 struct MCU_16 * transfo_MCU(struct MCU_8 *MCU_entree);
 
 
+/* Conversion d'un image codée en YCbCr en image codée en DCT */
 struct Image_MCU_16 * Image_DCT(struct Image_MCU_8 *Image_entree);
 
 
+/* Fonction d'affichage d'un MCU codé en DCT */
 void afficher_DCT(struct MCU_16 *MCU);
 
-
+/* Fonction d'affichage de l'image codée en DCT */
 void afficher_image_DCT(struct Image_MCU_16 *image);
 
 #endif //ETU_DCT_H
