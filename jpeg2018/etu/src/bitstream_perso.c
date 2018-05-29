@@ -41,14 +41,14 @@ void bitstream_write_nbits(struct bitstream *stream, uint32_t value, uint8_t nbi
   stream->buffer = stream->buffer << (nbits);
   value = value & mask;
   uint8_t taille = stream->compteur / 8;
-  uint8_t reste = stream->compteur % 8;   
+  uint8_t reste = stream->compteur % 8;
   stream->buffer |= value;
   // printf("Taille = %d \n", taille);
   uint32_t a_ecrire = stream->buffer >> reste;
   uint32_t mask8 = create_mask(8);
-  uint32_t a_ecrire_8 = 0; 
+  uint32_t a_ecrire_8 = 0;
   while (taille > 0){
-    a_ecrire_8 = (a_ecrire >> (8*(taille - 1))) & mask8; 
+    a_ecrire_8 = (a_ecrire >> (8*(taille - 1))) & mask8;
     stream->dernier_ecrit = stream->dernier_ecrit << 8;
     fwrite(&a_ecrire_8, 1, 1, stream->file);
     stream->compteur -= 8;
@@ -64,22 +64,22 @@ void bitstream_write_nbits(struct bitstream *stream, uint32_t value, uint8_t nbi
 }
 
 void bitstream_flush(struct bitstream *stream){
-  uint8_t reste = stream->compteur;  
+  uint8_t reste = stream->compteur;
   // printf("Reste à %d \n", reste);
   if (reste == 0){
     // printf(" Rien à flush \n ");
   } else {
     // printf("On rajoute %d zéros \n", 8-reste);
-      // stream->buffer = stream->buffer << ((8-reste)%8);   
+      // stream->buffer = stream->buffer << ((8-reste)%8);
       // printf("compteur = %d \n", stream->compteur);
       fwrite(&stream->buffer, 1, 1, stream->file);
   }
-  stream->compteur = 0; 
+  stream->compteur = 0;
   stream->buffer = 0;
   stream->dernier_ecrit = 0; //Peu importe la valeur écrite, ce ne sera pas un f, donc pas de ff à venir.
 }
 
 void bitstream_destroy(struct bitstream *stream){
-  free(stream->file);
+  fclose(stream->file);
   free(stream);
 }

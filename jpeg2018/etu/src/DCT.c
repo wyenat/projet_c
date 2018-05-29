@@ -72,6 +72,14 @@ struct MCU_16 * transfo_MCU(struct MCU_8 *MCU_entree) {
 
 }
 
+void Image_destroy(struct Image_MCU_16 *entree){
+    for (uint64_t i = 0; i < entree->largeur * entree->hauteur; i++) {
+        free(entree->MCUs[i]->flux);
+        free(entree->MCUs[i]);
+    }
+    free(entree);
+}
+
 
 struct Image_MCU_16 * Image_DCT(struct Image_MCU_8 *Image_entree)   {
     // Convertit une image composée de MCU_8 en version YCbCR en des MCU_16 en version DCT.

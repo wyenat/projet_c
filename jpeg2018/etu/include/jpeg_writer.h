@@ -187,14 +187,4 @@ extern void jpeg_desc_set_quantization_table(struct jpeg_desc *jdesc,
 extern uint8_t *jpeg_desc_get_quantization_table(struct jpeg_desc *jdesc,
                                                  enum color_component cc);
 
-/*
-    Permet de choisir une implémentation de DCT à enregistrer dans le jpeg_desc.
- */
-extern void jpeg_desc_set_dct(struct jpeg_desc *jdesc, void (*dct)(int16_t *));
-
-/*
-    Retourne la fonction utilisée pour calculer la DCT sur un bloc 8x8.
-*/
-extern void *jpeg_desc_get_dct(struct jpeg_desc *jdesc);
-
 #endif /* JPEG_WRITER_H */

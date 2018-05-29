@@ -101,7 +101,7 @@ int main( int argc, char * argv[] )
 
 
         //Passage en MCU
-        struct Image_MCU_8 *image = decoupe(pic, 1, 1);
+        struct Image_MCU_8 *image = decoupe(pic, h1, v1);
         if (verbose){
           printf("\n \n \n \t Passage MCU8 ! \n \n \n");
           afficher_image_8(image);
@@ -122,7 +122,7 @@ int main( int argc, char * argv[] )
 
 
         // Sous-échantillonages
-        Image_downsampling(image, 0, 0);
+        Image_downsampling(image, h1/h3 - 1, v1/v3 - 1);
         if (verbose){
           printf(" \n \n \n \t Sous-échantillonage ! \n \n \n");
           printf("Hauteur du MCU de l'image : %d\n", image->MCUs[0]->hauteur);
@@ -160,11 +160,13 @@ int main( int argc, char * argv[] )
         printf("\n \n \n \t ACDC ! \n \n");
         }
         ACDC_me(new_image, bitstream_jpeg, jpeg, verbose);
-  
 
 
-        // Fermeture du jpeg
+
+        // Libération des mémoires allouée.
         jpeg_write_footer(jpeg);
+        Image_destroy(new_image);
+        bitstream_destroy(bitstream_jpeg);
         printf("Image traitée \n");
     }
   }

@@ -35,6 +35,9 @@ int16_t * transformation_DCT(uint8_t *bloc_spatial, size_t indice_depart);
 
 struct MCU_16 * transfo_MCU(struct MCU_8 *MCU_entree);
 
+/* Libère la mémoire allouée à l'image MCU_16 */
+void Image_destroy(struct Image_MCU_16 *entree);
+
 
 struct Image_MCU_16 * Image_DCT(struct Image_MCU_8 *Image_entree);
 
