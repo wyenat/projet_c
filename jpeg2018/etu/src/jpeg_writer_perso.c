@@ -202,12 +202,6 @@ extern void jpeg_write_header(struct jpeg_desc *jpeg)
     bitstream_write_nbits(jpeg->bitstream, 63, 8, 0);                            // Se toujours 63
     bitstream_write_nbits(jpeg->bitstream, 0, 8, 0);                             // Se toujours 00
     printf("Start of Scan écrit\n");
-
-    free(jpeg->ppm_filename);
-    free(jpeg->jpeg_filename);
-    free(jpeg->sampling_factor);
-    free(jpeg->htables);
-    free(jpeg->qtables);
 }
 
 /* Ecrit le footer JPEG (marqueur EOI) dans le fichier de sortie. */
@@ -216,6 +210,12 @@ extern void jpeg_write_footer(struct jpeg_desc *jpeg)
     bitstream_flush(jpeg->bitstream);
     // Fin d'image : SOI 0xffd9
     bitstream_write_nbits(jpeg->bitstream, 0xffd9, 16, 1);
+
+    free(jpeg->ppm_filename);
+    free(jpeg->jpeg_filename);
+    free(jpeg->sampling_factor);
+    free(jpeg->htables);
+    free(jpeg->qtables);
 }
 
 
