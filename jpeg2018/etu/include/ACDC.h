@@ -38,7 +38,7 @@ void balise_std(int nb_zero, int valeur, struct bitstream *bitstream_jpeg, struc
 void LRE(int16_t *entree, struct bitstream *bitstream_jpeg, struct jpeg_desc *jpeg, int couleur, int verbose, int layer_y, int nb_compression);
 
 /* Calcul le DC du bloc, et le retourne */
-uint32_t calcul_DC(int16_t *flux, int premier,int32_t *DC, int couleur, int layer_y, int nb_compression);
+int32_t calcul_DC(int16_t *flux, int premier,int32_t *DC, int couleur, int layer_y, int nb_compression);
 
 /* Prend en entrée une image et le fichier de sortie, et écrit les informations contenues dans l'image
 dans le fichier avec la compression ACDC */

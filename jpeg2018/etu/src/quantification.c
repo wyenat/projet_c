@@ -1,4 +1,8 @@
 #include "quantification.h"
+
+// Ces structures sont là pour les retrouver plus vite en codant ou en relisant
+// Le fonctionnnement de ce script est très semblable à celui de zig_zag.c
+
 // struct MCU_16 {                // information sur un octet (RGB, YCbCr et échantillonnage)
 //     int couleur;              //0 si en noir et blanc, 1 sinon.
 //     uint8_t largeur;          // 1 ou 2 (blocs de 8x8)
@@ -19,10 +23,11 @@
 
 // fonction principale qui sera appelée par le programme
 // prend en entrée une image
-// renvoie cette image ou chaque bloc 8x8 (x16 bits) a été quantifié
+// renvoie cette image ou chaque bloc 8x8 a été quantifié
 void quantifier_image(struct Image_MCU_16 *image)
 {
     struct MCU_16 *MCU;
+    // cette fonction appelle la quantification sur chaque MCU de l'image
     for ( uint32_t indice = 0; indice < image->hauteur*image->largeur; indice++) {
         MCU = image->MCUs[indice];
         quantifier_MCU(MCU);
@@ -35,13 +40,16 @@ void quantifier_MCU(struct MCU_16 *MCU)
     uint8_t larg = MCU->largeur;
     uint8_t haut = MCU->hauteur;
     uint8_t n_blocs = larg*haut;
-    if (MCU->couleur == 1) {
+    if (MCU->couleur == 1) { // si on est en couleur le nombre de bloc n'est pas trivial
         // Le nombre de blocs différent est toujours largeur * hauteur pour Y, mais pour Cb et Cr il dépend de l'échantillonage.
         // Si l'échantillonage est vertical, il n'y a plus que hauteur/2 blocs, et idem pour un échantillonage horizontal.
         n_blocs += 2*(larg - MCU->echant_h*larg/2)*(haut - MCU->echant_h*haut/2);
     }
-
+    // Il nous faut une table tampon pour faire notre quantification
+    // Ce n'est pas possible en place
     int16_t *table = malloc(64*sizeof(int16_t));
+    // cette fonction appelle la quantification sur chaque bloc 8x8 du MCU
+    // avec la table de quantification adaptée
     for (uint8_t bloc = 0; bloc < n_blocs; bloc++) {
         for (int indice = 0; indice < 64; indice++) {
             table[indice] = MCU->flux[64*bloc + indice];
@@ -65,6 +73,7 @@ void quantifier_MCU(struct MCU_16 *MCU)
 // 1 si la table est une table Y, 0 pour Cb/Cr
 void quantifier_8x8(int16_t *table, int booleen_tableY)
 {
+    // Il faut un table de quantification différente pour pour les composantes Y et Cb/Cr
     uint8_t *table_quantification = NULL;
     if (booleen_tableY == 1) {
         table_quantification = compressed_Y_table;
@@ -72,10 +81,11 @@ void quantifier_8x8(int16_t *table, int booleen_tableY)
         table_quantification = compressed_CbCr_table;
     }
 
+    // vecteur tampon car la quantification n'est pas possible en place
     int16_t table_quantifiee[64];
     for (uint8_t indice = 0; indice < 64; indice++) {
         float ratio = table[indice]/table_quantification[indice];
-        table_quantifiee[indice] = (int16_t)(ratio+0.5)/1;
+        table_quantifiee[indice] = (int16_t)(ratio+0.5)/1; // ceci est un arroundi
     }
     for (uint8_t indice = 0; indice < 64; indice++) {
         table[indice] = table_quantifiee[indice];

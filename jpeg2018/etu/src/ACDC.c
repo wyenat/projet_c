@@ -6,7 +6,7 @@
 #include "hex.h"
 #include "DCT.h"
 #include "bitstream_perso.h"
-#include "huffman.h"
+#include "huffman_perso.h"
 #include "jpeg_writer_perso.h"
 
 //Je ne comprends pas bien comment gerer le byte stuffing mais sinon tout fonctionne.
@@ -92,7 +92,13 @@ void balise_std(int nb_zero, int valeur, struct bitstream *bitstream_jpeg, struc
   bitstream_write_nbits(bitstream_jpeg, chemin_huffman, longeur_huffman, 0);
   bitstream_write_nbits(bitstream_jpeg, i, m, 0);
   if (verbose){
-    printf("AC :   symbole = %s, huffman = %s, sur %d bits, indice = %s \n",hexme(valeur_symbole), binme_n(chemin_huffman, longeur_huffman), longeur_huffman, binme_n(i,m));
+    char *hex = hexme(valeur_symbole);
+    char *bin_h = binme_n(chemin_huffman, longeur_huffman);
+    char *bin = binme_n(i,m);
+    printf("AC :   symbole = %s, huffman = %s, sur %d bits, indice = %s \n", hex, bin_h, longeur_huffman, bin);
+    free(hex);
+    free(bin_h);
+    free(bin);
   }
 }
 
@@ -150,7 +156,11 @@ void ACDC_me(struct Image_MCU_16 *entree, struct bitstream *bitstream_jpeg, stru
                   code_dc[couleur] = huffman_table_get_path(jpeg_desc_get_huffman_table(jpeg, DC, couleur), m, &len_chemin[couleur]);
                   printf("code_dc = %d, len = %d \n", code_dc[couleur], len_chemin[couleur]);
                   if (verbose){
-                    printf("MCU = %d :     DC = %d, m=%d, encodé = %s, indice = %s \n",parcours, DC_valeur[couleur], m, binme_n(code_dc[couleur], len_chemin[couleur]), binme_n(i,m));
+                    char *bin_c = binme_n(code_dc[couleur], len_chemin[couleur]);
+                    char *bin = binme_n(i,m);
+                    printf("MCU = %d :     DC = %d, m=%d, encodé = %s, indice = %s \n",parcours, DC_valeur[couleur], m, bin_c, bin);
+                    free(bin_c);
+                    free(bin);
                   }
                   bitstream_write_nbits(bitstream_jpeg, code_dc[couleur], len_chemin[couleur], 0);
                   bitstream_write_nbits(bitstream_jpeg, i, m, 0);

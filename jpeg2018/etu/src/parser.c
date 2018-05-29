@@ -9,7 +9,7 @@
 #include "bitstream_perso.h"
 #include "jpeg_writer_perso.h"
 #include "htables.h"
-#include "huffman.h"
+#include "huffman_perso.h"
 #include "jpeg.h"
 
 
@@ -124,7 +124,7 @@ int main( int argc, char * argv[] )
         // Création de l'entête jpeg
         struct jpeg_desc *jpeg = jpeg_desc_create();
         struct bitstream *bitstream_jpeg = ecrire_entete(jpeg ,noms_des_images[i], renommage[i], image->hauteur*8*(image->MCUs[0]->hauteur),  image->largeur*8*(image->MCUs[0]->largeur),1 + 2*image->couleur, h1, h2, h3, v1, v2, v3);
-
+        free(renommage[i]);
 
         // Passage de RGB à YCbCr
         Image_RGB2YCbCr(image);

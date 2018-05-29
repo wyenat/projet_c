@@ -5,7 +5,7 @@
 #include <string.h>
 #include <assert.h>
 #include "bitstream_perso.h"
-#include "huffman.h"
+#include "huffman_perso.h"
 // #include "htables.h"
 
 /********************/
