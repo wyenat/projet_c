@@ -148,6 +148,7 @@ void ACDC_me(struct Image_MCU_16 *entree, struct bitstream *bitstream_jpeg, stru
                   uint32_t m = obtenir_magnetude(DC_valeur[couleur]);
                   uint32_t i = obtenir_indice(DC_valeur[couleur], m);
                   code_dc[couleur] = huffman_table_get_path(jpeg_desc_get_huffman_table(jpeg, DC, couleur), m, &len_chemin[couleur]);
+                  printf("code_dc = %d, len = %d \n", code_dc[couleur], len_chemin[couleur]);
                   if (verbose){
                     printf("MCU = %d :     DC = %d, m=%d, encodé = %s, indice = %s \n",parcours, DC_valeur[couleur], m, binme_n(code_dc[couleur], len_chemin[couleur]), binme_n(i,m));
                   }
