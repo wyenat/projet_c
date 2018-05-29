@@ -7,7 +7,7 @@
 #include "DCT.h"
 #include "bitstream_perso.h"
 #include "huffman.h"
-#include "jpeg_writer.h"
+#include "jpeg_writer_perso.h"
 
 //Je ne comprends pas bien comment gerer le byte stuffing mais sinon tout fonctionne.
 //Tout le module ne fait pour l'instant que de l'affichage, il sortira des char* ou

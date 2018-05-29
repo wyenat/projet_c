@@ -1,12 +1,13 @@
-#ifndef JPEG_WRITER_H
-#define JPEG_WRITER_H
+#ifndef JPEG_WRITER_PERSO_H
+#define JPEG_WRITER_PERSO_H
 
 #include <stdint.h>
 #include <string.h>
 #include <assert.h>
-#include "bitstream.h"
+#include <stdlib.h>
+#include "bitstream_perso.h"
 #include "huffman.h"
-#include "htables.h"
+// #include "htables.h"
 
 /********************/
 /* Types de données */
@@ -56,7 +57,6 @@ struct jpeg_desc {
     uint8_t *sampling_factor;   // h1xv1,h2xv2, h3xv3
     struct huff_table **htables;
     uint8_t **qtables;
-    void (*dct)(int16_t *));
     struct bitstream *bitstream;
 
 };
@@ -204,14 +204,5 @@ extern void jpeg_desc_set_quantization_table(struct jpeg_desc *jdesc,
 extern uint8_t *jpeg_desc_get_quantization_table(struct jpeg_desc *jdesc,
                                                  enum color_component cc);
 
-/*
-    Permet de choisir une implémentation de DCT à enregistrer dans le jpeg_desc.
- */
-extern void jpeg_desc_set_dct(struct jpeg_desc *jdesc, void (*dct)(int16_t *));
 
-/*
-    Retourne la fonction utilisée pour calculer la DCT sur un bloc 8x8.
-*/
-extern void *jpeg_desc_get_dct(struct jpeg_desc *jdesc);
-
-#endif /* JPEG_WRITER_H */
+#endif /* JPEG_WRITER_PERSO_H */

@@ -7,7 +7,7 @@
 #include "Downsampling.h"
 #include "ACDC.h"
 #include "bitstream_perso.h"
-#include "jpeg_writer.h"
+#include "jpeg_writer_perso.h"
 #include "htables.h"
 #include "huffman.h"
 #include "jpeg.h"
@@ -160,6 +160,7 @@ int main( int argc, char * argv[] )
         printf("\n \n \n \t ACDC ! \n \n");
         }
         ACDC_me(new_image, bitstream_jpeg, jpeg, verbose);
+
 
 
 

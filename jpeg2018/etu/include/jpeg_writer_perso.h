@@ -1,7 +1,12 @@
-#ifndef JPEG_WRITER_H
-#define JPEG_WRITER_H
+#ifndef JPEG_WRITER_PERSO_H
+#define JPEG_WRITER_PERSO_H
 
 #include <stdint.h>
+#include <string.h>
+#include <assert.h>
+#include "bitstream_perso.h"
+#include "huffman.h"
+// #include "htables.h"
 
 /********************/
 /* Types de données */
@@ -42,7 +47,18 @@ enum direction
     Type opaque contenant l'intégralité des informations nécessaires à
     l'écriture de l'entête JPEG.
 */
-struct jpeg_desc;
+struct jpeg_desc {
+    char *ppm_filename;
+    char *jpeg_filename;
+    uint32_t height;
+    uint32_t width;
+    uint8_t nb_components;
+    uint8_t *sampling_factor;   // h1xv1,h2xv2, h3xv3
+    struct huff_table **htables;
+    uint8_t **qtables;
+    struct bitstream *bitstream;
+
+};
 
 /* Type opaque représentant un arbre de Huffman. */
 struct huff_table;
@@ -187,4 +203,5 @@ extern void jpeg_desc_set_quantization_table(struct jpeg_desc *jdesc,
 extern uint8_t *jpeg_desc_get_quantization_table(struct jpeg_desc *jdesc,
                                                  enum color_component cc);
 
-#endif /* JPEG_WRITER_H */
+
+#endif /* JPEG_WRITER_PERSO_H */
