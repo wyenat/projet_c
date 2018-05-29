@@ -2,7 +2,7 @@
 #include "bitstream_perso.h"
 #include "jpeg_writer_perso.h"
 #include "htables.h"
-#include "huffman.h"
+#include "huffman_perso.h"
 
 /* Ecrit les facteurs de sampling dans le jpeg */
 void ecrire_facteur(struct jpeg_desc *jpeg, int h1, int h2, int h3, int v1, int v2, int v3);

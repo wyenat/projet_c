@@ -9,7 +9,7 @@
 #include "bitstream_perso.h"
 #include "jpeg_writer_perso.h"
 #include "htables.h"
-#include "huffman.h"
+#include "huffman_perso.h"
 #include "jpeg.h"
 
 

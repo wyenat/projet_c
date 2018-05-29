@@ -6,7 +6,7 @@
 #include "hex.h"
 #include "DCT.h"
 #include "bitstream_perso.h"
-#include "huffman.h"
+#include "huffman_perso.h"
 #include "jpeg_writer_perso.h"
 
 //Je ne comprends pas bien comment gerer le byte stuffing mais sinon tout fonctionne.

@@ -1,4 +1,5 @@
 #include "jpeg_writer_perso.h"
+#include "huffman_perso.h"
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -41,7 +42,7 @@
 // struct jpeg_desc;
 
 /* Type opaque représentant un arbre de Huffman. */
-struct huff_table;
+//struct huff_table;
 
 /***********************************************/
 /* Ouverture, fermeture et fonctions générales */

@@ -58,6 +58,17 @@ struct huff_table * init_noeud(struct huff_table *parent, uint8_t profondeur);
 void mise_a_jour_saturation(struct huff_table * noeud_courant);
 
 
+/*
+    Reinitialise l'attribut a_cette_visite des parents du noeud courant
+ */
+void reset_attribut_a_ete_visite_parents(struct huff_table *noeud_courant);
+
+
+/*
+    Met à jour l'attibut du nombre de fils dans l'arbre.
+ */
+void mise_a_jour_nombre_symboles_fils(struct huff_table * noeud_courant);
+
 
 /*
     A partir d'un noeud donné, recherche le prochain noeud dans l'arbre qui satsfait à la fois à la condition de non saturation
@@ -121,5 +132,5 @@ extern void afficher_table_huffman(struct huff_table *table_huffman);
 
 
 
-
 #endif //ETU_HUFFMAN_PERSO_H
+
