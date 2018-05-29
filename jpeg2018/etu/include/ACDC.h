@@ -6,7 +6,7 @@
 #include "hex.h"
 #include "DCT.h"
 #include "bitstream_perso.h"
-#include "jpeg_writer.h"
+#include "jpeg_writer_perso.h"
 
 uint32_t  obtenir_magnetude(int16_t entree);
 
