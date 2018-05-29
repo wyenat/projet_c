@@ -22,8 +22,8 @@ void EOB(struct bitstream *bitstream_jpeg, struct jpeg_desc *jpeg, int couleur, 
 
 void balise_std(int nb_zero, int valeur, struct bitstream *bitstream_jpeg, struct jpeg_desc *jpeg, int couleur, int verbose);
 
-void LRE(int16_t *entree, struct bitstream *bitstream_jpeg, struct jpeg_desc *jpeg, int couleur, int verbose);
+void LRE(int16_t *entree, struct bitstream *bitstream_jpeg, struct jpeg_desc *jpeg, int couleur, int verbose, int layer_y, int nb_compression);
 
-int calcul_DC(int16_t *flux, int premier,int32_t *DC, int couleur, int verbose);
+int calcul_DC(int16_t *flux, int premier,int32_t *DC, int couleur, int verbose, int layer_y, int nb_compression);
 
 void ACDC_me(struct Image_MCU_16 *entree, struct bitstream *bitstream_jpeg, struct jpeg_desc *jpeg, int verbose);

@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <assert.h>
 #include "decoupage_MCU.h"
-
+#include "hex.h"
 
 struct MCU_8 *RGB2YCbCr_couleur(struct MCU_8 *MCU_entree)  {
     //Convertit le MCU en COULEUR de RGB à YCbCr
@@ -84,7 +84,7 @@ void afficher_YCbCr(struct MCU_8 *MCU)
             printf("Cr\t");
         }
         for (uint32_t indice = 0; indice < 64 * nombre_blocs; indice++) {
-            printf("%u\t", MCU->flux[64 * nombre_blocs * composante + indice]);
+            printf("%s\t", hexme(MCU->flux[64 * nombre_blocs * composante + indice]));
             if ((indice + 1) % 8 == 0) {
                 printf("\n\t");
             }
