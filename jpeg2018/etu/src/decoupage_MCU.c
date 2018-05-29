@@ -30,17 +30,23 @@
 // largeur et hauteur MCU valent 1 ou 2
 struct Image_MCU_8 *decoupe(struct Image *image, uint8_t largeur_MCU, uint8_t hauteur_MCU)
 {
+    // Si la largeur ou la hauteur de l'image ne sont pas multiple
+    // de la taille d'un MCU, il faut donc redimensionner l'image
     struct Image *new_image = redimensionner(image, largeur_MCU, hauteur_MCU);
     uint32_t largeur = (new_image->largeur)/(8*largeur_MCU);          //en MCUs
     uint32_t hauteur = (new_image->hauteur)/(8*hauteur_MCU);
+    // MCUs est un pointeur sur le tableau contenant tout nos MCUs
     struct MCU_8 **MCUs = malloc(hauteur*largeur*sizeof(struct MCU *));
     for (uint32_t ligne = 0; ligne < hauteur; ligne++) {
         for (uint32_t colonne = 0; colonne < largeur; colonne++) {
+            // Ici on donne l'image et l'endroit où récupérer les informations
+            // De plus que la taille d'un MCU pour en créer un
             struct MCU_8 *MCU = creer_MCU(new_image, ligne, colonne, largeur, largeur_MCU, hauteur_MCU);
-//            MCU = MCU_RGB(MCU);
             MCUs[largeur*ligne + colonne] = MCU;
         }
     }
+    // On créer donc une nouvelle structure Image_MCU_8
+    // Qui sera bien plus pratique que Image pour la suite.
     struct Image_MCU_8 *image_MCU = malloc(sizeof(struct Image_MCU_8));
     image_MCU->couleur = new_image->couleur;
     image_MCU->largeur = largeur;
@@ -95,10 +101,12 @@ void afficher_MCU_8(struct MCU_8 *MCU)
 struct MCU_8 *creer_MCU(struct Image *image, uint32_t ligne, uint32_t colonne, uint32_t largeur, uint8_t largeur_MCU, uint8_t hauteur_MCU)
 {
     uint8_t taille_pixel = 1 + 2*image->couleur;         // 1 si noir et blanc, 3 si couleur, nombre d'octets par pixel
+    // Dans nos MCUs l'information est stockée sous forme de vecteur
+    // Vecteur étant la concaténation de vecteur de longueur 64 ou 192 suivant la taille des pixels
     uint8_t *flux = malloc(64*taille_pixel*largeur_MCU*hauteur_MCU*sizeof(uint8_t));
     for (uint32_t ordonnee = 0; ordonnee < 8*hauteur_MCU; ordonnee++) {
         for (uint32_t abscisse = 0; abscisse < 8*taille_pixel*largeur_MCU; abscisse++) {
-            flux[8*taille_pixel*largeur_MCU*ordonnee + abscisse]
+            flux[8*taille_pixel*largeur_MCU*ordonnee + abscisse] // taille d'une ligne fois la ligne plus position sur cette ligne
                 = image->stream[(8*taille_pixel*largeur_MCU*largeur)*(8*hauteur_MCU*ligne + ordonnee) + (8*taille_pixel*largeur_MCU*colonne + abscisse)];
         }
     }
@@ -107,30 +115,6 @@ struct MCU_8 *creer_MCU(struct Image *image, uint32_t ligne, uint32_t colonne, u
     MCU->largeur = largeur_MCU;
     MCU->hauteur = hauteur_MCU;
     MCU->flux = flux;
-    return MCU;
-}
-
-
-// s'il y de la couleur, il faut réaranger en 3 blocs ou plus 8x8 (RGB)
-// donc pour du 2x1 : R1 G1 B1  R2 G2 B2
-struct MCU_8 *MCU_RGB(struct MCU_8 *MCU)
-{
-    if (MCU->couleur == 0) {
-        return MCU;
-    }
-    uint8_t haut = MCU->hauteur, larg = MCU->largeur;
-    uint8_t RGB[3*64*haut*larg];
-    for (uint8_t h = 0; h < haut; h ++) {
-        for (uint8_t l = 0; l < haut; l ++) {
-            for (uint8_t ligne = 0; ligne < 8; ligne++) {
-                for (uint8_t colonne = 0; colonne < 8; colonne++) {
-                    RGB[64*(3*(2*h +l)) + 8*ligne + colonne] = MCU->flux[larg*8*3*(8*h+ligne)+ 8*l+colonne];
-                    RGB[64*(3*(2*h +l)+1) + 8*ligne + colonne] = MCU->flux[larg*8*3*(8*h+ligne)+ 8*l+colonne+1];
-                    RGB[64*(3*(2*h +l)+2) + 8*ligne + colonne] = MCU->flux[larg*8*3*(8*h+ligne)+ 8*l+colonne+2];
-                }
-            }
-        }
-    }
     return MCU;
 }
 
@@ -159,10 +143,12 @@ struct Image *redimensionner(struct Image *image, uint8_t largeur_MCU, uint8_t h
         if (elargir_droite == 1) {
             elargir(image, stream_tmp, new_largeur);
         } else {
+            // Ici même si on élargie pas, comme on agrandit,
+            // il faut quand même créer une nouvelle image et donc copier le stream
             for (uint32_t ligne = 0; ligne < image->hauteur; ligne++) {
                 for (uint32_t colonne = 0; colonne < image->largeur; colonne++) {
                     for (uint8_t couleur = 0; couleur < taille_pixel; couleur++) {
-                        stream_tmp[new_largeur*taille_pixel*ligne + colonne*taille_pixel + couleur]
+                        stream_tmp[new_largeur*taille_pixel*ligne + colonne*taille_pixel + couleur] // taille d'une ligne fois la ligne plus position sur cette ligne
                             = image->stream[image->largeur*taille_pixel*ligne + colonne*taille_pixel + couleur];
                     }
                 }
@@ -194,15 +180,17 @@ char *elargir(struct Image *image, char *stream_tmp, uint32_t new_largeur)
     uint8_t taille_pixel = 1 + 2*image->couleur;         // 1 si noir et blanc, 3 si couleur, nombre d'octets par pixel
     uint32_t last_largeur = image->largeur;
     for (uint32_t ligne = 0; ligne < image->hauteur; ligne++) {
+        // Au début on réécrit chaque début de ligne
         for (uint32_t colonne = 0; colonne < last_largeur; colonne++) {
             for (uint8_t couleur = 0; couleur < taille_pixel; couleur++) {
-                stream_tmp[new_largeur*taille_pixel*ligne + colonne*taille_pixel + couleur]
+                stream_tmp[new_largeur*taille_pixel*ligne + colonne*taille_pixel + couleur] // taille d'une ligne fois la ligne plus position sur cette ligne
                     = image->stream[last_largeur*taille_pixel*ligne + colonne*taille_pixel + couleur];
             }
         }
+        // Puis pour caque ligne on compléte en copiant le dernier pixel autant de fois que nécessaire
         for (uint32_t colonne = last_largeur; colonne < new_largeur; colonne++) {
             for (uint8_t couleur = 0; couleur < taille_pixel; couleur++) {
-                stream_tmp[new_largeur*taille_pixel*ligne + colonne*taille_pixel + couleur]
+                stream_tmp[new_largeur*taille_pixel*ligne + colonne*taille_pixel + couleur] // taille d'une ligne fois la ligne plus position sur cette ligne
                     = image->stream[last_largeur*taille_pixel*ligne + (last_largeur-1)*taille_pixel + couleur];
             }
 
@@ -218,10 +206,14 @@ char *elargir(struct Image *image, char *stream_tmp, uint32_t new_largeur)
 char *agrandir(char *stream_tmp, uint32_t new_hauteur, uint32_t last_hauteur, uint32_t new_largeur, uint8_t taille_pixel)
 {
     // printf("\n \n \n \t Début de l'agrandissement ! \n \n \n");
+    // Quand on arrive ici toute l'image a été copiée,
+    // il ne reste plus qu'à ajouter des lignes
     for (uint32_t ligne = last_hauteur; ligne < new_hauteur; ligne++) {
         for (uint32_t colonne = 0; colonne < new_largeur; colonne++) {
             for (uint8_t couleur = 0; couleur < taille_pixel; couleur++) {
-                stream_tmp[new_largeur*taille_pixel*ligne + colonne*taille_pixel + couleur]
+                // Ici le deuxième membre de l'égalité ne dépend pas de la ligne
+                // car c'est toujours la dernière ligne que l'on copie
+                stream_tmp[new_largeur*taille_pixel*ligne + colonne*taille_pixel + couleur] // taille d'une ligne fois la ligne plus position sur cette ligne
                     = stream_tmp[(last_hauteur-1)*new_largeur*taille_pixel + colonne*taille_pixel + couleur];
             }
         }
@@ -229,13 +221,3 @@ char *agrandir(char *stream_tmp, uint32_t new_hauteur, uint32_t last_hauteur, ui
     }
     return stream_tmp;
 }
-
-
-// int main(void)
-// {
-//     struct Image *pic = initialisation("../images/zig-zag.ppm");
-//     afficher_pic(pic);
-//     struct Image_MCU_8 *image = decoupe(pic, 1, 1);
-//     afficher_image_8(image);
-//     return EXIT_SUCCESS;
-// }

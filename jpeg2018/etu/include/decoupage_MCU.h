@@ -40,10 +40,6 @@ void afficher_MCU_8(struct MCU_8 *MCU);
 // la stock dans le flux du MCU
 struct MCU_8 *creer_MCU(struct Image *image, uint32_t ligne, uint32_t colonne, uint32_t largeur, uint8_t largeur_MCU, uint8_t hauteur_MCU);
 
-// s'il y de la couleur, il faut réaranger en 3 blocs ou plus 8x8 (RGB)
-// donc pour du 2x1 : R1 G1 B1  R2 G2 B2
-struct MCU_8 *MCU_RGB(struct MCU_8 *MCU);
-
 // Les images n'ont pas forcement une taille multiple de la taille des MTU
 // on élargit donc si besoin en copiant la dernière colonne
 // puis on agrandit si besoin avec la dernière ligne
