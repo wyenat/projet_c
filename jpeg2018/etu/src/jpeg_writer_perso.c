@@ -129,11 +129,12 @@ extern void jpeg_write_header(struct jpeg_desc *jpeg)
     // Define Quantization Table : DQT 0xffdb
     bitstream_flush(jpeg->bitstream);
     for (uint8_t iq = 0; iq < jpeg->nb_components; iq++) {
+        if (iq == 2) {break;}                                                    // Il n'y a pas besoin de la troisième table
         bitstream_write_nbits(jpeg->bitstream, 0xffdb, 16, 1);                   // marqueur DQT
         bitstream_write_nbits(jpeg->bitstream, 67, 16, 0);                       // longueur 67 octets
         bitstream_write_nbits(jpeg->bitstream, 0, 4, 0);                         // precision 8bits
         bitstream_write_nbits(jpeg->bitstream, iq, 4, 0);                        // indice de la table
-        for (uint8_t indice = 0; indice < 64; indice++) {                       // valeurs de la table
+        for (uint8_t indice = 0; indice < 64; indice++) {                        // valeurs de la table
             bitstream_write_nbits(jpeg->bitstream, jpeg->qtables[iq][indice], 8, 0);
         }
     }
@@ -148,15 +149,18 @@ extern void jpeg_write_header(struct jpeg_desc *jpeg)
     bitstream_write_nbits(jpeg->bitstream, jpeg->width, 16, 0);                  // largeur
     bitstream_write_nbits(jpeg->bitstream, jpeg->nb_components, 8, 0);           // nombre de composantes couleur
     for (uint8_t ic = 0; ic < jpeg->nb_components; ic++) {
-        bitstream_write_nbits(jpeg->bitstream, jpeg->nb_components, 8, 0);//XXXXX      // identifiant de composante
+        bitstream_write_nbits(jpeg->bitstream, ic+1, 8, 0);                        // identifiant de composante
         bitstream_write_nbits(jpeg->bitstream, jpeg->sampling_factor[2*ic], 4, 0);// facteur d'échantillonnage horizontale
         bitstream_write_nbits(jpeg->bitstream, jpeg->sampling_factor[2*ic + 1], 4, 0);// facteur d'échantillonnage verticale
-        bitstream_write_nbits(jpeg->bitstream, ic, 8, 0);           //XXXXX      // table de quantification iq
+        uint8_t iq = 0;
+        if (ic >= 1) {iq = 1;}                                                   // si ic vaut plus de 1 on est sur Cb ou Cr
+        bitstream_write_nbits(jpeg->bitstream, iq, 8, 0);                        // table de quantification iq
     }
     printf("Start of Frame écrit\n");
 
     // Define Huffman Table : DHT 0xffc4
     for (uint8_t ic = 0; ic < jpeg->nb_components; ic++) {
+        if (ic == 2) {break;}
         for (uint8_t ia = 0; ia < 2; ia++) {
             // VOIR DANS HTABLES !!!!!
             uint8_t *table_length = huffman_table_get_length_vector(jpeg->htables[2*ic + ia]);
@@ -169,7 +173,9 @@ extern void jpeg_write_header(struct jpeg_desc *jpeg)
             bitstream_write_nbits(jpeg->bitstream, 19 + longueur_totale, 16, 0); // longueur 19+L octets
             bitstream_write_nbits(jpeg->bitstream, 0, 3, 0);                     // toujours 0
             bitstream_write_nbits(jpeg->bitstream, ia, 1, 0);                    // 0 pour DC, 1 pour AC
-            bitstream_write_nbits(jpeg->bitstream, 2*ic + ia, 4, 0); //XXXXX     // indice de Huffman
+            uint8_t ih = 0;
+            if (ic >= 1) {ih = 1;}                                               // si ic vaut plus de 1 on est sur Cb ou Cr
+            bitstream_write_nbits(jpeg->bitstream, ih, 4, 0);                    // indice de Huffman
             for (uint8_t longueur = 0; longueur < 16; longueur++) {
                 bitstream_write_nbits(jpeg->bitstream, table_length[longueur], 8, 0);// nombre de symboles de taille longueur
             }
@@ -186,9 +192,11 @@ extern void jpeg_write_header(struct jpeg_desc *jpeg)
     bitstream_write_nbits(jpeg->bitstream, 6 + 2*jpeg->nb_components, 16, 0);    // longueur 2N + 6 octets
     bitstream_write_nbits(jpeg->bitstream, jpeg->nb_components, 8, 0);           // nombre de composantes couleur
     for (uint8_t ic = 0; ic < jpeg->nb_components; ic++) {
-        bitstream_write_nbits(jpeg->bitstream, jpeg->nb_components, 8, 0);       // ic
-        bitstream_write_nbits(jpeg->bitstream, 2*ic, 4, 0);                      // indice de la table de huffman pour DC
-        bitstream_write_nbits(jpeg->bitstream, 2*ic + 1, 4, 0);                  // indice de la table de huffman pour AC
+        bitstream_write_nbits(jpeg->bitstream, ic+1, 8, 0);                      // ic
+        uint8_t iq = 0;
+        if (ic >= 1) {iq = 1;}                                                   // si ic vaut plus de 1 on est sur Cb ou Cr
+        bitstream_write_nbits(jpeg->bitstream, iq, 4, 0);                        // indice de la table de huffman pour DC
+        bitstream_write_nbits(jpeg->bitstream, iq, 4, 0);                        // indice de la table de huffman pour AC
     }
     bitstream_write_nbits(jpeg->bitstream, 0, 8, 0);                             // Ss toujours 0
     bitstream_write_nbits(jpeg->bitstream, 63, 8, 0);                            // Se toujours 63
