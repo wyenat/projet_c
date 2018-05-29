@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "bitstream.h"
+#include "bitstream_perso.h"
 #include "jpeg_writer.h"
 #include "htables.h"
 #include "huffman.h"
