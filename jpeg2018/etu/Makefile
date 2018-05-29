@@ -19,7 +19,6 @@ OBJ_FILES=$(patsubst src/%.c,obj/%.o,$(SRC_FILES))
 # module en question. Le module htables_prof.o, qui contient la déclaration des tables
 # de Huffman génériques sous forme de constantes, n'est pas à ré-implémenter.
 OBJ_PROF_FILES = obj_prof/huffman_prof.o     \
-				 obj_prof/bitstream_prof.o   \
 				 obj_prof/htables_prof.o
 
 all: ppm2jpeg

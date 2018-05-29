@@ -1,6 +1,11 @@
 #include <stdio.h>
+<<<<<<< HEAD:jpeg2018/etu/src/jpeg.h
 #include "bitstream.h"
 #include "jpeg_writer_perso.h"
+=======
+#include "bitstream_perso.h"
+#include "jpeg_writer.h"
+>>>>>>> 7546f032f192c888a8205230cc038383bc9fcd74:jpeg2018/etu/include/jpeg.h
 #include "htables.h"
 #include "huffman.h"
 

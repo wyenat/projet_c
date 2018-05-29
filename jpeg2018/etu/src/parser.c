@@ -6,7 +6,7 @@
 #include "quantification.h"
 #include "Downsampling.h"
 #include "ACDC.h"
-#include "bitstream.h"
+#include "bitstream_perso.h"
 #include "jpeg_writer_perso.h"
 #include "htables.h"
 #include "huffman.h"
@@ -14,7 +14,7 @@
 
 
 int main( int argc, char * argv[] )
-{ if (argc == 1) {
+{   if (argc == 1) {
   perror("Aucun arguments rentré ! Tapez --h ou --help pour plus d'informations \n");
   exit(EXIT_FAILURE);
 }
@@ -156,10 +156,11 @@ int main( int argc, char * argv[] )
 
 
         // Compression de l'image, écriture dans le flux
-        ACDC_me(new_image, bitstream_jpeg, jpeg, verbose);
         if (verbose){
         printf("\n \n \n \t ACDC ! \n \n");
         }
+        ACDC_me(new_image, bitstream_jpeg, jpeg, verbose);
+
 
 
         // Fermeture du jpeg

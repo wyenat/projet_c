@@ -144,17 +144,17 @@ struct Image *redimensionner(struct Image *image, uint8_t largeur_MCU, uint8_t h
     uint8_t taille_pixel = 1 + 2*image->couleur;         // 1 si noir et blanc, 3 si couleur, nombre d'octets par pixel
     if (image->largeur % (8*largeur_MCU) != 0) {
         elargir_droite = 1;
-        printf("Il faut élargir\n");
+        // printf("Il faut élargir\n");
         new_largeur = image->largeur + (8*largeur_MCU - (image->largeur %(8*largeur_MCU)));
     }
     if (image->hauteur % (8*hauteur_MCU) != 0) {
         elargir_bas = 1;
-        printf("Il faut agrandir\n");
+        // printf("Il faut agrandir\n");
         new_hauteur = image->hauteur + (8*hauteur_MCU - (image->hauteur %(8*hauteur_MCU)));
     }
 
     if (elargir_droite == 1 || elargir_bas == 1) {
-        printf("\n \n \n \t Début du redimensionnement ! \n \n \n");
+        // printf("\n \n \n \t Début du redimensionnement ! \n \n \n");
         char *stream_tmp = malloc(new_hauteur*new_largeur*taille_pixel*sizeof(char));
         if (elargir_droite == 1) {
             elargir(image, stream_tmp, new_largeur);
@@ -178,7 +178,7 @@ struct Image *redimensionner(struct Image *image, uint8_t largeur_MCU, uint8_t h
         new_image->stream = stream_tmp;
         free(image->stream);
         free(image);
-        printf("\n \n \n \t Image redimensionnée ! \n \n \n");
+        // printf("\n \n \n \t Image redimensionnée ! \n \n \n");
         return new_image;
     } else {
         return image;
@@ -190,7 +190,7 @@ struct Image *redimensionner(struct Image *image, uint8_t largeur_MCU, uint8_t h
 // rajoute la valeur de la dernière colonne de pixels sur la droite pour coller avec la taille des MCUs
 char *elargir(struct Image *image, char *stream_tmp, uint32_t new_largeur)
 {
-    printf("\n \n \n \t Début de l'élargissement ! \n \n \n");
+    // printf("\n \n \n \t Début de l'élargissement ! \n \n \n");
     uint8_t taille_pixel = 1 + 2*image->couleur;         // 1 si noir et blanc, 3 si couleur, nombre d'octets par pixel
     uint32_t last_largeur = image->largeur;
     for (uint32_t ligne = 0; ligne < image->hauteur; ligne++) {
@@ -207,7 +207,7 @@ char *elargir(struct Image *image, char *stream_tmp, uint32_t new_largeur)
             }
 
         }
-        printf("\n \n \n \t Elargissement : Ligne %u traitée sur %u\n", ligne, image->hauteur);
+        // printf("\n \n \n \t Elargissement : Ligne %u traitée sur %u\n", ligne, image->hauteur);
     }
     return stream_tmp;
 }
@@ -217,7 +217,7 @@ char *elargir(struct Image *image, char *stream_tmp, uint32_t new_largeur)
 // rajoute la valeur de la dernière ligne de pixels en bas pour coller avec la taille des MCUs
 char *agrandir(char *stream_tmp, uint32_t new_hauteur, uint32_t last_hauteur, uint32_t new_largeur, uint8_t taille_pixel)
 {
-    printf("\n \n \n \t Début de l'agrandissement ! \n \n \n");
+    // printf("\n \n \n \t Début de l'agrandissement ! \n \n \n");
     for (uint32_t ligne = last_hauteur; ligne < new_hauteur; ligne++) {
         for (uint32_t colonne = 0; colonne < new_largeur; colonne++) {
             for (uint8_t couleur = 0; couleur < taille_pixel; couleur++) {
@@ -225,7 +225,7 @@ char *agrandir(char *stream_tmp, uint32_t new_hauteur, uint32_t last_hauteur, ui
                     = stream_tmp[(last_hauteur-1)*new_largeur*taille_pixel + colonne*taille_pixel + couleur];
             }
         }
-        printf("\n \n \n \t  agrandissement : Ligne %u traitée sur %u\n", ligne, new_hauteur-last_hauteur);
+        // printf("\n \n \n \t  agrandissement : Ligne %u traitée sur %u\n", ligne, new_hauteur-last_hauteur);
     }
     return stream_tmp;
 }
