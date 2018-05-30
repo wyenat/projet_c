@@ -103,22 +103,22 @@ void balise_std(int nb_zero, int16_t valeur, struct bitstream *bitstream_jpeg, s
 }
 
 void LRE(int16_t *entree, struct bitstream *bitstream_jpeg, struct jpeg_desc *jpeg, int couleur, int verbose, int layer_y, int nb_compression){
-  int courant = 1+64*nb_compression*couleur*(2-couleur) + 64*(nb_compression+1)*couleur*(couleur-1)/2+ 64*layer_y;
-  while (courant%64 != 0) {
-    int nb_zero = compter_zero(entree, &courant);
-    switch(nb_zero){
-      case 16:
-        ZRL(bitstream_jpeg, jpeg, couleur, verbose);
-        break;
-      case 64:
-        EOB(bitstream_jpeg, jpeg, couleur, verbose);
-        break;
-      default:
-        balise_std(nb_zero, entree[courant], bitstream_jpeg, jpeg, couleur, verbose);
-        courant++;
-        break;
+    int courant = 1+64*nb_compression*couleur*(2-couleur) + 64*(nb_compression+1)*couleur*(couleur-1)/2+ 64*layer_y;
+    while (courant%64 != 0) {
+        int nb_zero = compter_zero(entree, &courant);
+        switch(nb_zero){
+            case 16:
+            ZRL(bitstream_jpeg, jpeg, couleur, verbose);
+            break;
+            case 64:
+            EOB(bitstream_jpeg, jpeg, couleur, verbose);
+            break;
+            default:
+            balise_std(nb_zero, entree[courant], bitstream_jpeg, jpeg, couleur, verbose);
+            courant++;
+            break;
+        }
     }
-  }
 }
 
 //Partie adaptation à la structure;
@@ -128,7 +128,7 @@ int32_t calcul_DC(int16_t *flux, int premier, int32_t *DC, int couleur, int laye
     // printf("On accède à la valeur située en %d \n", 64*nb_compression*couleur*(2-couleur) + 64*(nb_compression+1)*couleur*(couleur-1)/2+ 64*layer_y);
     // printf("64*nb_compression*couleur*(2-couleur) = %d \n 64*(nb_compression+1)*couleur*(couleur-1)/2 = %d \n ", 64*nb_compression*couleur*(2-couleur),64*(nb_compression+1)*couleur*(couleur-1)/2);
     if (premier != 0){
-      val_DC = val_DC - *DC;
+        val_DC = val_DC - *DC;
     }
     *DC = flux[64*nb_compression*couleur*(2-couleur) + 64*(nb_compression+1)*couleur*(couleur-1)/2+ 64*layer_y];
     return val_DC;
@@ -142,31 +142,32 @@ void ACDC_me(struct Image_MCU_16 *entree, struct bitstream *bitstream_jpeg, stru
     int32_t DC_precedent[] = {0,0,0};
     uint8_t len_chemin[] = {0,0,0};
     uint32_t code_dc[] = {0,0,0};
-      for (uint32_t parcours=0; parcours < entree->hauteur * entree->largeur; parcours++){
-          for (int couleur =0; couleur < 1 + 2*entree->couleur; couleur++){
-              if (verbose){
-                printf("PASSAGE A LA COULEUR %d \n", couleur);
-              }
-              int nb_layer =  1+(nb_compression - 1) * ((couleur-1) * (couleur-2)) / 2 ;
+    for (uint32_t parcours=0; parcours < entree->hauteur * entree->largeur; parcours++){
+        for (int couleur =0; couleur < 1 + 2*entree->couleur; couleur++){
+            if (verbose){
+            printf("PASSAGE A LA COULEUR %d \n", couleur);
+            }
+            int nb_layer =  1+(nb_compression - 1) * ((couleur-1) * (couleur-2)) / 2 ;
             //   printf("Pour la couleur %d, il y a %d layers \n", couleur, nb_layer);
-              for (int layer_y = 0; layer_y < nb_layer; layer_y++){
-                  DC_valeur[couleur] = calcul_DC(entree->MCUs[parcours]->flux, premier[couleur], &DC_precedent[couleur], couleur, layer_y, nb_compression);
-                  uint32_t m = obtenir_magnetude(DC_valeur[couleur]);
-                  uint32_t i = obtenir_indice(DC_valeur[couleur], m);
-                  code_dc[couleur] = huffman_table_get_path(jpeg_desc_get_huffman_table(jpeg, DC, couleur), m, &len_chemin[couleur]);
-                  printf("code_dc = %d, len = %d \n", code_dc[couleur], len_chemin[couleur]);
-                  if (verbose){
-                    char *bin_c = binme_n(code_dc[couleur], len_chemin[couleur]);
-                    char *bin = binme_n(i,m);
-                    printf("MCU = %d :     DC = %d, m=%d, encodé = %s, indice = %s \n",parcours, DC_valeur[couleur], m, bin_c, bin);
-                    free(bin_c);
-                    free(bin);
-                  }
-                  bitstream_write_nbits(bitstream_jpeg, code_dc[couleur], len_chemin[couleur], 0);
-                  bitstream_write_nbits(bitstream_jpeg, i, m, 0);
-                  LRE(entree->MCUs[parcours]->flux, bitstream_jpeg, jpeg, couleur, verbose, layer_y, nb_compression);
-                  if (premier[couleur] == 0){premier[couleur]++;}
-              }
-          }
-      }
+            for (int layer_y = 0; layer_y < nb_layer; layer_y++){
+                DC_valeur[couleur] = calcul_DC(entree->MCUs[parcours]->flux, premier[couleur], &DC_precedent[couleur], couleur, layer_y, nb_compression);
+                uint32_t m = obtenir_magnetude(DC_valeur[couleur]);
+                uint32_t i = obtenir_indice(DC_valeur[couleur], m);
+                code_dc[couleur] = huffman_table_get_path(jpeg_desc_get_huffman_table(jpeg, DC, couleur), m, &len_chemin[couleur]);
+                printf("code_dc = %d, len = %d \n", code_dc[couleur], len_chemin[couleur]);
+                if (verbose){
+                char *bin_c = binme_n(code_dc[couleur], len_chemin[couleur]);
+                char *bin = binme_n(i,m);
+                printf("MCU = %d :     DC = %d, m=%d, encodé = %s, indice = %s \n",parcours, DC_valeur[couleur], m, bin_c, bin);
+                free(bin_c);
+                free(bin);
+                }
+                bitstream_write_nbits(bitstream_jpeg, code_dc[couleur], len_chemin[couleur], 0);
+                bitstream_write_nbits(bitstream_jpeg, i, m, 0);
+                LRE(entree->MCUs[parcours]->flux, bitstream_jpeg, jpeg, couleur, verbose, layer_y, nb_compression);
+                if (premier[couleur] == 0){premier[couleur]++;}
+            }
+        }
+    }
+
   }

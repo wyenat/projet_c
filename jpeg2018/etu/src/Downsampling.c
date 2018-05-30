@@ -149,10 +149,7 @@ void afficher_apres_compression(struct MCU_8 *MCU)
                     if ((indice + 1) % (64*MCU->largeur) == 0)  {
                         printf("\n\n");
                     }
-                    else if ((indice + 1) % 16 == 8) {
-                        printf("\t");
-                    }
-                    else if((indice + 1) % 16 == 0) {
+                    else if ((indice + 1) % 8 == 0) {
                         printf("\n\t");
                     }
                 }
