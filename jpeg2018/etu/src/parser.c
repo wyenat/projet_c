@@ -31,7 +31,7 @@ int main( int argc, char * argv[] )
   uint8_t v1=1;
   uint8_t v2=1;
   uint8_t v3=1;
-	for(int i=1; i<argc; i++) {
+	 for(int i=1; i<argc; i++) {
         if (strcmp(argv[i],"--h" ) == 0 || strcmp(argv[i], "--help") == 0 ) {
           printf("Voilà les options : \n \t --outfile=nomdufichier renomme la sortie en nomdufichier.jpg (ne supporte pas les espaces) \n");
           printf("\t --sample=h1xv1,h2xv2,h3xv3 : défini les composantes d'échantillonages pour les 3 couleurs \n");
@@ -178,6 +178,7 @@ int main( int argc, char * argv[] )
 
 
         // Libération des mémoires allouée.
+        jpeg_huffman_table_destroy(jpeg);
         jpeg_write_footer(jpeg);
         Image_destroy(new_image);
         bitstream_destroy(bitstream_jpeg);

@@ -51,7 +51,6 @@ char calculer_coeff(int *entree,int puissance){
     default:
       perror("Problème dans la conversion en hex... \n");
       exit(EXIT_FAILURE);
-      break;
   }
 }
 

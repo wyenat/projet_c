@@ -85,8 +85,37 @@ void afficher_YCbCr(struct MCU_8 *MCU)
             char *hex = hexme(MCU->flux[64 * nombre_blocs * composante + indice]);
             printf("%s\t", hex);
             // free(hex);
-            if ((indice + 1) % 8 == 0) {
-                printf("\n\t");
+            if (nombre_blocs == 4)  {
+                if ((indice + 1) % 64 == 0) {
+                    printf("\n\n\t");
+                }
+                else if ((indice + 1) % 16 == 8) {
+                    printf("\t");
+                }
+                else if ((indice + 1) % 16 == 0) {
+                    printf("\n\t");
+                }
+            }
+            else if (MCU->largeur == 2) {
+                if ((indice + 1) % 16 == 8) {
+                    printf("\t");
+                }
+                else if ((indice + 1) % 16 == 0) {
+                    printf("\n\t");
+                }
+            }
+            else if (MCU->hauteur == 2) {
+                if ((indice + 1) % 64 == 0) {
+                    printf("\n\n\t");
+                }
+                else if ((indice + 1) % 16 == 0) {
+                    printf("\n\t");
+                }
+            }
+            else    {
+                if ((indice + 1) % 8 == 0) {
+                    printf("\n\t");
+                }
             }
         }
         printf("\n");

@@ -188,6 +188,12 @@ extern struct huff_table *jpeg_desc_get_huffman_table(struct jpeg_desc *jdesc,
                                                       enum sample_type acdc,
                                                       enum color_component cc);
 
+
+/*
+    Detruit les tables de Huffman du jpeg (liberation de la mémoire tout à la fin).
+ */
+extern void jpeg_huffman_table_destroy(struct jpeg_desc *jdesc);
+
 /*
     Ecrit dans le jpeg_desc jdesc la table de quantification qtable à utiliser
     pour compresser les coefficients de la composante de couleur cc.

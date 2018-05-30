@@ -151,7 +151,7 @@ void afficher_apres_compression(struct MCU_8 *MCU)
                         printf("\n\n");
                     }
                     else if ((indice + 1) % 8 == 0) {
-                        printf("\t\n\t");
+                        printf("\n\t");
                     }
                 }
             }

@@ -32,7 +32,7 @@ void EOB(struct bitstream *bitstream_jpeg, struct jpeg_desc *jpeg, int couleur, 
 A : le nombre de zéros calculé par compter_zero
 B : la magnétude de l'entier
 Puis l'indice de l'entier valeur */
-void balise_std(int nb_zero, int valeur, struct bitstream *bitstream_jpeg, struct jpeg_desc *jpeg, int couleur, int verbose);
+void balise_std(int nb_zero, int16_t valeur, struct bitstream *bitstream_jpeg, struct jpeg_desc *jpeg, int couleur, int verbose);
 
 /* Parcourt tout le bloc en décidant laquelle des trois balises écrire à chaque fois */
 void LRE(int16_t *entree, struct bitstream *bitstream_jpeg, struct jpeg_desc *jpeg, int couleur, int verbose, int layer_y, int nb_compression);
