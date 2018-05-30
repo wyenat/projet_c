@@ -102,7 +102,7 @@ int main( int argc, char * argv[] )
         fichier = fopen(renommage[i],  "r");
         if (fichier != NULL && force == 0){
             perror("Le fichier existe déjà ! \n Activez le mode --force si vous voulez l'écraser.\n");
-            exit(EXIT_SUCCESS);
+            continue;
         }
 
         // Récupération des données dans l'images
