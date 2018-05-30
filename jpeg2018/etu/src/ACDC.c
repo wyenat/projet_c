@@ -136,7 +136,7 @@ int32_t calcul_DC(int16_t *flux, int premier, int32_t *DC, int couleur, int laye
 
 void ACDC_me(struct Image_MCU_16 *entree, struct bitstream *bitstream_jpeg, struct jpeg_desc *jpeg, int verbose){
     int nb_compression = 1+(entree->MCUs[0]->echant_l + entree->MCUs[0]->echant_h + entree->MCUs[0]->echant_l * entree->MCUs[0]->echant_h );
-    // printf("On a %d layers de Y \n", nb_compression);
+    printf("On a %d layers de Y \n", nb_compression);
     int premier[] = {0,0,0};
     int32_t DC_valeur[] = {0,0,0};
     int32_t DC_precedent[] = {0,0,0};
