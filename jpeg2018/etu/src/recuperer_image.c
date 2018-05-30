@@ -36,7 +36,7 @@ size_t recuperer_jusqua_fin(FILE *lecture, char *buffer) {
 
 
 uint32_t prendre_valeur(char *chaine){
-  uint32_t valeur = atoi(&chaine[0]);
+  uint32_t valeur = atoi(chaine);
   return valeur;
 }
 
@@ -105,7 +105,6 @@ struct Image *initialisation(char *name_file){
     exit(EXIT_FAILURE);
   }
   remettre_zero(indice, buffer);
-  free(buffer);
   // initialisation de stream et de taille_stream
   buffer = malloc(sizeof(char)*hauteur*largeur*3);
   size_t taille_stream = recuperer_jusqua_fin(lecture, buffer);
