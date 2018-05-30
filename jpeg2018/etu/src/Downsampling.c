@@ -33,7 +33,7 @@ struct MCU_8 * downsampling_horizontal_2_blocs(struct MCU_8 * MCU_entree)   {
     MCU_sortie->echant_l = 1;
     MCU_sortie->echant_h = MCU_entree->echant_h;
     MCU_sortie->flux = flux_sortie;
-
+    free(MCU_entree->flux);
     free(MCU_entree);
     return MCU_sortie;
 }
@@ -67,7 +67,7 @@ struct MCU_8 * downsampling_vertical_2_blocs(struct MCU_8 * MCU_entree)   {
     MCU_sortie->echant_l = MCU_entree->echant_l;
     MCU_sortie->echant_h = 1;
     MCU_sortie->flux = flux_sortie;
-
+    free(MCU_entree->flux);
     free(MCU_entree);
     return MCU_sortie;
 }
@@ -108,7 +108,7 @@ void afficher_apres_compression(struct MCU_8 *MCU)
         if (composante == 0) {
             printf("Y\t");
             for (uint32_t indice = 0; indice < 64 * nombre_blocs; indice++) {
-                printf("%u\t", MCU->flux[indice]);
+                printf("%s\t", hexme(MCU->flux[indice]));
                 if ((indice + 1) % (64 * MCU->largeur * MCU->hauteur) == 0)   {
                     printf("\n\n");
                 }

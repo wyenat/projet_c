@@ -92,7 +92,7 @@ extern void jpeg_write_header(struct jpeg_desc *jpeg)
 
     // Début d'image : SOI 0xffd8
     bitstream_write_nbits(jpeg->bitstream, 0xffd8, 16, 1);
-    printf("SOI écrit\n");
+    // printf("SOI écrit\n");
 
     // Application data : APPx 0xffe0
     bitstream_write_nbits(jpeg->bitstream, 0xffe0, 16, 1);                       // marqueur APP0
@@ -106,13 +106,13 @@ extern void jpeg_write_header(struct jpeg_desc *jpeg)
     bitstream_write_nbits(jpeg->bitstream, 1, 8, 0);
     bitstream_write_nbits(jpeg->bitstream, 0, 32, 0);                            // données pour le JFIF
     bitstream_write_nbits(jpeg->bitstream, 0, 24, 0);                            // données pour le JFIF
-    printf("APPx écrit\n");
+    // printf("APPx écrit\n");
 
     // Commentaire : COM 0xfffe
     bitstream_write_nbits(jpeg->bitstream, 0xfffe, 16, 1);                       // marqueur COM
     bitstream_write_nbits(jpeg->bitstream, 16, 16, 0);                           // longueur 17 octets
     bitstream_write_nbits(jpeg->bitstream, '<', 8, 0);                           // made by antonin
-    bitstream_write_nbits(jpeg->bitstream, '3', 8, 0);
+    bitstream_write_nbits(jpeg->bitstream, '5', 8, 0);
     bitstream_write_nbits(jpeg->bitstream, ' ', 8, 0);
     bitstream_write_nbits(jpeg->bitstream, 'l', 8, 0);
     bitstream_write_nbits(jpeg->bitstream, 'e', 8, 0);
@@ -125,7 +125,7 @@ extern void jpeg_write_header(struct jpeg_desc *jpeg)
     bitstream_write_nbits(jpeg->bitstream, 't', 8, 0);
     bitstream_write_nbits(jpeg->bitstream, ' ', 8, 0);
     bitstream_write_nbits(jpeg->bitstream, 'C', 8, 0);
-    printf("Commentaire écrit \n");
+    // printf("Commentaire écrit \n");
 
     // Define Quantization Table : DQT 0xffdb
     bitstream_flush(jpeg->bitstream);
@@ -139,7 +139,7 @@ extern void jpeg_write_header(struct jpeg_desc *jpeg)
             bitstream_write_nbits(jpeg->bitstream, jpeg->qtables[iq][indice], 8, 0);
         }
     }
-    printf("Quantification table écrit\n");
+    // printf("Quantification table écrit\n");
 
     // Start Of Frame : SOFx 0xffc0
     bitstream_flush(jpeg->bitstream);
@@ -157,7 +157,7 @@ extern void jpeg_write_header(struct jpeg_desc *jpeg)
         if (ic >= 1) {iq = 1;}                                                   // si ic vaut plus de 1 on est sur Cb ou Cr
         bitstream_write_nbits(jpeg->bitstream, iq, 8, 0);                        // table de quantification iq
     }
-    printf("Start of Frame écrit\n");
+    // printf("Start of Frame écrit\n");
 
     // Define Huffman Table : DHT 0xffc4
     for (uint8_t ic = 0; ic < jpeg->nb_components; ic++) {
@@ -183,9 +183,11 @@ extern void jpeg_write_header(struct jpeg_desc *jpeg)
             for (uint8_t indice = 0; indice < longueur_totale; indice++) {
                 bitstream_write_nbits(jpeg->bitstream, table_symbol[indice], 8, 0);// symbole numéro indice
             }
+            free(table_length);
+            free(table_symbol);
         }
     }
-    printf("Huffman table écrit\n");
+    // printf("Huffman table écrit\n");
 
 
     // Start Of Scan : SOS 0xffda
@@ -202,7 +204,7 @@ extern void jpeg_write_header(struct jpeg_desc *jpeg)
     bitstream_write_nbits(jpeg->bitstream, 0, 8, 0);                             // Ss toujours 0
     bitstream_write_nbits(jpeg->bitstream, 63, 8, 0);                            // Se toujours 63
     bitstream_write_nbits(jpeg->bitstream, 0, 8, 0);                             // Se toujours 00
-    printf("Start of Scan écrit\n");
+    // printf("Start of Scan écrit\n");
 }
 
 /* Ecrit le footer JPEG (marqueur EOI) dans le fichier de sortie. */
@@ -217,6 +219,7 @@ extern void jpeg_write_footer(struct jpeg_desc *jpeg)
     free(jpeg->sampling_factor);
     free(jpeg->htables);
     free(jpeg->qtables);
+
 }
 
 
@@ -353,10 +356,10 @@ extern void jpeg_desc_set_sampling_factor(struct jpeg_desc *jpeg,
         exit(1);
     } else {
         if (jpeg->nb_components != 1) {
-            printf("Sampling factor color %u, direction %u SET\n", cc, dir);
+            // printf("Sampling factor color %u, direction %u SET\n", cc, dir);
             jpeg->sampling_factor[2*cc + dir] = sampling_factor;
         } else {
-            printf("Sampling factor grey, direction %u SET\n", dir);
+            // printf("Sampling factor grey, direction %u SET\n", dir);
             jpeg->sampling_factor[dir] = sampling_factor;
         }
     }

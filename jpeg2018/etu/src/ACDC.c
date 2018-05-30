@@ -125,7 +125,7 @@ void LRE(int16_t *entree, struct bitstream *bitstream_jpeg, struct jpeg_desc *jp
 
 int32_t calcul_DC(int16_t *flux, int premier, int32_t *DC, int couleur, int layer_y, int nb_compression){
     int32_t val_DC = flux[64*nb_compression*couleur*(2-couleur) + 64*(nb_compression+1)*couleur*(couleur-1)/2+ 64*layer_y];
-    printf("On accède à la valeur située en %d \n", 64*nb_compression*couleur*(2-couleur) + 64*(nb_compression+1)*couleur*(couleur-1)/2+ 64*layer_y);
+    // printf("On accède à la valeur située en %d \n", 64*nb_compression*couleur*(2-couleur) + 64*(nb_compression+1)*couleur*(couleur-1)/2+ 64*layer_y);
     // printf("64*nb_compression*couleur*(2-couleur) = %d \n 64*(nb_compression+1)*couleur*(couleur-1)/2 = %d \n ", 64*nb_compression*couleur*(2-couleur),64*(nb_compression+1)*couleur*(couleur-1)/2);
     if (premier != 0){
         val_DC = val_DC - *DC;
@@ -136,7 +136,7 @@ int32_t calcul_DC(int16_t *flux, int premier, int32_t *DC, int couleur, int laye
 
 void ACDC_me(struct Image_MCU_16 *entree, struct bitstream *bitstream_jpeg, struct jpeg_desc *jpeg, int verbose){
     int nb_compression = 1+(entree->MCUs[0]->echant_l + entree->MCUs[0]->echant_h + entree->MCUs[0]->echant_l * entree->MCUs[0]->echant_h );
-    printf("On a %d layers de Y \n", nb_compression);
+    // printf("On a %d layers de Y \n", nb_compression);
     int premier[] = {0,0,0};
     int32_t DC_valeur[] = {0,0,0};
     int32_t DC_precedent[] = {0,0,0};
@@ -154,7 +154,7 @@ void ACDC_me(struct Image_MCU_16 *entree, struct bitstream *bitstream_jpeg, stru
                 uint32_t m = obtenir_magnetude(DC_valeur[couleur]);
                 uint32_t i = obtenir_indice(DC_valeur[couleur], m);
                 code_dc[couleur] = huffman_table_get_path(jpeg_desc_get_huffman_table(jpeg, DC, couleur), m, &len_chemin[couleur]);
-                printf("code_dc = %d, len = %d \n", code_dc[couleur], len_chemin[couleur]);
+                // printf("code_dc = %d, len = %d \n", code_dc[couleur], len_chemin[couleur]);
                 if (verbose){
                 char *bin_c = binme_n(code_dc[couleur], len_chemin[couleur]);
                 char *bin = binme_n(i,m);

@@ -30,6 +30,7 @@ struct MCU_8 *RGB2YCbCr_couleur(struct MCU_8 *MCU_entree)  {
         MCU_YCbCr->flux[i + 2*nombre_pixels] = (uint8_t) (0.5 * MCU_entree->flux[3*i] - 0.4187 * MCU_entree->flux[3*i+1] -
                                     0.0813 * MCU_entree->flux[3*i+2] + 128);
     }
+    free(MCU_entree->flux);
     free(MCU_entree);
     return MCU_YCbCr;
 }
@@ -49,6 +50,7 @@ struct MCU_8 *RGB2YCbCr_gris(struct MCU_8 *MCU_entree)  {
     for (size_t i = 0; i < nombre_pixels; i++) {
         MCU_YCbCr->flux[i] = (uint8_t) MCU_entree->flux[i];
     }
+    free(MCU_entree->flux);
     free(MCU_entree);
     return MCU_YCbCr;
 }
@@ -86,7 +88,7 @@ void afficher_YCbCr(struct MCU_8 *MCU)
             printf("%s\t", hex);
             // free(hex);
             if (nombre_blocs == 4)  {
-                if ((indice + 1) % 64 == 0) {
+                if ((indice + 1) % 128 == 0) {
                     printf("\n\n\t");
                 }
                 else if ((indice + 1) % 16 == 8) {
@@ -133,12 +135,3 @@ void afficher_image_YCbCr(struct Image_MCU_8 *image)
         afficher_YCbCr(MCU);
     }
 }
-
-
-//int main(void)    {
-//    struct Image *pic = initialisation("../images/zig-zag.ppm");
-//    afficher_pic(pic);
-//    struct Image_MCU_8 *image = decoupe(pic, 1, 1);
-//    afficher_image_8(image);
-//    return 0;
-//}

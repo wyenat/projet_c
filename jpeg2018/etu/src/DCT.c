@@ -67,6 +67,7 @@ struct MCU_16 * transfo_MCU(struct MCU_8 *MCU_entree) {
         memcpy(new_MCU->flux + indice_depart, new_flux, sizeof(int16_t)*64);
         free(new_flux);
     }
+    free(MCU_entree->flux);
     free(MCU_entree);
     return new_MCU;
 
@@ -77,6 +78,7 @@ void Image_destroy(struct Image_MCU_16 *entree){
         free(entree->MCUs[i]->flux);
         free(entree->MCUs[i]);
     }
+    free(entree->MCUs);
     free(entree);
 }
 
@@ -93,6 +95,7 @@ struct Image_MCU_16 * Image_DCT(struct Image_MCU_8 *Image_entree)   {
     for (uint64_t i = 0; i < nombre_MCUs; i++) {
         new_image->MCUs[i] = transfo_MCU(Image_entree->MCUs[i]);
     }
+    free(Image_entree->MCUs);
     free(Image_entree);
     return new_image;
 }
@@ -131,28 +134,3 @@ void afficher_image_DCT(struct Image_MCU_16 *image)
         afficher_DCT(MCU);
     }
 }
-
-
-// int main(void)  {
-//     uint8_t bloc_spatial[64] = {  0,  1,  5,  6, 14, 15, 27, 28,
-//                       2,  4,  7, 13, 16, 26, 29, 42,
-//                       3,  8, 12, 17, 25, 30, 41, 43,
-//                       9, 11, 18, 24, 31, 40, 44, 53,
-//                       10, 19, 23, 32, 39, 45, 52, 54,
-//                       20, 22, 33, 38, 46, 51, 55, 60,
-//                       21, 34, 37, 47, 50, 56, 59, 61,
-//                       35, 36, 48, 49, 57, 58, 62, 63};
-//     struct MCU_8 *MCU_test = malloc(sizeof(struct MCU_8));
-//     MCU_test->couleur = 0;
-//     MCU_test->largeur = 1;
-//     MCU_test->hauteur = 1;
-//     MCU_test->echant_l = 0;
-//     MCU_test->echant_h = 0;
-//     MCU_test->flux = bloc_spatial;
-//     struct MCU_16 *new_MCU = transfo_MCU(MCU_test);
-//     for (int i = 0; i < 64; ++i) {
-//         printf("%hd\n", new_MCU->flux[i]);
-//     }
-//     free(new_MCU);
-//     return 1;
-// }

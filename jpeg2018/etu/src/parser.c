@@ -111,10 +111,18 @@ int main( int argc, char * argv[] )
           printf("\n \n \n \t initialisation de l'image ! \n \n \n ");
           afficher_pic(pic);
         }
+        if (pic->couleur == 0){
+            h1 = 1;
+            h2 = 1;
+            h3 = 1;
+            v1 = 1;
+            v2 = 1;
+            v3 = 1;
+        }
 
 
         // Passage en MCU
-        struct Image_MCU_8 *image = decoupe(pic, h1/h3, v1/v3);
+        struct Image_MCU_8 *image = decoupe(pic, h1, v1);
         if (verbose){
           printf("\n \n \n \t Passage MCU8 ! \n \n \n");
           afficher_image_8(image);
@@ -178,8 +186,9 @@ int main( int argc, char * argv[] )
 
 
         // Libération des mémoires allouée.
-        jpeg_huffman_table_destroy(jpeg);
         jpeg_write_footer(jpeg);
+        free(jpeg);
+        fclose(fichier);
         Image_destroy(new_image);
         bitstream_destroy(bitstream_jpeg);
         printf("Image traitée \n");

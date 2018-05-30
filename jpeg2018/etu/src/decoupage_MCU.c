@@ -215,7 +215,7 @@ char *agrandir(char *stream_tmp, uint32_t new_hauteur, uint32_t last_hauteur, ui
                 // Ici le deuxième membre de l'égalité ne dépend pas de la ligne
                 // car c'est toujours la dernière ligne que l'on copie
                 stream_tmp[new_largeur*taille_pixel*ligne + colonne*taille_pixel + couleur] // taille d'une ligne fois la ligne plus position sur cette ligne
-                    = stream_tmp[(last_hauteur-1)*new_largeur*taille_pixel + colonne*taille_pixel + couleur];
+                    = stream_tmp[(last_hauteur-1)*taille_pixel + colonne*taille_pixel + couleur];
             }
         }
         // printf("\n \n \n \t  agrandissement : Ligne %u traitée sur %u\n", ligne, new_hauteur-last_hauteur);
