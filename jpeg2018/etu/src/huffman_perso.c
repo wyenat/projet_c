@@ -374,7 +374,7 @@ void huffman_table_destroy(struct huff_table *ht)   {
         }
         else if (ht->fils[0]->a_ete_visite != 200)  {
             ht = ht->fils[0];
-        }ud_retour->fils = NULL;
+        }
         else    {       //  ht->fils[1]->a_ete_visite != 200
             ht = ht->fils[1];
         }
@@ -430,7 +430,7 @@ void afficher_table_huffman(struct huff_table *table_huffman)   {
                 table_huffman = table_huffman->fils[0];
             }
             else    {       //  table_huffman->fils[1]->a_ete_visite != 42
-                table_huffman = table_huffman->fils[1];ffman_perso.c:2
+                table_huffman = table_huffman->fils[1];
             }
         }
 

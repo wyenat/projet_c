@@ -66,13 +66,38 @@ extern struct jpeg_desc *jpeg_desc_create(void)
 */
 extern void jpeg_desc_destroy(struct jpeg_desc *jpeg)
 {
-  if (jpeg->ppm_filename != NULL) { free(jpeg->ppm_filename);}
-  if (jpeg->jpeg_filename != NULL) { free(jpeg->jpeg_filename);}
-  if (jpeg->sampling_factor != NULL) { free(jpeg->sampling_factor);}
-  if (jpeg->htables != NULL) { free(jpeg->htables);}
-  if (jpeg->qtables != NULL) { free(jpeg->qtables);}
+  if (jpeg->ppm_filename != NULL) {
+      free(jpeg->ppm_filename);
+  }
+  if (jpeg->jpeg_filename != NULL) {
+      free(jpeg->jpeg_filename);
+  }
+  if (jpeg->sampling_factor != NULL) {
+      free(jpeg->sampling_factor);
+  }
+  if (jpeg->htables != NULL) {
+      jpeg_huffman_table_destroy(jpeg);
+      free(jpeg->htables);
+  }
+  if (jpeg->qtables != NULL) {
+      free(jpeg->qtables);
+  }
   free(jpeg);
 }
+
+
+/*
+    Detruit les tables de Huffman du jpeg (liberation de la mémoire tout à la fin).
+ */
+void jpeg_huffman_table_destroy(struct jpeg_desc *jdesc){
+
+    for (enum color_component cc = 0; cc<jdesc->nb_components; cc++){
+        for (enum sample_type sample_type=0; sample_type < 2; sample_type++){
+            huffman_table_destroy(jdesc->htables[2*cc + sample_type]);
+        }
+    }
+}
+
 
 /*
     Ecrit toute l'entête JPEG dans le fichier de sortie à partir des
@@ -213,13 +238,6 @@ extern void jpeg_write_footer(struct jpeg_desc *jpeg)
     bitstream_flush(jpeg->bitstream);
     // Fin d'image : SOI 0xffd9
     bitstream_write_nbits(jpeg->bitstream, 0xffd9, 16, 1);
-
-    free(jpeg->ppm_filename);
-    free(jpeg->jpeg_filename);
-    free(jpeg->sampling_factor);
-    free(jpeg->htables);
-    free(jpeg->qtables);
-
 }
 
 
@@ -411,18 +429,6 @@ extern struct huff_table *jpeg_desc_get_huffman_table(struct jpeg_desc *jpeg,
     return(jpeg->htables[2*cc + acdc]);
 }
 
-
-/*
-    Detruit les tables de Huffman du jpeg (liberation de la mémoire tout à la fin).
- */
-void jpeg_huffman_table_destroy(struct jpeg_desc *jdesc){
-
-    for (enum color_component cc = 0; cc<jdesc->nb_components; cc++){
-        for (enum sample_type sample_type=0; sample_type < 2; sample_type++){
-            huffman_table_destroy(jdesc->htables[2*cc + sample_type]);
-        }
-    }
-}
 
 
 /*
