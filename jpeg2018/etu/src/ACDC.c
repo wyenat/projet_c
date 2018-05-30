@@ -18,7 +18,7 @@ uint32_t  obtenir_magnetude(int16_t entree){
   if (entree == 0){
     return 0;
   }
-  int32_t  magnetude = log2(abs(entree))+1;
+  uint32_t  magnetude = (uint32_t)log2(abs(entree))+1;
   return magnetude;
 }
 
@@ -26,9 +26,9 @@ uint32_t  obtenir_indice(int16_t entree, int32_t  magnetude){
   if (magnetude == 0){
     return 0;
   }
-  uint32_t indice = abs(entree);
+  uint32_t indice = (uint32_t)abs(entree);
   if (entree < 0){
-    indice = pow(2, magnetude) - indice - 1;
+    indice = (uint32_t)pow(2, magnetude) - indice - 1;
   }
   return indice;
 }
@@ -79,14 +79,14 @@ void EOB(struct bitstream *bitstream_jpeg, struct jpeg_desc *jpeg, int couleur, 
   }
 }
 
-void balise_std(int nb_zero, int valeur, struct bitstream *bitstream_jpeg, struct jpeg_desc *jpeg, int couleur, int verbose){
+void balise_std(int nb_zero, int16_t valeur, struct bitstream *bitstream_jpeg, struct jpeg_desc *jpeg, int couleur, int verbose){
   uint32_t m = obtenir_magnetude(valeur);
   uint32_t i = obtenir_indice(valeur, m);
   if (m == 0) {
     perror("On ne lit pas assez de 0 ! \n");
     exit(EXIT_FAILURE);
   }
-  uint8_t valeur_symbole = 16*nb_zero + m;
+  uint8_t valeur_symbole = (uint8_t)(16*nb_zero + m);
   uint8_t longeur_huffman = 0;
   uint32_t chemin_huffman = huffman_table_get_path(jpeg_desc_get_huffman_table(jpeg, AC, couleur), valeur_symbole, &longeur_huffman);
   bitstream_write_nbits(bitstream_jpeg, chemin_huffman, longeur_huffman, 0);

@@ -20,7 +20,7 @@ void ZRL(struct bitstream *bitstream_jpeg, struct jpeg_desc *jpeg, int couleur, 
 
 void EOB(struct bitstream *bitstream_jpeg, struct jpeg_desc *jpeg, int couleur, int verbose);
 
-void balise_std(int nb_zero, int valeur, struct bitstream *bitstream_jpeg, struct jpeg_desc *jpeg, int couleur, int verbose);
+void balise_std(int nb_zero, int16_t valeur, struct bitstream *bitstream_jpeg, struct jpeg_desc *jpeg, int couleur, int verbose);
 
 void LRE(int16_t *entree, struct bitstream *bitstream_jpeg, struct jpeg_desc *jpeg, int couleur, int verbose, int layer_y, int nb_compression);
 

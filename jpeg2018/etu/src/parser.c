@@ -165,6 +165,7 @@ int main( int argc, char * argv[] )
 
 
         // Libération des mémoires allouée.
+        jpeg_huffman_table_destroy(jpeg);
         jpeg_write_footer(jpeg);
         Image_destroy(new_image);
         bitstream_destroy(bitstream_jpeg);
