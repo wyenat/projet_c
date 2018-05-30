@@ -18,8 +18,9 @@ int main( int argc, char * argv[] )
   perror("Aucun arguments rentré ! Tapez --h ou --help pour plus d'informations \n");
   exit(EXIT_FAILURE);
 }
-  int verbose = 0; // A remettre à 0 pour rendre le projet final
+  int verbose = 0;
   int sample  = 0;
+  int force   = 0;
   char* noms_des_images[argc];
   char* renommage[argc];
   int nombre_de_renommage=0;
@@ -35,6 +36,7 @@ int main( int argc, char * argv[] )
           printf("Voilà les options : \n \t --outfile=nomdufichier renomme la sortie en nomdufichier.jpg (ne supporte pas les espaces) \n");
           printf("\t --sample=h1xv1,h2xv2,h3xv3 : défini les composantes d'échantillonages pour les 3 couleurs \n");
           printf("\t --verbose : affiche le mode verbeux \n");
+          printf("\t --force : crée le fichier même s'il existe déjà \n \t ATTENTION ! LA SUPPRESSION DU FICHIER ORIGINAL EST DEFINITIVE  \n");
         }
         else if ( strncmp(argv[i], "--outfile=", 10) == 0 ) {
           if (strlen(argv[i]) == 10) {
@@ -66,6 +68,9 @@ int main( int argc, char * argv[] )
           noms_des_images[nombre_dimages] = argv[i];
           nombre_dimages++;
         }
+        else if (strcmp(argv[i], "--force") == 0 ) {
+            force = 1;
+        }
         else {
           printf("Erreur dans les arguments, %s n'est pas reconnu ! \n Faire --h ou --help pour plus d'informations \n", argv[i]);
           exit(EXIT_FAILURE);
@@ -92,7 +97,15 @@ int main( int argc, char * argv[] )
           printf("\t Création du jpeg \n");
         }
 
-        //Récupération des données dans l'images
+        // Vérifie que l'image de sortie n'existe pas
+        FILE *fichier = NULL;
+        fichier = fopen(renommage[i],  "r");
+        if (fichier != NULL && force == 0){
+            perror("Le fichier existe déjà ! \n Activez le mode --force si vous voulez l'écraser.\n");
+            exit(EXIT_SUCCESS);
+        }
+
+        // Récupération des données dans l'images
         struct Image *pic = initialisation(noms_des_images[i]);
         if (verbose){
           printf("\n \n \n \t initialisation de l'image ! \n \n \n ");
@@ -100,7 +113,7 @@ int main( int argc, char * argv[] )
         }
 
 
-        //Passage en MCU
+        // Passage en MCU
         struct Image_MCU_8 *image = decoupe(pic, h1, v1);
         if (verbose){
           printf("\n \n \n \t Passage MCU8 ! \n \n \n");
@@ -108,12 +121,12 @@ int main( int argc, char * argv[] )
         }
 
 
-        //Création de l'entête jpeg
+        // Création de l'entête jpeg
         struct jpeg_desc *jpeg = jpeg_desc_create();
         struct bitstream *bitstream_jpeg = ecrire_entete(jpeg ,noms_des_images[i], renommage[i], image->hauteur*8*(image->MCUs[0]->hauteur),  image->largeur*8*(image->MCUs[0]->largeur),1 + 2*image->couleur, h1, h2, h3, v1, v2, v3);
         free(renommage[i]);
 
-        //Passage de RGB à YCbCr
+        // Passage de RGB à YCbCr
         Image_RGB2YCbCr(image);
         if (verbose){
           printf("\n \n \n \t Conversion de RGB à YCbCr ! \n \n \n");
