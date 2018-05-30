@@ -187,8 +187,8 @@ int main( int argc, char * argv[] )
 
         // Libération des mémoires allouée.
         jpeg_write_footer(jpeg);
+        // fclose(fichier);
         jpeg_desc_destroy(jpeg);
-        fclose(fichier);
         Image_destroy(new_image);
         bitstream_destroy(bitstream_jpeg);
         printf("Image traitée \n");
