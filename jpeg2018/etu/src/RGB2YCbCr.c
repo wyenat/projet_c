@@ -62,8 +62,6 @@ void Image_RGB2YCbCr(struct Image_MCU_8 *Image_entree)  {
     }
     else    {
         for (uint64_t i = 0; i < nombre_MCUs; i++) {
-//            printf("Hauteur du MCU : %d\n", Image_entree->MCUs[i]->hauteur);
-//            printf("Largeur du MCU : %d\n", Image_entree->MCUs[i]->largeur);
             Image_entree->MCUs[i] = RGB2YCbCr_couleur(Image_entree->MCUs[i]);
         }
     }
@@ -72,7 +70,7 @@ void Image_RGB2YCbCr(struct Image_MCU_8 *Image_entree)  {
 
 void afficher_YCbCr(struct MCU_8 *MCU)
 {
-    uint8_t nombre_composantes = 1 + 2*MCU->couleur;         // 1 si noir et blanc, 3 si couleur, nombre d'octets par pixel
+    uint8_t nombre_composantes = 1 + 2*MCU->couleur;
     uint8_t nombre_blocs = MCU->largeur*MCU->hauteur;
     printf("Nombre de blocs dans le MCU : %d\n", nombre_blocs);
     for (int composante = 0; composante < nombre_composantes; composante++) {
@@ -86,7 +84,7 @@ void afficher_YCbCr(struct MCU_8 *MCU)
         for (uint32_t indice = 0; indice < 64 * nombre_blocs; indice++) {
             char *hex = hexme(MCU->flux[64 * nombre_blocs * composante + indice]);
             printf("%s\t", hex);
-            free(hex);
+            // free(hex);
             if ((indice + 1) % 8 == 0) {
                 printf("\n\t");
             }
