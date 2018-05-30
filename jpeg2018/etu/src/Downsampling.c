@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <assert.h>
 #include "decoupage_MCU.h"
+#include "hex.h"
 
 struct MCU_8 * downsampling_horizontal_2_blocs(struct MCU_8 * MCU_entree)   {
     // Compresse un MCU 2x? en un MCU 1x?. ATTENTION !! Ne marche que sur des MCU de largeur 2 !
@@ -133,7 +134,7 @@ void afficher_apres_compression(struct MCU_8 *MCU)
             if (MCU->echant_h && MCU->echant_l) {
                 printf("H et L\n\t");
                 for (uint32_t indice = 0; indice < 64; indice++)    {
-                    printf("%u\t", MCU->flux[64 * nombre_blocs + 64 * (composante - 1) + indice]);
+                    printf("%s\t", hexme(MCU->flux[64 * nombre_blocs + 64 * (composante - 1) + indice]));
                     if ((indice + 1) % 64 == 0)   {
                         printf("\n\n");
                     }
@@ -145,22 +146,19 @@ void afficher_apres_compression(struct MCU_8 *MCU)
             else if (MCU->echant_h) {
                 printf(("Juste H\n\t"));
                 for (uint32_t indice = 0; indice < MCU->largeur * 64; indice++)    {
-                    printf("%u\t", MCU->flux[64 * nombre_blocs + MCU->largeur * 64 * (composante - 1) + indice]);
+                    printf("%s\t", hexme(MCU->flux[64 * nombre_blocs + MCU->largeur * 64 * (composante - 1) + indice]));
                     if ((indice + 1) % (64*MCU->largeur) == 0)  {
                         printf("\n\n");
                     }
-                    else if ((indice + 1) % 16 == 8) {
-                        printf("\t");
-                    }
-                    else if((indice + 1) % 16 == 0) {
-                        printf("\n\t");
+                    else if ((indice + 1) % 8 == 0) {
+                        printf("\t\n\t");
                     }
                 }
             }
             else if (MCU->echant_l) {
                 printf("Juste L\n\t");
                 for (uint32_t indice = 0; indice < MCU->hauteur * 64; indice++)    {
-                    printf("%u\t", MCU->flux[64 * nombre_blocs + MCU->hauteur * 64 * (composante - 1) + indice]);
+                    printf("%s\t", hexme(MCU->flux[64 * nombre_blocs + MCU->hauteur * 64 * (composante - 1) + indice]));
                     if ((indice + 1) % 64 == 0) {
                         printf("\n\n\t");
                     }

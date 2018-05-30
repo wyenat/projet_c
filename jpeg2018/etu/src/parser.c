@@ -114,7 +114,7 @@ int main( int argc, char * argv[] )
 
 
         // Passage en MCU
-        struct Image_MCU_8 *image = decoupe(pic, h1, v1);
+        struct Image_MCU_8 *image = decoupe(pic, h1/h3, v1/v3);
         if (verbose){
           printf("\n \n \n \t Passage MCU8 ! \n \n \n");
           afficher_image_8(image);
